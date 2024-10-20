@@ -66,6 +66,7 @@ export class LogoGenerator extends HTMLElement {
 
         // Initialiser les champs avec les valeurs actuelles
         this.textInput.value = this._text;
+        this.colorTitleInput.value = this._colorTitle;
         this.fontSizeTitleInput.value = this._fontSizeTitle;
         this.backgroundTitleSelect.value = this._backgroundTitle;
         this.textureTitleSelect.value = this._textureTitle;
@@ -109,6 +110,7 @@ export class LogoGenerator extends HTMLElement {
     // Mettre à jour les propriétés à partir du formulaire et afficher le logo
     updateLogo() {
         this._text = this.textInput.value;
+        this._colorTitle = this.colorTitleInput.value;
         this._fontSizeTitle = this.fontSizeTitleInput.value;
         this._backgroundTitle = this.backgroundTitleSelect.value;
         this._textureTitle = this.textureTitleSelect.value;
@@ -119,6 +121,7 @@ export class LogoGenerator extends HTMLElement {
     // Afficher le logo avec les propriétés actuelles
     renderLogo() {
         this.logoDisplay.textContent = this._text;
+        this.logoDisplay.style.color = this._colorTitle;
         this.logoDisplay.style.fontSize = `${this._fontSizeTitle}px`;
 
         // Appliquer la position (gauche, centre, droite)
@@ -159,6 +162,15 @@ export class LogoGenerator extends HTMLElement {
 
     get text() {
         return this._text;
+    }
+
+    set colorTitle(value) {
+        this._colorTitle = value;
+        this.renderLogo();
+    }
+
+    get colorTitle() {
+        return this._colorTitle;
     }
 
     set fontSizeTitle(value) {
