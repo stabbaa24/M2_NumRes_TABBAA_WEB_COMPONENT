@@ -1,6 +1,55 @@
 <div class="container">
-    <header class="header">Header</header>
-    <div class="content-left">Plusieurs div en flex pour le réglage</div>
-    <div class="content-right">Affichage des éléments, du logo définie à l'aide du réglage</div>
+    <header class="header">Générateur de Logo Personnalisé</header>
+    <div class="content-left">
+        <form id="logoForm">
+            <div class="Title">
+                <label for="logoTitle">Texte du logo:</label>
+                <input type="text" id="logoTitle" name="logoTitle" placeholder="Saisir le texte du logo" />
+
+                <label for="colorTitle">Couleur du texte:</label>
+                <input type="color" id="colorTitle" name="colorTitle" value="#000000" />
+
+                <label for="fontSizeTitle">Taille de la police:</label>
+                <input type="range" id="fontSizeTitle" name="fontSizeTitle" min="16" max="72" value="32" />
+
+                <label for="positionTitle">Position du texte:</label>
+                <input type="radio" id="positionTitle" name="positionTitle" value="left" checked /> Gauche
+                <input type="radio" id="positionTitle" name="positionTitle" value="center" /> Centre
+                <input type="radio" id="positionTitle" name="positionTitle" value="right" /> Droite
+
+                <label for="orientationTitle">Orientation du texte:</label>
+                <input type="radio" id="orientationTitle" name="orientationTitle" value="horizontal" checked /> Horizontal
+                <input type="radio" id="orientationTitle" name="orientationTitle" value="vertical" /> Vertical
+
+                <label for="backgroundTitle">Texture de fond:</label>
+                <select id="backgroundTitle" name="background">
+                    <option value="https://media2.giphy.com/media/l41YcgNSPj6Wy1KyQ/giphy.gif">Wave Hexagon</option>
+                    <option value="https://media4.giphy.com/media/3oEduXpUkXpRgAxfAk/giphy.gif">Colorful Geometry
+                    </option>
+                    <option value="https://media.giphy.com/media/gNke2UrUTopOg/giphy.gif">Christmas</option>
+                    <option value="https://media.giphy.com/media/7Bgpw7PwdxoDC/giphy.gif">Snow</option>
+                    <option value="https://media.giphy.com/media/13mwsrXEUtSyZi/giphy.gif">Flames</option>
+                    <option value="https://media1.giphy.com/media/l3vR16pONsV8cKkWk/giphy.gif">Geometric Eye</option>
+                </select>
+
+                <label for="textureTitle">Texture du texte:</label>
+                <select id="textureTitle" name="texture">
+                    <option value="https://media2.giphy.com/media/l41YcgNSPj6Wy1KyQ/giphy.gif">Wave Hexagon</option>
+                    <option value="https://media4.giphy.com/media/3oEduXpUkXpRgAxfAk/giphy.gif">Colorful Geometry
+                    </option>
+                    <option value="https://media.giphy.com/media/gNke2UrUTopOg/giphy.gif">Christmas</option>
+                    <option value="https://media.giphy.com/media/7Bgpw7PwdxoDC/giphy.gif">Snow</option>
+                    <option value="https://media.giphy.com/media/13mwsrXEUtSyZi/giphy.gif">Flames</option>
+                    <option value="https://media1.giphy.com/media/l3vR16pONsV8cKkWk/giphy.gif">Geometric Eye</option>
+                </select>
+
+                <button type="button" id="updateLogo">Mettre à jour le logo</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="content-right">
+        <div id="logoDisplay" class="logo">Logo Exemple</div>
+    </div>
     <footer class="footer">Footer</footer>
 </div>
