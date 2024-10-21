@@ -36,8 +36,6 @@ export class LogoGenerator extends HTMLElement {
         this._text = 'Logo Exemple';
         this._colorTitle = '#000000';
         this._fontSizeTitle = 32;
-        this._positionTitle = 'left';
-        this._orientationTitle = 'horizontal';
         this._backgroundTitle = '';
         this._textureTitle = '';
     }
@@ -58,8 +56,6 @@ export class LogoGenerator extends HTMLElement {
         this.textInput = this.shadowRoot.querySelector('#logoTitle');
         this.colorTitleInput = this.shadowRoot.querySelector('#colorTitle');
         this.fontSizeTitleInput = this.shadowRoot.querySelector('#fontSizeTitle');
-        this.positionTitleInputs = this.shadowRoot.querySelectorAll('input[name="positionTitle"]');
-        this.orientationTitleInputs = this.shadowRoot.querySelectorAll('input[name="orientationTitle"]');
         this.backgroundTitleSelect = this.shadowRoot.querySelector('#backgroundTitle');
         this.textureTitleSelect = this.shadowRoot.querySelector('#textureTitle');
         this.updateButton = this.shadowRoot.querySelector('#updateLogo');
@@ -70,41 +66,11 @@ export class LogoGenerator extends HTMLElement {
         this.fontSizeTitleInput.value = this._fontSizeTitle;
         this.backgroundTitleSelect.value = this._backgroundTitle;
         this.textureTitleSelect.value = this._textureTitle;
-
-        // Sélectionner la bonne position par défaut
-        this.positionTitleInputs.forEach(input => {
-            if (input.value === this._positionTitle) {
-                input.checked = true;
-            }
-        });
-
-        // Sélectionner la bonne orientation par défaut
-        this.orientationTitleInputs.forEach(input => {
-            if (input.value === this._orientationTitle) {
-                input.checked = true;
-            }
-        });
     }
 
     // Attacher les événements du formulaire
     attachEventListeners() {
         this.updateButton.addEventListener('click', () => this.updateLogo());
-
-        // Gérer les changements d'orientation
-        this.orientationTitleInputs.forEach(input => {
-            input.addEventListener('change', () => {
-                this._orientationTitle = input.value;
-                this.renderLogo();
-            });
-        });
-
-        // Gérer les changements de position
-        this.positionTitleInputs.forEach(input => {
-            input.addEventListener('change', () => {
-                this._positionTitle = input.value;
-                this.renderLogo();
-            });
-        });
     }
 
     // Mettre à jour les propriétés à partir du formulaire et afficher le logo
@@ -123,22 +89,6 @@ export class LogoGenerator extends HTMLElement {
         this.logoDisplay.textContent = this._text;
         this.logoDisplay.style.color = this._colorTitle;
         this.logoDisplay.style.fontSize = `${this._fontSizeTitle}px`;
-
-        // Appliquer la position (gauche, centre, droite)
-        if (this._positionTitle === 'left') {
-            this.logoDisplay.style.textAlign = 'left';
-        } else if (this._positionTitle === 'center') {
-            this.logoDisplay.style.textAlign = 'center';
-        } else {
-            this.logoDisplay.style.textAlign = 'right';
-        }
-
-        // Appliquer l'orientation (horizontal/vertical)
-        if (this._orientationTitle === 'horizontal') {
-            this.logoDisplay.style.writingMode = 'horizontal-tb';
-        } else {
-            this.logoDisplay.style.writingMode = 'vertical-rl';
-        }
 
         // Appliquer la texture de fond si disponible
         if (this._backgroundTitle) {
@@ -180,24 +130,6 @@ export class LogoGenerator extends HTMLElement {
 
     get fontSizeTitle() {
         return this._fontSizeTitle;
-    }
-
-    set positionTitle(value) {
-        this._positionTitle = value;
-        this.renderLogo();
-    }
-
-    get positionTitle() {
-        return this._positionTitle;
-    }
-
-    set orientationTitle(value) {
-        this._orientationTitle = value;
-        this.renderLogo();
-    }
-
-    get orientationTitle() {
-        return this._orientationTitle;
     }
 
     set backgroundTitle(value) {
