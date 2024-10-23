@@ -1,8 +1,14 @@
 const template = document.createElement('template');
 
+/*************  ✨ Codeium Command 🌟  *************/
 const getBaseURL = () => {
+    console.log('import.meta.url:', import.meta.url);
+    const url = new URL('.', import.meta.url);
+    console.log('getBaseURL:', url.href);
+    return url;
     return new URL('.', import.meta.url);
 };
+/******  c9b10ab2-179c-42b1-b05f-e8762dee46f8  *******/
 
 async function loadHTML(htmlRelativeUrl, baseUrl) {
     const htmlUrl = new URL(htmlRelativeUrl, baseUrl).href;
@@ -61,9 +67,54 @@ export class LogoGenerator extends HTMLElement {
         this.backgroundEffectInput.addEventListener('change', () => this.applyBackgroundEffect());
         this.addTextButton.addEventListener('click', () => this.addTextElement());
 
-        // Pour générer le logo
-        const generateLogoButton = this.shadowRoot.querySelector('#generateLogo');
-        generateLogoButton.addEventListener('click', () => this.captureAndDownloadLogo());
+        this.shadowRoot.querySelector('#generateLogo').addEventListener('click', () => this.generateLogoImage());
+    }
+
+    generateLogoImage() {
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Obtenez les dimensions du logo pour ajuster la taille du canvas
+        const logoWrapper = this.logoDisplay.getBoundingClientRect();
+        canvas.width = logoWrapper.width;
+        canvas.height = logoWrapper.height;
+    
+        // Initialiser une promesse pour charger l'image de fond
+        let backgroundPromise = Promise.resolve();
+    
+        // Vérifier si une image de fond est présente
+        if (this.logoBackground.style.backgroundImage) {
+            const backgroundUrl = this.logoBackground.style.backgroundImage.slice(5, -2); // Enlever "url(...)" des styles
+            const backgroundImg = new Image();
+            backgroundPromise = new Promise((resolve) => {
+                backgroundImg.onload = () => {
+                    ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+                    resolve();
+                };
+                backgroundImg.src = backgroundUrl;
+            });
+        }
+    
+        // Quand l'image de fond est chargée, dessiner les textes
+        backgroundPromise.then(() => {
+            this.textElements.forEach(textElement => {
+                const style = window.getComputedStyle(textElement);
+                ctx.font = `${style.fontSize} ${style.fontFamily}`;
+                ctx.fillStyle = style.color;
+                const left = parseInt(style.left, 10);
+                const top = parseInt(style.top, 10);
+                ctx.fillText(textElement.textContent, left, top);
+            });
+    
+            // Générer l'URL de l'image PNG
+            const imageUrl = canvas.toDataURL('image/png');
+    
+            // Créer un lien pour télécharger l'image
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'logo.png';
+            link.click();
+        });
     }
 
     updateBackground() {
@@ -135,7 +186,7 @@ export class LogoGenerator extends HTMLElement {
             if (isDragging) {
                 const parent = this.logoDisplay.getBoundingClientRect();
                 const elementRect = element.getBoundingClientRect();
-
+                
                 let newX = e.clientX - offsetX;
                 let newY = e.clientY - offsetY;
 
@@ -231,17 +282,6 @@ export class LogoGenerator extends HTMLElement {
         });
 
         this.textSettingsContainer.appendChild(panel);
-    }
-
-    // Capture du logo et téléchargement
-    captureAndDownloadLogo() {
-        const logoContainer = this.shadowRoot.querySelector('.logo-wrapper');
-
-        html2canvas(logoContainer).then(canvas => {
-            canvas.toBlob(blob => {
-                saveAs(blob, 'logo.png');
-            });
-        });
     }
 }
 
