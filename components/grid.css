@@ -1,27 +1,28 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Franklin Gothic Medium';
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Dégradé de fond pour tout le body */
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+.header, .content-left, .footer {
+    font-family: 'Poppins', sans-serif;
 }
 
 .container {
     display: grid;
-    grid-template-rows: 100px 1fr 50px;
+    grid-template-rows: 60px 1fr 30px;
     grid-template-columns: 1fr 2fr;
     height: 100vh;
     gap: 20px;
     padding: 20px;
     box-sizing: border-box;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
+    background: linear-gradient(45deg, #031633, #095b41); /* Dégradé de fond pour tout le body */
 }
 
 .header {
     grid-column: 1 / -1;
     background-color: white;
-    background: linear-gradient(135deg, #00e5e5, #0083e8);
+    background: linear-gradient(135deg, #490852, #a30a85);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,6 +33,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     animation: slide-down 0.5s ease-out;
+    height: 100%;
 }
 
 @keyframes slide-down {
@@ -45,18 +47,18 @@ body {
     }
 }
 
+/* Contenu gauche */
 .content-left {
+    padding: 20px;
     background-color: #ffffff;
     background: linear-gradient(135deg, #f3f4f6, #e2e3e7);
-    padding: 20px;
-    border: 2px solid #6a11cb;
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
     animation: fade-in-left 0.8s ease-in-out;
+    align-items: center;
 }
 
 @keyframes fade-in-left {
@@ -70,16 +72,20 @@ body {
     }
 }
 
+/* Contenu droit */
 .content-right {
-    background-color: none;
-    padding: 20px;
+    background-color: #ffffff;
     border-radius: 10px;
-    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
     animation: fade-in-right 0.8s ease-in-out;
+    position: relative; 
+    flex: 1;
+    padding-left: 20px;
 }
 
 @keyframes fade-in-right {
@@ -95,13 +101,13 @@ body {
 
 .footer {
     grid-column: 1 / -1;
-    background: linear-gradient(135deg, #ffdd57, #fca636);
+    background: linear-gradient(135deg, #000000, #333130);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 20px;
     font-weight: bold;
-    color: #333;
+    color: #c4c4c4;
     border-radius: 10px;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
     animation: slide-up 0.5s ease-out;

@@ -1,46 +1,49 @@
 <div class="container">
     <header class="header">Générateur de Logo Personnalisé</header>
+
     <div class="content-left">
-        <form id="logoForm">
-            <div class="Title">
-                <label for="logoTitle">Texte du logo:</label>
-                <input type="text" id="logoTitle" name="logoTitle" placeholder="Saisir le texte du logo" />
-
-                <label for="colorTitle">Couleur du texte:</label>
-                <input type="color" id="colorTitle" name="colorTitle" value="#000000" />
-
-                <label for="fontSizeTitle">Taille de la police:</label>
-                <input type="range" id="fontSizeTitle" name="fontSizeTitle" min="16" max="72" value="32" />
-
-                <label for="backgroundTitle">Texture de fond:</label>
-                <select id="backgroundTitle" name="background">
-                    <option value="https://media2.giphy.com/media/l41YcgNSPj6Wy1KyQ/giphy.gif">Wave Hexagon</option>
-                    <option value="https://media4.giphy.com/media/3oEduXpUkXpRgAxfAk/giphy.gif">Colorful Geometry
-                    </option>
-                    <option value="https://media.giphy.com/media/gNke2UrUTopOg/giphy.gif">Christmas</option>
-                    <option value="https://media.giphy.com/media/7Bgpw7PwdxoDC/giphy.gif">Snow</option>
-                    <option value="https://media.giphy.com/media/13mwsrXEUtSyZi/giphy.gif">Flames</option>
-                    <option value="https://media1.giphy.com/media/l3vR16pONsV8cKkWk/giphy.gif">Geometric Eye</option>
-                </select>
-
-                <label for="textureTitle">Texture du texte:</label>
-                <select id="textureTitle" name="texture">
-                    <option value="https://media2.giphy.com/media/l41YcgNSPj6Wy1KyQ/giphy.gif">Wave Hexagon</option>
-                    <option value="https://media4.giphy.com/media/3oEduXpUkXpRgAxfAk/giphy.gif">Colorful Geometry
-                    </option>
-                    <option value="https://media.giphy.com/media/gNke2UrUTopOg/giphy.gif">Christmas</option>
-                    <option value="https://media.giphy.com/media/7Bgpw7PwdxoDC/giphy.gif">Snow</option>
-                    <option value="https://media.giphy.com/media/13mwsrXEUtSyZi/giphy.gif">Flames</option>
-                    <option value="https://media1.giphy.com/media/l3vR16pONsV8cKkWk/giphy.gif">Geometric Eye</option>
-                </select>
-
-                <button type="button" id="updateLogo">Mettre à jour le logo</button>
+        <div id="global-settings">
+            <h3>Paramètres globaux</h3>
+        
+            <label for="backgroundUrl">Image de fond (URL):</label>
+            <input type="text" id="backgroundUrl" placeholder="URL de l'image" />
+        
+            <label class="image-upload" for="backgroundFile">
+                <img src="../asset/download.png" alt="Upload Icon" />
+                Télécharger une image
+            </label>
+            <input id="backgroundFile" type="file" accept="image/*" style="display: none;" />
+        
+            <div class="range-container">
+                <label for="backgroundSize">Taille de l'image</label>
+                <input type="range" id="backgroundSize" min="50" max="200" value="100" />
             </div>
-        </form>
+        
+            <label for="backgroundEffect">Effet sur l'image de fond</label>
+            <select id="backgroundEffect">
+                <option value="none">Aucun</option>
+                <option value="blur">Flou</option>
+                <option value="grayscale">Gris</option>
+                <option value="sepia">Sépia</option>
+            </select>
+        </div>
+        
+        <div id="text-settings-container">
+        </div>
+
+        <div class="settings-button-container">
+            <button type="button" id="addTextButton">Ajouter un texte</button>
+            <button type="button" id="generateLogo">Générer le logo</button>
+            <button type="button" id="generateCode">Générer le code</button>
+        </div>
     </div>
 
     <div class="content-right">
-        <div id="logoDisplay" class="logo">Logo Exemple</div>
+        <div id="logoDisplay" class="logo-wrapper">
+            <div class="logo-background draggable"></div>
+            <div class="logo-texts"></div>
+        </div>
     </div>
+
     <footer class="footer">S. TABBAA - M2 Miage - NumRes - 2024/2025</footer>
 </div>

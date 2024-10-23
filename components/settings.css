@@ -1,0 +1,154 @@
+/* Tous les param */
+.settings-panel {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 400px;
+    box-sizing: border-box;
+}
+
+/* Paramètres globaux */
+#global-settings {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+#global-settings h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#global-settings label {
+    color: #555;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+#global-settings input[type="text"],
+#global-settings select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.image-upload {
+    display: flex;
+    align-items: center; 
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.image-upload img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; 
+    transition: transform 0.3s ease;
+}
+
+.image-upload:hover img {
+    transform: scale(1.1); 
+}
+
+.range-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.range-container label {
+    margin-bottom: 0;
+}
+
+.range-container input[type="range"] {
+    flex-grow: 1;
+    margin-left: 15px; 
+}
+
+/* Panneaux de configuration de texte */
+.text-settings-panel {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.text-settings-panel h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.text-settings-panel label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.text-settings-panel input,
+.text-settings-panel select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+/* Applique le même style à la section de texte dynamique */
+#text-settings-container {
+    margin-bottom: 20px;
+}
+
+/* Bouton pour ajouter un texte */
+.settings-button-container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    justify-content: space-evenly;
+    gap: 10px;
+}
+
+#addTextButton, #generateCode, #generateLogo {
+    background-color: #00c1d4;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#addTextButton:hover, #generateCode:hover, #generateLogo:hover {
+    background-color: #0083e8;
+}
+
+/* Bouton de téléchargement de l'image de fond */
+.image-upload label {
+    cursor: pointer;
+}
+
+.image-upload img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+.image-upload img:hover {
+    transform: scale(1.1);
+}
