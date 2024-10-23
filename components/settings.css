@@ -152,3 +152,35 @@
 .image-upload img:hover {
     transform: scale(1.1);
 }
+
+/* Panneaux de configuration d'icônes */
+.icon-settings-panel {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.icon-settings-panel h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.icon-settings-panel label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.icon-settings-panel input[type="range"],
+.icon-settings-panel select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
