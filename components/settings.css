@@ -184,3 +184,111 @@
     border: 1px solid #ddd;
     box-sizing: border-box;
 }
+
+/* Style pour le bouton de suppression */
+.delete-button {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #ff1a1a;
+}
+
+/** Pour les gradiens de couleur **/
+.gradient-color-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.gradient-color-container label {
+    flex-basis: 40%; /* Largeur du label */
+    margin-bottom: 0; /* Supprime l'espace supplémentaire */
+}
+
+.gradient-color-container input[type="color"] {
+    width: 50px; /* Taille des input color */
+    height: 30px; /* Ajuste la hauteur des input color */
+    border: none;
+    padding: 0;
+    margin-left: 10px; /* Ajoute un espace entre les éléments */
+    cursor: pointer;
+}
+
+.gradient-color-preview {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/** Pour les effets d'ombre et de lumière **/
+/* Conteneur général pour les paramètres d'ombre et de lumière */
+.effect-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Alignement des éléments */
+.effect-container label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Style pour les cases à cocher (activer/désactiver) */
+.effect-container input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Style pour les sliders (ombre et lumière) */
+.effect-container input[type="range"] {
+    flex-grow: 1;
+    margin-left: 15px;
+    height: 8px;
+    cursor: pointer;
+}
+
+/* Style pour les sélecteurs de couleur */
+.effect-container input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: none;
+    padding: 0;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Désactiver les éléments lorsqu'ils sont désactivés */
+.effect-container input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Section pour l'ombre portée */
+.shadow-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Section pour l'effet de lumière */
+.light-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+

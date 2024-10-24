@@ -222,11 +222,21 @@ export class LogoGenerator extends HTMLElement {
     createTextSettingsPanel(text, textElement) {
         const panel = document.createElement('div');
         panel.classList.add('text-settings-panel');
-
+    
         panel.innerHTML = `
-            <h4></h4>
+            <h4>Paramètres pour ${text}</h4>
             <label>Texte: <input type="text" value="${text}" /></label>
-            <label>Couleur: <input type="color" value="#000000" /></label>
+    
+            <div class="gradient-color-container">
+                <label>Couleur de départ:</label>
+                <input type="color" class="gradient-color-start" value="#000000" />
+            </div>
+    
+            <div class="gradient-color-container">
+                <label>Couleur de fin:</label>
+                <input type="color" class="gradient-color-end" value="#ff0000" />
+            </div>
+    
             <label>Taille: <input type="range" min="16" max="72" value="32" /></label>
             <label>Orientation:
                 <select class="orientation-select">
@@ -239,42 +249,79 @@ export class LogoGenerator extends HTMLElement {
                 <select class="animation-select">
                     <option value="none">Aucune</option>
                     <option value="rotate">Rotation</option>
-                    <option value="fade-in">Apparition</option>
                     <option value="bounce">Sautillant</option>
+                    <option value="wobble">Wobble</option>
+                    <option value="jello">Jello</option>
+                    <option value="pulse">Pulsation</option>
+                    <option value="tada">Tada</option>
+                    <option value="zoom-in">Zoom In</option>
+                    <option value="zoom-out">Zoom Out</option>
+                    <option value="slide-left">Slide Left</option>
+                    <option value="slide-right">Slide Right</option>
+                    <option value="slide-up">Slide Up</option>
+                    <option value="slide-down">Slide Down</option>
+                    <option value="shake">Shake</option>
                 </select>
             </label>
-        `;
+    
+            <!-- Ombre portée -->
+            <div class="shadow-section effect-container">
+                <label><input type="checkbox" class="enable-shadow" /> Activer l'ombre portée</label>
+                <label>Ombre portée (taille et distance): <input type="range" min="0" max="20" value="0" class="shadow-size" disabled /></label>
+                <label>Couleur de l'ombre: <input type="color" class="shadow-color" value="#000000" disabled /></label>
+            </div>
 
+            <!-- Effet de lumière -->
+            <div class="light-section effect-container">
+                <label><input type="checkbox" class="enable-light" /> Activer l'effet de lumière</label>
+                <label>Effet lumière (taille): <input type="range" min="0" max="20" value="0" class="light-size" disabled /></label>
+                <label>Couleur de la lumière: <input type="color" class="light-color" value="#ffffff" disabled /></label>
+            </div>
+        `;
+    
         const textInput = panel.querySelector('input[type="text"]');
-        const colorInput = panel.querySelector('input[type="color"]');
+        const gradientStartColorInput = panel.querySelector('.gradient-color-start');
+        const gradientEndColorInput = panel.querySelector('.gradient-color-end');
         const fontSizeInput = panel.querySelector('input[type="range"]');
         const orientationSelect = panel.querySelector('.orientation-select');
         const animationSelect = panel.querySelector('.animation-select');
-
-        // Donner à la balise h4 le même nom que le texte du input text de manière dynamique
+        const enableShadowCheckbox = panel.querySelector('.enable-shadow');
+        const shadowSizeInput = panel.querySelector('.shadow-size');
+        const shadowColorInput = panel.querySelector('.shadow-color');
+        const enableLightCheckbox = panel.querySelector('.enable-light');
+        const lightSizeInput = panel.querySelector('.light-size');
+        const lightColorInput = panel.querySelector('.light-color');
+    
         const h4 = panel.querySelector('h4');
         h4.textContent = "Paramètres pour " + textInput.value;
-
+    
         // Modification du texte dynamique
         textInput.addEventListener('input', () => {
+            textElement.textContent = textInput.value;
             h4.textContent = "Paramètres pour " + textInput.value;
         });
-
-        // Modification du texte
-        textInput.addEventListener('input', () => {
-            textElement.textContent = textInput.value;
-        });
-
-        // Changement de couleur
-        colorInput.addEventListener('input', () => {
-            textElement.style.color = colorInput.value;
-        });
-
+    
+        // Mise à jour du dégradé de couleur
+        const applyGradient = () => {
+            const startColor = gradientStartColorInput.value;
+            const endColor = gradientEndColorInput.value;
+    
+            textElement.style.backgroundImage = `linear-gradient(to right, ${startColor}, ${endColor})`;
+            textElement.style.webkitBackgroundClip = 'text'; // Compatibilité avec Webkit (Chrome, Safari)
+            textElement.style.backgroundClip = 'text';
+            textElement.style.color = 'transparent'; // Masque la couleur initiale pour ne montrer que le dégradé
+        };
+    
+        gradientStartColorInput.addEventListener('input', applyGradient);
+        gradientEndColorInput.addEventListener('input', applyGradient);
+    
+        applyGradient(); // Appliquer immédiatement le dégradé après avoir sélectionné les couleurs
+    
         // Taille de police
         fontSizeInput.addEventListener('input', () => {
             textElement.style.fontSize = `${fontSizeInput.value}px`;
         });
-
+    
         // Orientation du texte
         orientationSelect.addEventListener('change', () => {
             const orientation = orientationSelect.value;
@@ -288,19 +335,89 @@ export class LogoGenerator extends HTMLElement {
                 textElement.style.transform = 'initial';
             }
         });
-
+    
         // Application des animations
         animationSelect.addEventListener('change', () => {
+            textElement.classList.remove('rotate', 'bounce', 'wobble', 'jello', 'pulse', 'tada', 'zoom-in', 'zoom-out', 'slide-left', 'slide-right', 'slide-up', 'slide-down', 'shake');
+    
             const animation = animationSelect.value;
-            textElement.classList.remove('rotate', 'fade-in', 'bounce'); // Supprime les anciennes classes d'animation
             if (animation !== 'none') {
-                textElement.classList.add(animation); // Ajoute la nouvelle classe d'animation
+                textElement.classList.add(animation);
             }
         });
-
+    
+        // Fonction pour appliquer les effets d'ombre et de lumière
+        const applyShadowAndLight = () => {
+            let shadow = '';
+            let light = '';
+        
+            // Si l'ombre est activée, ajoutez l'ombre
+            if (enableShadowCheckbox.checked) {
+                const shadowSize = shadowSizeInput.value;
+                const shadowColor = shadowColorInput.value;
+                shadow = `${shadowSize}px ${shadowSize}px 5px ${shadowColor}`;
+            }
+        
+            // Si l'effet de lumière est activé, ajoutez la lumière
+            if (enableLightCheckbox.checked) {
+                const lightSize = lightSizeInput.value;
+                const lightColor = lightColorInput.value;
+                light = `0 0 ${lightSize}px ${lightColor}`;
+            }
+        
+            // Appliquez les effets combinés
+            if (shadow && light) {
+                textElement.style.textShadow = `${shadow}, ${light}`; // Applique les deux effets si les deux sont activés
+            } else if (shadow) {
+                textElement.style.textShadow = shadow; // Applique uniquement l'ombre si la lumière est désactivée
+            } else if (light) {
+                textElement.style.textShadow = light; // Applique uniquement la lumière si l'ombre est désactivée
+            } else {
+                textElement.style.textShadow = 'none'; // Réinitialise l'effet si aucun n'est activé
+            }
+        };
+        
+        // Activer/Désactiver les contrôles d'ombre portée
+        enableShadowCheckbox.addEventListener('change', () => {
+            const isEnabled = enableShadowCheckbox.checked;
+            shadowSizeInput.disabled = !isEnabled;
+            shadowColorInput.disabled = !isEnabled;
+            applyShadowAndLight();
+        });
+        
+        // Activer/Désactiver les contrôles d'effet de lumière
+        enableLightCheckbox.addEventListener('change', () => {
+            const isEnabled = enableLightCheckbox.checked;
+            lightSizeInput.disabled = !isEnabled;
+            lightColorInput.disabled = !isEnabled;
+            applyShadowAndLight();
+        });
+        
+        // Mise à jour de l'ombre et de la lumière
+        shadowSizeInput.addEventListener('input', applyShadowAndLight);
+        shadowColorInput.addEventListener('input', applyShadowAndLight);
+        lightSizeInput.addEventListener('input', applyShadowAndLight);
+        lightColorInput.addEventListener('input', applyShadowAndLight);
+        
+        applyShadowAndLight(); // Appliquez les effets initiaux
+    
+        // Ajouter un bouton de suppression dans le panneau de paramètres
+        const deleteButton = document.createElement('button');
+        deleteButton.innerHTML = '🗑️ Supprimer le texte';
+        deleteButton.classList.add('delete-button');
+        deleteButton.style.marginTop = '10px';
+    
+        deleteButton.addEventListener('click', () => {
+            this.logoTexts.removeChild(textElement);
+            this.textElements = this.textElements.filter(el => el !== textElement);
+            this.textSettingsContainer.removeChild(panel);
+        });
+    
+        panel.appendChild(deleteButton);
         this.textSettingsContainer.appendChild(panel);
     }
-
+    
+    
     addIconFromFile(event) {
         const file = event.target.files[0];
         if (file) {
@@ -380,6 +497,17 @@ export class LogoGenerator extends HTMLElement {
                     <option value="none">Aucune</option>
                     <option value="rotate">Rotation</option>
                     <option value="bounce">Sautillant</option>
+                    <option value="wobble">Wobble</option>
+                    <option value="jello">Jello</option>
+                    <option value="pulse">Pulsation</option>
+                    <option value="tada">Tada</option>
+                    <option value="zoom-in">Zoom In</option>
+                    <option value="zoom-out">Zoom Out</option>
+                    <option value="slide-left">Slide Left</option>
+                    <option value="slide-right">Slide Right</option>
+                    <option value="slide-up">Slide Up</option>
+                    <option value="slide-down">Slide Down</option>
+                    <option value="shake">Shake</option>
                 </select>
             </label>
         `;
@@ -396,11 +524,28 @@ export class LogoGenerator extends HTMLElement {
         // Application des animations à l'icône
         animationSelect.addEventListener('change', () => {
             const animation = animationSelect.value;
-            iconElement.classList.remove('rotate', 'bounce'); // Supprime les anciennes classes d'animation
+            iconElement.classList.remove('rotate', 'bounce', 'wobble', 'jello', 'pulse', 'tada', 'zoom-in', 'zoom-out', 'slide-left', 'slide-right', 'slide-up', 'slide-down', 'shake');
             if (animation !== 'none') {
                 iconElement.classList.add(animation); // Ajoute la nouvelle classe d'animation
             }
         });
+
+        // Ajouter un bouton de suppression dans le panneau de paramètres
+        const deleteButton = document.createElement('button');
+        deleteButton.innerHTML = '🗑️ Supprimer l\'icône';
+        deleteButton.classList.add('delete-button');
+        deleteButton.style.marginTop = '10px'; // Ajoutez un peu de marge si nécessaire
+
+        // Ajouter l'événement de suppression pour l'icône et son panneau
+        deleteButton.addEventListener('click', () => {
+            // Supprimer l'icône du DOM
+            this.logoTexts.removeChild(iconElement);
+
+            // Supprimer le panneau de paramètres du DOM
+            this.textSettingsContainer.removeChild(panel);
+        });
+
+        panel.appendChild(deleteButton);
 
         this.textSettingsContainer.appendChild(panel);
     }
