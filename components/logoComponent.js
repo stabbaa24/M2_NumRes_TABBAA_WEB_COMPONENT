@@ -35,6 +35,7 @@ export class LogoGenerator extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
 
+        this.iconCount = 0; // Compteur pour suivre le nombre d'icônes ajoutées
         this.textElements = []; // Liste des textes ajoutés
         this._backgroundImage = ''; // URL ou fichier d'image de fond
     }
@@ -67,7 +68,7 @@ export class LogoGenerator extends HTMLElement {
         this.backgroundEffectInput.addEventListener('change', () => this.applyBackgroundEffect());
         this.addTextButton.addEventListener('click', () => this.addTextElement());
         this.iconFileInput.addEventListener('change', (e) => this.addIconFromFile(e));
-    
+
         // Désactiver les icônes lorsqu'on clique en dehors
         this.shadowRoot.addEventListener('click', (e) => {
             if (!e.target.closest('.icon-wrapper')) {
@@ -221,8 +222,9 @@ export class LogoGenerator extends HTMLElement {
     createTextSettingsPanel(text, textElement) {
         const panel = document.createElement('div');
         panel.classList.add('text-settings-panel');
+
         panel.innerHTML = `
-            <h4>Paramètres pour ${text}</h4>
+            <h4></h4>
             <label>Texte: <input type="text" value="${text}" /></label>
             <label>Couleur: <input type="color" value="#000000" /></label>
             <label>Taille: <input type="range" min="16" max="72" value="32" /></label>
@@ -246,8 +248,17 @@ export class LogoGenerator extends HTMLElement {
         const textInput = panel.querySelector('input[type="text"]');
         const colorInput = panel.querySelector('input[type="color"]');
         const fontSizeInput = panel.querySelector('input[type="range"]');
-        const orientationSelect = panel.querySelector('.orientation-select'); // Spécifie la classe pour l'orientation
-        const animationSelect = panel.querySelector('.animation-select'); // Spécifie la classe pour l'animation
+        const orientationSelect = panel.querySelector('.orientation-select');
+        const animationSelect = panel.querySelector('.animation-select');
+
+        // Donner à la balise h4 le même nom que le texte du input text de manière dynamique
+        const h4 = panel.querySelector('h4');
+        h4.textContent = "Paramètres pour " + textInput.value;
+
+        // Modification du texte dynamique
+        textInput.addEventListener('input', () => {
+            h4.textContent = "Paramètres pour " + textInput.value;
+        });
 
         // Modification du texte
         textInput.addEventListener('input', () => {
@@ -315,8 +326,8 @@ export class LogoGenerator extends HTMLElement {
         iconWrapper.style.position = 'absolute';
         iconWrapper.style.left = '100px';
         iconWrapper.style.top = '100px';
-        iconWrapper.style.width = '50px'; // Taille initiale
-        iconWrapper.style.height = '50px'; // Taille initiale
+        iconWrapper.style.width = '50px';
+        iconWrapper.style.height = '50px';
         iconWrapper.style.cursor = 'move';
         iconWrapper.classList.add('draggable');
 
@@ -356,8 +367,13 @@ export class LogoGenerator extends HTMLElement {
     createIconSettingsPanel(iconUrl, iconElement) {
         const panel = document.createElement('div');
         panel.classList.add('icon-settings-panel');
+
+        // Incrémenter le compteur d'icônes
+        this.iconCount += 1;
+
+        // Créer le titre du panneau avec le numéro de l'icône
         panel.innerHTML = `
-            <h4>Paramètres pour l'icône</h4>
+            <h4>Paramètres pour l'icône ${this.iconCount}</h4>
             <label>Taille: <input type="range" min="16" max="128" value="50" /></label>
             <label>Animation:
                 <select class="icon-animation-select">
@@ -389,49 +405,65 @@ export class LogoGenerator extends HTMLElement {
         this.textSettingsContainer.appendChild(panel);
     }
 
+    /**
+     * Activer une icône
+     * @param {*} iconWrapper L'icône à activer
+     */
     activateIcon(iconWrapper) {
         // Désactiver les autres icônes en enlevant leur classe 'active'
         const activeIcons = this.shadowRoot.querySelectorAll('.icon-wrapper.active');
         activeIcons.forEach(icon => icon.classList.remove('active'));
-    
+
         // Activer cette icône
         iconWrapper.classList.add('active');
     }
-    
+
+    /**
+     * Désactiver toutes les icônes
+     */
     deactivateIcons() {
         const activeIcons = this.shadowRoot.querySelectorAll('.icon-wrapper.active');
         activeIcons.forEach(icon => icon.classList.remove('active'));
     }
 
+    /**
+     * Fonction pour ajouter la fonctionnalité de redimensionnement
+     * @param {*} iconWrapper Permet de redimensionner l'icône
+     * @param {*} resizers Permet de redimensionner l'icône
+     */
     addResizeFunctionality(iconWrapper, resizers) {
         const resizersElements = resizers.querySelectorAll('.resizer');
         let currentResizer;
-    
+
         let startX, startY, startWidth, startHeight;
-    
+
         resizersElements.forEach(resizer => {
             resizer.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 currentResizer = resizer;
                 startX = e.clientX;
                 startY = e.clientY;
-    
+
                 const rect = iconWrapper.getBoundingClientRect();
                 startWidth = rect.width;
                 startHeight = rect.height;
-    
+
                 window.addEventListener('mousemove', resize);
                 window.addEventListener('mouseup', stopResize);
-    
+
                 // Activer les poignées pendant le redimensionnement
                 iconWrapper.classList.add('active');
             });
         });
-    
+
+        /**
+         * Fonction pour redimensionner l'icône
+         * @param {*} e Coordonnées de la souris
+         */
         function resize(e) {
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
-    
+
             if (currentResizer.classList.contains('bottom-right')) {
                 iconWrapper.style.width = `${startWidth + dx}px`;
                 iconWrapper.style.height = `${startHeight + dy}px`;
@@ -450,11 +482,14 @@ export class LogoGenerator extends HTMLElement {
                 iconWrapper.style.left = `${iconWrapper.offsetLeft + dx}px`;
             }
         }
-    
+
+        /**
+         * Fonction pour arreter le redimensionnement
+         */
         function stopResize() {
             window.removeEventListener('mousemove', resize);
             window.removeEventListener('mouseup', stopResize);
-    
+
             // Désactiver les poignées après le redimensionnement
             iconWrapper.classList.remove('active');
         }
