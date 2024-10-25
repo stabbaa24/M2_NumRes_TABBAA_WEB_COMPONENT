@@ -4,42 +4,40 @@
     <div class="content-left">
         <div id="global-settings">
             <h3>Paramètres globaux</h3>
-        
             <label for="backgroundUrl">Image de fond (URL):</label>
             <input type="text" id="backgroundUrl" placeholder="URL de l'image" />
-        
+
             <label class="image-upload" for="backgroundFile">
                 <img src="../asset/download.png" alt="Upload Icon" />
-                Télécharger une image
+                Télécharger une image de fond
             </label>
             <input id="backgroundFile" type="file" accept="image/*" style="display: none;" />
-        
+
             <div class="range-container">
                 <label for="backgroundSize">Taille de l'image</label>
                 <input type="range" id="backgroundSize" min="50" max="200" value="100" />
             </div>
-        
+
             <label for="backgroundEffect">Effet sur l'image de fond</label>
             <select id="backgroundEffect">
                 <option value="none">Aucun</option>
                 <option value="blur">Flou</option>
                 <option value="grayscale">Gris</option>
                 <option value="sepia">Sépia</option>
-            </select>
+            </select>      
             
-            <label class="image-upload" for="iconFile">
-                <img src="../asset/download.png" alt="Upload Icon" />
-                Télécharger une icône
-            </label>
             <input id="iconFile" type="file" accept="image/*" style="display: none;" />            
         </div>
         
-        <div id="text-settings-container">
-        </div>
+        <div id="text-settings-container"></div>
+
+        <label class="image-upload" for="iconFile">
+            <img src="../asset/download.png" alt="Upload Icon" />
+            Télécharger une icône
+        </label>
 
         <div class="settings-button-container">
             <button type="button" id="addTextButton">Ajouter un texte</button>
-            <button type="button" id="generateLogo">Générer le logo</button>
             <button type="button" id="generateCode">Générer le code</button>
         </div>
     </div>
