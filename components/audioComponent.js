@@ -21,7 +21,7 @@ const loadTemplate = async () => {
     `;
 };
 
-// Appel asynchrone pour charger le template avant de continuer
+// Appel asynchrone pour charger le template avant de continuer 
 await loadTemplate();
 
 /**

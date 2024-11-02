@@ -12,7 +12,7 @@ body {
     gap: 20px;
     padding: 20px;
     box-sizing: border-box;
-    background: linear-gradient(135deg, #27273e , #282727); /*Pour le fond de toute la page*/
+    background: linear-gradient(135deg, #27273e , #282727); /*Pour le fond de toute la pages*/
 }
 
 .header {
