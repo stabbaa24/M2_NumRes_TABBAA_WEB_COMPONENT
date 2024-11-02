@@ -5,7 +5,7 @@ Bienvenue sur le projet **TP WEB - Générateur de Logo et Lecteur Audio**. Ce p
 ### Branches du Projet
 
 - **Générateur de Logo** : Pour accéder au code source du générateur de logo, il faut aller dans la branche `LogoGenerator`.
-- **Lecteur Audio** : Pour accéder au code source du lecteur audio, il faut aller dans la branche `Audio`.
+- **Lecteur Audio** : Pour accéder au code source du lecteur audio, il faut aller dans la branche `AudioPlayer`.
 
 ### Informations Supplémentaires
 
