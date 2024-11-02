@@ -1,5 +1,3 @@
-/* 'rotate', 'bounce', 'wobble', 'jello', 'pulse', 'tada', 'zoom-in', 'zoom-out', 'slide-left', 'slide-right', 'slide-up', 'slide-down', 'shake'*/
-
 /* Animation rotate */
 .rotate {
     animation: rotate 1s ease-in-out infinite;
