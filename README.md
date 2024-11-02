@@ -37,7 +37,7 @@ Le lecteur audio dispose des fonctionnalités suivantes :
 ## Fonctionnalités futures
 Les fonctionnalités qui seront ajoutées dans les versions futures incluent :
 
-- **Visualisation des Fréquences** : Ajouter une visualisation en temps réel des fréquences audio jouées, comme vu dans les exemples de MOOC.
+- **Visualisation des Fréquences** : Ajouter une visualisation en temps réel des fréquences audio jouées.
 - **Réglage de la Stéréo** : Permettre le réglage de la stéréo pour une expérience sonore plus riche.
 - **Décomposition en Sous-Composants** : Création de sous WebComponents pour décomposer le lecteur audio en plusieurs éléments spécifiques, tels qu'un composant de visualisation, un égaliseur de fréquences et une playlist.
 - **Utilisation des WebAudio Controls** : Intégration de contrôles WebAudio plus avancés (potentiomètres pour le volume, la stéréo, etc.).
