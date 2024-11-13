@@ -1,19 +1,18 @@
-const template = document.createElement('template'); // Créer un template HTML
+const template = document.createElement('template');
 
-const getBaseURL = () => {
-    return new URL('.', import.meta.url); // Fonction pour obtenir l'URL de base (le répertoire du script)
-};
+// Fonction pour obtenir l'URL de base (le répertoire du script)
+const getBaseURL = () => new URL('.', import.meta.url);
 
 // Fonction pour charger un fichier HTML
 async function loadHTML(htmlRelativeUrl, baseUrl) {
-    const htmlUrl = new URL(htmlRelativeUrl, baseUrl).href; // Obtenir l'URL absolue du fichier HTML
-    const response = await fetch(htmlUrl); // Charger le fichier HTML
-    return response.text(); // Retourner le contenu du fichier HTML
+    const htmlUrl = new URL(htmlRelativeUrl, baseUrl).href;
+    const response = await fetch(htmlUrl);
+    return response.text();
 }
 
-// Fonction d'initialisation asynchrone qui attend le chargement complet du HTML
+// Fonction d'initialisation pour charger le template HTML
 const loadTemplate = async () => {
-    const templateHTML = await loadHTML('./audioComponent.html', getBaseURL()); // Charger le fichier HTML du composant
+    const templateHTML = await loadHTML('./audioComponent.html', getBaseURL());
     template.innerHTML = `
         <link rel="stylesheet" href="${getBaseURL() + 'audioComponent.css'}">
         <link rel="stylesheet" href="${getBaseURL() + 'grid.css'}">
@@ -21,41 +20,77 @@ const loadTemplate = async () => {
     `;
 };
 
-// Appel asynchrone pour charger le template avant de continuer 
+// Charger le template avant de continuer
 await loadTemplate();
 
 /**
- * Définir la classe du composant <audio-generator>
+ * Classe du composant <audio-generator>
  */
-export class AudioGenerator extends HTMLElement {
+class AudioGenerator extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' }); // Ouvrir le shadow DOM
-
-       
+        this.attachShadow({ mode: 'open' }); // Créer le shadow DOM
     }
 
-    /**
-     * Méthode appelée lorsque le composant est connecté au DOM 
-     * pour pouvoir initialiser les éléments du composant
-     */
     async connectedCallback() {
-        // Attendre le template complet avant d'attacher les éléments
+        // Attendre le template et attacher au shadow DOM
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        // Initialiser les éléments du DOM
-        this.initElements();
-        this.attachEventListeners();
+        // Initialiser l'élément audio, le bouton de volume, la sélection de fichier, et le bouton de lecture
+        this.initAudio();
+        this.initVolumeKnob();
+        this.initFileInput();
+        this.initPlayButton();
     }
 
-    // Initialiser les éléments du DOM
-    initElements() {
-        
+    initAudio() {
+        console.log("Initializing audio element...");
+        this.audioElement = document.createElement('audio');
+        this.audioElement.loop = true;
     }
 
-    // Attacher les événements du formulaire
-    attachEventListeners() {
-        
+    initVolumeKnob() {
+        const volumeKnob = this.shadowRoot.getElementById('volumeKnob');
+        console.log("Initializing volume knob...");
+
+        // Synchroniser le bouton de volume avec l'élément audio
+        volumeKnob.addEventListener('input', (event) => {
+            this.audioElement.volume = event.target.value;
+            console.log("Volume set to:", event.target.value);
+        });
+    }
+
+    initFileInput() {
+        const fileInput = this.shadowRoot.getElementById('fileInput');
+        console.log("Initializing file input...");
+
+        // Écouteur pour le changement de fichier
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                this.audioElement.src = fileURL;
+                console.log("File selected:", file.name);
+            }
+        });
+    }
+
+    initPlayButton() {
+        const playButton = this.shadowRoot.getElementById('playButton');
+        console.log("Initializing play button...");
+
+        // Écouteur pour démarrer la lecture lorsque le bouton est cliqué
+        playButton.addEventListener('click', () => {
+            if (this.audioElement.src) {
+                this.audioElement.play().then(() => {
+                    console.log("Audio is playing...");
+                }).catch((error) => {
+                    console.error("Error playing audio:", error);
+                });
+            } else {
+                alert("Veuillez d'abord sélectionner un fichier audio.");
+            }
+        });
     }
 }
 

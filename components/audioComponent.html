@@ -3,11 +3,14 @@
 
     <!-- Partie gauche : Contrôle -->
     <div class="content-left">
+        <input type="file" id="fileInput" accept="audio/*" style="margin-top: 20px;">
+        <button id="playButton" style="margin-top: 20px;">Play</button>
+        <webaudio-knob id="volumeKnob" src="img/LittlePhatty.png" min="0" max="1" value="0.5" step="0.01" diameter="64" sprites="100"></webaudio-knob>
     </div>
 
     <!-- Partie droite : Visualisation du son -->
     <div class="content-right">
-        <div id="audioDisplay"></div>
+        
     </div>
 
     <footer class="footer">S. TABBAA - M2 Miage - NumRes - 2024/2025</footer>
