@@ -1,0 +1,181 @@
+/* Couleurs principales */
+:root {
+    --background-dark: #222831;
+    --background-light: #393e46;
+    --accent-color: #00adb5; /* Bleu-vert lumineux pour les accents */
+    --button-bg: #393e46;
+    --button-hover: #00adb5;
+    --text-color: #eeeeee;
+}
+
+/* Grille principale */
+.container {
+    display: grid;
+    grid-template-areas:
+        "controls-left vinyl controls-right"
+        "playlist playlist launchpad";
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
+    height: 100vh;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1; /* Met la grille principale au-dessus du fond */
+}
+
+/* Contrôles Gauche */
+.controls-left {
+    grid-area: controls-left;
+    background: var(--background-dark);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+}
+
+.controls-left button {
+    margin: 5px;
+    background: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.controls-left button:hover {
+    background: var(--button-hover);
+}
+
+/* Vinyle au centre */
+.vinyl {
+    grid-area: vinyl;
+    background: var(--background-dark);
+    /*border-radius: 50%;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.vinyl .vinyl-disk {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #333 10%, #111 80%);
+    border: 5px solid var(--accent-color);
+    border-radius: 50%;
+}
+
+/* Contrôles Droite */
+.controls-right {
+    grid-area: controls-right;
+    background: var(--background-dark);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+}
+
+.controls-right button {
+    margin: 5px;
+    background: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.controls-right button:hover {
+    background: var(--button-hover);
+}
+
+/* Liste de Musique */
+.playlist {
+    grid-area: playlist;
+    background-color: #0a5a64;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.search input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #2e3238;
+    color: var(--text-color);
+}
+
+.track-list {
+    list-style: none;
+    padding: 0;
+}
+
+.track-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+    color: var(--text-color);
+}
+
+.track-list li button {
+    background: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.track-list li button:hover {
+    background: var(--button-hover);
+}
+
+/* Launchpad */
+.launchpad {
+    grid-area: launchpad;
+    background: var(--background-light);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pad-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 50px);
+    grid-template-rows: repeat(2, 50px);
+    gap: 10px;
+}
+
+.pad {
+    width: 50px;
+    height: 50px;
+    background: #444;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.pad:hover {
+    background: var(--button-hover);
+}

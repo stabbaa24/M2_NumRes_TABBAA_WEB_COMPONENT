@@ -1,0 +1,63 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    background-color: #0a5a64;
+    border-radius: 8px;
+    color: #eeeeee;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+h3 {
+    text-align: left;
+    margin: 0 0 10px 0;
+}
+
+.track-list {
+    flex-grow: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+}
+
+.track-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ffffff;
+}
+
+.track-list li:last-child {
+    border-bottom: none;
+}
+
+.track-list li button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none; /* Pas de fond */
+    border: none; /* Pas de bordure */
+    cursor: pointer; /* Curseur pointer */
+    padding: 0; /* Pas de padding autour */
+    transition: transform 0.2s ease; /* Effet de survol */
+}
+
+.track-list li button:hover {
+    transform: scale(1.1); /* Agrandit légèrement au survol */
+}
+
+.track-list li button img {
+    width: 40px; /* Ajustez la taille de l'image */
+    height: 40px;
+    object-fit: contain; /* Assure que l'image conserve ses proportions */
+}
+
+.track-list li button:hover img {
+    opacity: 0.8; /* Réduit l'opacité au survol pour un effet subtil */
+}
