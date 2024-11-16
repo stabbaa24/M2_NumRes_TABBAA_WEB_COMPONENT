@@ -1,4 +1,6 @@
 import '../playlist/audio-playlist.js';
+import '../controls-right/audio-volume.js';
+import '../controls-right/audio-mute.js';
 
 const template = document.createElement('template');
 
@@ -19,7 +21,7 @@ const loadTemplate = async () => {
     const templateHTML = await loadHTML('audioComponent.html', getBaseURL());
     template.innerHTML = `
         <link rel="stylesheet" href="${getBaseURL() + 'audioComponent.css'}">
-        <link rel="stylesheet" href="${getBaseURL() + '../../grid.css'}"> <!-- Remonte de deux niveaux pour accéder à grid.css -->
+        <link rel="stylesheet" href="${getBaseURL() + '../../grid.css'}">
         ${templateHTML}
     `;
 };
@@ -48,22 +50,33 @@ export class AudioGenerator extends HTMLElement {
         const playlistComponent = document.createElement('audio-playlist');
         this.shadowRoot.querySelector('.playlist').appendChild(playlistComponent);
 
-        // Sous web component - Contrôles gauche
-        const controlsLeftComponent = document.createElement('audio-controls');
-        this.shadowRoot.querySelector('.controls-left').appendChild(controlsLeftComponent);
+        // Sous web component - Contrôles droit - Volume
+        const controlsRightComponentVolume = document.createElement('audio-volume');
+        this.shadowRoot.querySelector('.controls-right').appendChild(controlsRightComponentVolume);
 
-        // Sous web component - Contrôles droite
-        const controlsRightComponent = document.createElement('audio-controls');
-        this.shadowRoot.querySelector('.controls-right').appendChild(controlsRightComponent);
+        // Sous web component - Contrôles droit - Mute
+        const controlsRightComponentMute = document.createElement('audio-mute');
+        this.shadowRoot.querySelector('.controls-right').appendChild(controlsRightComponentMute);
 
-        // Sous web component - Vinyle
-        const vinylComponent = document.createElement('audio-vinyl');
-        this.shadowRoot.querySelector('.vinyl').appendChild(vinylComponent);
+        // Écouter les changements de volume
+        controlsRightComponentVolume.addEventListener('volumeChange', (event) => {
+            const volume = event.detail.volume;
+            const playlistComponent = this.shadowRoot.querySelector('audio-playlist');
+            if (playlistComponent && playlistComponent.audio) {
+                playlistComponent.audio.volume = volume;
+            }
+        });
 
-        // Sous web component - Launchpad
-        const launchpadComponent = document.createElement('audio-launchpad');
-        this.shadowRoot.querySelector('.launchpad').appendChild(launchpadComponent);
+        // Écouter les changements de mute
+        controlsRightComponentMute.addEventListener('muteChange', (event) => {
+            const isMuted = event.detail.isMuted;
+            const playlistComponent = this.shadowRoot.querySelector('audio-playlist');
+            if (playlistComponent && playlistComponent.audio) {
+                playlistComponent.audio.muted = isMuted;
+            }
+        });
     }
+
 }
 
 // Définir le custom element <audio-generator>
