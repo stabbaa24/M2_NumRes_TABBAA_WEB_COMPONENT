@@ -41,23 +41,23 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: none; /* Pas de fond */
-    border: none; /* Pas de bordure */
-    cursor: pointer; /* Curseur pointer */
-    padding: 0; /* Pas de padding autour */
-    transition: transform 0.2s ease; /* Effet de survol */
+    background: none;
+    border: none;
+    cursor: pointer; 
+    padding: 0;
+    transition: transform 0.2s ease; 
 }
 
 .track-list li button:hover {
-    transform: scale(1.1); /* Agrandit légèrement au survol */
+    transform: scale(0.8);
 }
 
 .track-list li button img {
-    width: 40px; /* Ajustez la taille de l'image */
+    width: 40px; 
     height: 40px;
-    object-fit: contain; /* Assure que l'image conserve ses proportions */
+    object-fit: contain;
 }
 
 .track-list li button:hover img {
-    opacity: 0.8; /* Réduit l'opacité au survol pour un effet subtil */
+    opacity: 0.8; 
 }

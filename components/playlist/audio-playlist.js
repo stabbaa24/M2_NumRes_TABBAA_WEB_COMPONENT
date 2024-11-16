@@ -18,6 +18,7 @@ class Playlist extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+        // Liste des morceaux
         this.musicList = [
             { title: "Ne parlons pas de bruno - La famille Madrigal", url: "/assets/music/bruno.mp3" },
             { title: "Jamais je n'avouerai - Hercules", url: "/assets/music/jamais-je-navouerai--disney.mp3" },
@@ -28,6 +29,7 @@ class Playlist extends HTMLElement {
         this.currentIndex = null; // Pour suivre le morceau en cours
     }
 
+    // Fonction appelée lorsque le composant est ajouté au DOM
     connectedCallback() {
         // Générer la liste des morceaux dans le DOM
         this.renderPlaylist();
@@ -36,6 +38,7 @@ class Playlist extends HTMLElement {
         this.attachEventListeners();
     }
 
+    // Fonction pour générer la liste des morceaux
     renderPlaylist() {
         const trackList = this.shadowRoot.querySelector('.track-list');
         trackList.innerHTML = '';
@@ -52,6 +55,7 @@ class Playlist extends HTMLElement {
         });
     }
 
+    // Fonction pour attacher les événements de lecture
     attachEventListeners() {
         const trackList = this.shadowRoot.querySelector('.track-list');
     
@@ -65,6 +69,7 @@ class Playlist extends HTMLElement {
         });
     }
 
+    // Fonction pour jouer ou mettre en pause un morceau
     playSong(index) {
         const trackList = this.shadowRoot.querySelectorAll('button');
         const selectedButton = trackList[index];

@@ -30,9 +30,10 @@ export class AudioGenerator extends HTMLElement {
         this.attachShadow({ mode: 'open' });
     }
 
+    // Fonction appelée lorsque le composant est ajouté au DOM
     async connectedCallback() {
-        // Charger et attacher le template au Shadow DOM
-        if (!template.innerHTML.includes('<div class="container">')) { // Vérifie que le template est chargé une seule fois
+        // Si le template n'a pas encore été chargé, le charger
+        if (!template.innerHTML.includes('<div class="container">')) {
             await loadTemplate();
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -41,21 +42,25 @@ export class AudioGenerator extends HTMLElement {
         this.initSubComponents();
     }
 
+    // Fonction pour initialiser les sous-composants
     initSubComponents() {
-        // Ajouter le sous-composant de playlist dans le conteneur "playlist"
+        // Sous web component - Playlist
         const playlistComponent = document.createElement('audio-playlist');
         this.shadowRoot.querySelector('.playlist').appendChild(playlistComponent);
 
-        // Ajouter d'autres sous-composants dans leurs conteneurs respectifs
-        const vinylLeftComponent = document.createElement('audio-vinyl');
-        this.shadowRoot.querySelector('.vinyl-left').appendChild(vinylLeftComponent);
+        // Sous web component - Contrôles gauche
+        const controlsLeftComponent = document.createElement('audio-controls');
+        this.shadowRoot.querySelector('.controls-left').appendChild(controlsLeftComponent);
 
-        const vinylRightComponent = document.createElement('audio-vinyl');
-        this.shadowRoot.querySelector('.controls-right').appendChild(vinylRightComponent);
+        // Sous web component - Contrôles droite
+        const controlsRightComponent = document.createElement('audio-controls');
+        this.shadowRoot.querySelector('.controls-right').appendChild(controlsRightComponent);
 
-        const visualizationComponent = document.createElement('audio-visualization');
-        this.shadowRoot.querySelector('.visualization').appendChild(visualizationComponent);
+        // Sous web component - Vinyle
+        const vinylComponent = document.createElement('audio-vinyl');
+        this.shadowRoot.querySelector('.vinyl').appendChild(vinylComponent);
 
+        // Sous web component - Launchpad
         const launchpadComponent = document.createElement('audio-launchpad');
         this.shadowRoot.querySelector('.launchpad').appendChild(launchpadComponent);
     }

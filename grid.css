@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Franklin Gothic Medium', sans-serif;
-    background: #1b1b2f; /* Arrière-plan principal sombre */
+    background: #1b1b2f;
     color: white;
     overflow: hidden;
 }
@@ -13,7 +13,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; /* Met Butterchurn en arrière-plan */
+    z-index: -1;
     overflow: hidden;
 }
 
@@ -34,5 +34,5 @@ body {
     padding: 20px;
     box-sizing: border-box;
     position: relative;
-    z-index: 1; /* Met la grille principale au-dessus du fond */
+    z-index: 1;
 }
