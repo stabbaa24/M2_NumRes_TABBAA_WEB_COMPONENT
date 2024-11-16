@@ -7,8 +7,6 @@ const getBaseURL = () => {
 
 // // Template HTML pour le composant audio-volume
 template.innerHTML = `
-    <link rel="stylesheet" href="${getBaseURL() + 'audio-volume.css'}">
-    <label for="volumeKnob">Volume</label>
     <webaudio-knob id="volumeKnob" 
                    src="${getBaseURL() + '../../assets/img/volume.png'}"
                    min="0" max="1" 

@@ -36,6 +36,11 @@ class Playlist extends HTMLElement {
 
         // Attacher les événements de lecture
         this.attachEventListeners();
+
+        // Écouter la fin de la musique
+        this.audio.addEventListener('ended', () => {
+            this.playNext();
+        });
     }
 
     // Fonction pour générer la liste des morceaux
@@ -47,56 +52,59 @@ class Playlist extends HTMLElement {
             const li = document.createElement('li');
             li.innerHTML = `
                 <span>${music.title}</span>
-                <button data-index="${index}">
+                <button class="play-pause" data-index="${index}" aria-label="Play">
                     <img src="${getBaseURL() + '../../assets/img/play.png'}" alt="Play Icon" />
+                </button>
+                <button class="reload" data-index="${index}" aria-label="Reload">
+                    <img src="${getBaseURL() + '../../assets/img/reload.png'}" alt="Reload Icon" />
                 </button>
             `;
             trackList.appendChild(li);
         });
     }
 
-    // Fonction pour attacher les événements de lecture
+    // Fonction pour attacher les événements de lecture et de reload
     attachEventListeners() {
         const trackList = this.shadowRoot.querySelector('.track-list');
-    
+
         trackList.addEventListener('click', (event) => {
-            // Trouver le bouton parent même si l'image a été cliquée
-            const button = event.target.closest('button');
-            if (button) {
-                const index = parseInt(button.getAttribute('data-index'), 10);
-                this.playSong(index);
+            const playPauseButton = event.target.closest('.play-pause');
+            const reloadButton = event.target.closest('.reload');
+
+            if (playPauseButton) {
+                const index = parseInt(playPauseButton.getAttribute('data-index'), 10);
+                this.playPauseSong(index);
+            }
+
+            if (reloadButton) {
+                const index = parseInt(reloadButton.getAttribute('data-index'), 10);
+                this.reloadSong(index);
             }
         });
     }
 
     // Fonction pour jouer ou mettre en pause un morceau
-    playSong(index) {
-        const trackList = this.shadowRoot.querySelectorAll('button');
+    playPauseSong(index) {
+        const trackList = this.shadowRoot.querySelectorAll('.play-pause');
         const selectedButton = trackList[index];
-    
+
         if (this.currentIndex === index && !this.audio.paused) {
-            // Si le même morceau est déjà en cours, le mettre en pause et changer l'icône
             this.audio.pause();
             selectedButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/play.png'}`;
         } else {
-            // Charger et jouer le nouveau morceau
             const selectedMusic = this.musicList[index];
-    
+
             if (selectedMusic) {
-                // Si un autre morceau est en cours on réinitialiser le bouton
                 if (this.currentIndex !== null && this.currentIndex !== index) {
                     const previousButton = trackList[this.currentIndex];
                     previousButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/play.png'}`;
                 }
-    
+
                 this.currentIndex = index;
                 this.audio.src = selectedMusic.url;
                 this.audio.play();
-    
-                // Mettre à jour l'icône pour indiquer "Pause"
                 selectedButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/pause.png'}`;
-    
-                // Émettre un événement personnalisé avec les informations de la chanson sélectionnée
+
                 this.dispatchEvent(new CustomEvent('playSong', {
                     detail: { ...selectedMusic },
                     bubbles: true,
@@ -105,7 +113,33 @@ class Playlist extends HTMLElement {
             }
         }
     }
-    
+
+    // Fonction pour relancer un morceau
+    reloadSong(index) {
+        const selectedMusic = this.musicList[index];
+        if (selectedMusic) {
+            this.audio.src = selectedMusic.url;
+            this.audio.currentTime = 0;
+            this.audio.play();
+
+            const playPauseButton = this.shadowRoot.querySelector(`.play-pause[data-index="${index}"]`);
+            if (playPauseButton) {
+                playPauseButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/pause.png'}`;
+            }
+
+            this.dispatchEvent(new CustomEvent('reloadSong', {
+                detail: { ...selectedMusic },
+                bubbles: true,
+                composed: true,
+            }));
+        }
+    }
+
+    // Fonction pour jouer le morceau suivant
+    playNext() {
+        const nextIndex = (this.currentIndex + 1) % this.musicList.length; // Passe au prochain morceau, revient au début si à la fin
+        this.playPauseSong(nextIndex);
+    }
 }
 
 // Définir le custom element <playlist>

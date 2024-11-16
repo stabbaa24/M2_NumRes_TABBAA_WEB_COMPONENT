@@ -55,21 +55,14 @@
 /* Vinyle au centre */
 .vinyl {
     grid-area: vinyl;
-    background: var(--background-dark);
-    /*border-radius: 50%;*/
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     position: relative;
-}
-
-.vinyl .vinyl-disk {
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, #333 10%, #111 80%);
-    border: 5px solid var(--accent-color);
-    border-radius: 50%;
+    /*
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: var(--background-dark);
+    border-radius: 10px;*/
 }
 
 /* Contrôles Droite */
