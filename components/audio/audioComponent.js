@@ -87,25 +87,25 @@ export class AudioGenerator extends HTMLElement {
         });
 
         // Écouter les changements de vitesse
-controlsRightComponentSpeed.addEventListener('speedChange', (event) => {
-    const speed = event.detail.speed;
+        controlsRightComponentSpeed.addEventListener('speedChange', (event) => {
+            const speed = event.detail.speed;
 
-    // Mettre à jour la vitesse de lecture dans la playlist
-    const playlistComponent = this.shadowRoot.querySelector('audio-playlist');
-    if (playlistComponent && playlistComponent.audio) {
-        playlistComponent.audio.playbackRate = speed;
-    }
+            // Mettre à jour la vitesse de lecture dans la playlist
+            const playlistComponent = this.shadowRoot.querySelector('audio-playlist');
+            if (playlistComponent && playlistComponent.audio) {
+                playlistComponent.audio.playbackRate = speed;
+            }
 
-    // Mettre à jour la vitesse de rotation du vinyle
-    const vinylComponent = this.shadowRoot.querySelector('audio-vinyl');
-    if (vinylComponent) {
-        vinylComponent.dispatchEvent(new CustomEvent('playMusic', {
-            detail: { playbackRate: speed },
-            bubbles: true,
-            composed: true
-        }));
-    }
-});
+            // Mettre à jour la vitesse de rotation du vinyle
+            const vinylComponent = this.shadowRoot.querySelector('audio-vinyl');
+            if (vinylComponent) {
+                vinylComponent.dispatchEvent(new CustomEvent('playMusic', {
+                    detail: { playbackRate: speed },
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+        });
 
         // Écouter l'événement de lecture depuis la playlist
         playlistComponent.addEventListener('playSong', (event) => {
@@ -133,7 +133,6 @@ controlsRightComponentSpeed.addEventListener('speedChange', (event) => {
             }));
         });
     }
-
 }
 
 // Définir le custom element <audio-generator>

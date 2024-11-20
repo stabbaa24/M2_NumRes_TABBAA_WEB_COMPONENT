@@ -7,16 +7,18 @@ const getBaseURL = () => {
 
 // Template HTML pour le contrôle de vitesse
 template.innerHTML = `
+    <link rel="stylesheet" href="${getBaseURL() + 'controls-right.css'}">
     <div class="audio-speed">
         <webaudio-slider 
             id="speedSlider"
-            direction="horz"
             min="0.5"
-            max="2"
+            max="1.5"
             step="0.1"
             value="1"
-            src="${getBaseURL() + '../../assets/img/hsliderbody.png'}"
-            knobsrc="${getBaseURL() + '../../assets/img/hsliderknob.png'}">
+            src="${getBaseURL() + '../../assets/img/slider_4.png'}"
+            knobsrc="${getBaseURL() + '../../assets/img/bouton_2.png'}"
+            knobwidth="32"
+            knobheight="32">
         </webaudio-slider>
     </div>
 `;
