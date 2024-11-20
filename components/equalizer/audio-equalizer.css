@@ -1,40 +1,80 @@
-.audio-equalizer {
+/* Global styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1d1d1d;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#eq-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #1f1f2f;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    color: white;
+    width: 100%;
+    gap: 20px;
 }
 
-.audio-equalizer h3 {
-    margin: 0 0 20px;
+/* Graphique : conteneur élargi */
+#graph-container {
+  flex: 4; /* Augmenter la largeur relative du graphique */
+  position: relative;
+  width: 100%;
+  z-index: 1; /* Ensure it's on top */
 }
 
-.equalizer-bands {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+/* Canvas : reste adaptatif */
+#graph-canvas {
+    cursor: pointer;
+    pointer-events: auto; /* Important pour capter les événements */
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+    display: block;
+    width: 100%; /* Taille responsive */
+    height: 400px;
+    position: relative;
+    z-index: 2;
 }
 
-.band {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+/* Sliders : moins espacés horizontalement */
+#slider-container {
+  flex: 1;
+  display: flex;
+  justify-content: space-evenly; /* Resserre les sliders */
+  align-items: flex-end;
 }
 
-.band label {
-    margin-bottom: 5px;
-    color: #eeeeee;
-    font-size: 12px;
+.slider-wrapper {
+    padding: 10px;
 }
 
-.band input[type="range"] {
-    writing-mode: bt-lr; /* Affiche les sliders verticalement */
-    -webkit-appearance: slider-vertical;
-    width: 100px;
-    height: 150px;
-    margin: 0;
+.slider {
+  width: 70px; /* Réduit la largeur des sliders */
+  transform: rotate(-90deg);
+  margin-bottom: 10px;
 }
+
+label {
+  font-size: 12px;
+  margin-top: 35%;
+  text-align: center;
+}
+
+/* Cercles au-dessus des sliders */
+.slider-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-bottom: 50px;
+}
+
+/* Couleurs Arcane (inspirées) */
+#color-0, #slider-0 { background-color: #9b5de5; } /* Violet */
+#color-1, #slider-1 { background-color: #f15bb5; } /* Rose */
+#color-2, #slider-2 { background-color: #fee440; } /* Jaune */
+#color-3, #slider-3 { background-color: #00bbf9; } /* Bleu clair */
+#color-4, #slider-4 { background-color: #00f5d4; } /* Vert menthe */
+#color-5, #slider-5 { background-color: #ff5f57; } /* Rouge */
+#color-6, #slider-6 { background-color: #56b4d3; } /* Bleu arcane */
