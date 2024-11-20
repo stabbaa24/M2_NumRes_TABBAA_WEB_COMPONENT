@@ -3,6 +3,7 @@ import '../controls-right/audio-volume.js';
 import '../controls-right/audio-mute.js';
 import '../vynil/audio-vynil.js';
 import '../controls-right/audio-speed.js';
+import '../equalizer/audio-equalizer.js';
 
 const template = document.createElement('template');
 
@@ -68,6 +69,17 @@ export class AudioGenerator extends HTMLElement {
         const controlsRightComponentSpeed = document.createElement('audio-speed');
         this.shadowRoot.querySelector('.controls-right').appendChild(controlsRightComponentSpeed);
 
+        // Sous web component - Contrôles gauche - Égaliseur
+        const controlsLeftComponentEqualizer = document.createElement('audio-equalizer');
+        this.shadowRoot.querySelector('.controls-left').appendChild(controlsLeftComponentEqualizer);
+
+        // Connecter la source audio à l'égaliseur
+        playlistComponent.addEventListener('playSong', () => {
+            if (playlistComponent.audio) {
+                controlsLeftComponentEqualizer.connectAudioSource(playlistComponent.audio);
+            }
+        });
+
         // Écouter les changements de volume
         controlsRightComponentVolume.addEventListener('volumeChange', (event) => {
             const volume = event.detail.volume;
@@ -132,6 +144,8 @@ export class AudioGenerator extends HTMLElement {
                 composed: true
             }));
         });
+
+
     }
 }
 

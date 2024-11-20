@@ -1,0 +1,40 @@
+.audio-equalizer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1f1f2f;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.audio-equalizer h3 {
+    margin: 0 0 20px;
+}
+
+.equalizer-bands {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.band {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.band label {
+    margin-bottom: 5px;
+    color: #eeeeee;
+    font-size: 12px;
+}
+
+.band input[type="range"] {
+    writing-mode: bt-lr; /* Affiche les sliders verticalement */
+    -webkit-appearance: slider-vertical;
+    width: 100px;
+    height: 150px;
+    margin: 0;
+}
