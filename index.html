@@ -1,51 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive EQ</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive EQ with Sliders</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <div id="eq-container">
-    <!-- Container pour le graphique -->
-    <div id="graph-container">
-      <canvas id="graph-canvas"></canvas>
+    <div id="eq-container">
+        <!-- Container pour le graphique -->
+        <div id="graph-container">
+            <canvas id="graph-canvas"></canvas>
+        </div>
+
+        <!-- Container pour les sliders -->
+        <div id="slider-container">
+            <div class="slider-wrapper" data-id="0">
+                <div class="slider-color" id="color-0"></div>
+                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-0">
+                <label>63 Hz</label>
+            </div>
+            <div class="slider-wrapper" data-id="1">
+                <div class="slider-color" id="color-1"></div>
+                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-1">
+                <label>136 Hz</label>
+            </div>
+            <div class="slider-wrapper" data-id="2">
+                <div class="slider-color" id="color-2"></div>
+                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-2">
+                <label>294 Hz</label>
+            </div>
+            <div class="slider-wrapper" data-id="3">
+                <div class="slider-color" id="color-3"></div>
+                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-3">
+                <label>632 Hz</label>
+            </div>
+            <div class="slider-wrapper" data-id="4">
+                <div class="slider-color" id="color-4"></div>
+                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-4">
+                <label>1363 Hz</label>
+            </div>
+            <div class="slider-wrapper" data-id="5">
+                <div class="slider-color" id="color-5"></div>
+                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-5">
+                <label>2936 Hz</label>
+            </div>
+            <div class="slider-wrapper" data-id="6">
+                <div class="slider-color" id="color-6"></div>
+                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-6">
+                <label>6324 Hz</label>
+            </div>
+        </div>
     </div>
 
-    <!-- Container pour les sliders -->
-    <div id="slider-container">
-      <div class="slider-wrapper" data-freq="63">
-        <input type="range" min="20" max="20000" value="63" class="slider">
-        <label>63 Hz</label>
-      </div>
-      <div class="slider-wrapper" data-freq="136">
-        <input type="range" min="20" max="20000" value="136" class="slider">
-        <label>136 Hz</label>
-      </div>
-      <div class="slider-wrapper" data-freq="294">
-        <input type="range" min="20" max="20000" value="294" class="slider">
-        <label>294 Hz</label>
-      </div>
-      <div class="slider-wrapper" data-freq="632">
-        <input type="range" min="20" max="20000" value="632" class="slider">
-        <label>632 Hz</label>
-      </div>
-      <div class="slider-wrapper" data-freq="1363">
-        <input type="range" min="20" max="20000" value="1363" class="slider">
-        <label>1363 Hz</label>
-      </div>
-      <div class="slider-wrapper" data-freq="2936">
-        <input type="range" min="20" max="20000" value="2936" class="slider">
-        <label>2936 Hz</label>
-      </div>
-      <div class="slider-wrapper" data-freq="6324">
-        <input type="range" min="20" max="20000" value="6324" class="slider">
-        <label>6324 Hz</label>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+        <script src="script.js"></script>
 </body>
+
 </html>
