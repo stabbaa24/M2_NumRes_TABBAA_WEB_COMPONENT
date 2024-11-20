@@ -1,14 +1,51 @@
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="en">
 <head>
-    <title>LogoGenerator</title>
-    <script type="module" src="./components/logoComponent.js"></script>
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive EQ</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body>
+  <div id="eq-container">
+    <!-- Container pour le graphique -->
+    <div id="graph-container">
+      <canvas id="graph-canvas"></canvas>
+    </div>
 
-<body style="margin: 0px">
-    <logo-generator id="logoComponent"></logo-generator>
-    <canvas id="logoCanvas" style="display: none;"></canvas>
+    <!-- Container pour les sliders -->
+    <div id="slider-container">
+      <div class="slider-wrapper" data-freq="63">
+        <input type="range" min="20" max="20000" value="63" class="slider">
+        <label>63 Hz</label>
+      </div>
+      <div class="slider-wrapper" data-freq="136">
+        <input type="range" min="20" max="20000" value="136" class="slider">
+        <label>136 Hz</label>
+      </div>
+      <div class="slider-wrapper" data-freq="294">
+        <input type="range" min="20" max="20000" value="294" class="slider">
+        <label>294 Hz</label>
+      </div>
+      <div class="slider-wrapper" data-freq="632">
+        <input type="range" min="20" max="20000" value="632" class="slider">
+        <label>632 Hz</label>
+      </div>
+      <div class="slider-wrapper" data-freq="1363">
+        <input type="range" min="20" max="20000" value="1363" class="slider">
+        <label>1363 Hz</label>
+      </div>
+      <div class="slider-wrapper" data-freq="2936">
+        <input type="range" min="20" max="20000" value="2936" class="slider">
+        <label>2936 Hz</label>
+      </div>
+      <div class="slider-wrapper" data-freq="6324">
+        <input type="range" min="20" max="20000" value="6324" class="slider">
+        <label>6324 Hz</label>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
