@@ -16,7 +16,7 @@
     opacity: 0.9;
     backdrop-filter: blur(40px); 
     color: #fff;
-    font-family: 'Arcane Font', sans-serif; 
+    font-family: 'Arcane Nine', sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -61,7 +61,6 @@
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s;
 }
 
 .controls-left button:hover {
@@ -112,7 +111,7 @@
 /* Liste de Musique */
 .playlist {
     grid-area: playlist;
-    background-color: #0a5a64;
+    background: radial-gradient(circle, #1b1b29 40%, #0f0f1f 90%);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
