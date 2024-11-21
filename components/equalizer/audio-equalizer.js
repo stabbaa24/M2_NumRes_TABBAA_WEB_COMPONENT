@@ -52,70 +52,100 @@ class AudioEqualizer extends HTMLElement {
     this.drawGraph();
 
     // Attach event listeners for the graph
-    
-    this.canvas.addEventListener('mouseleave', () => this.stopDragging()); // Stop dragging on mouse leave
-
     // Événements pour interagir avec les points
     this.canvas.addEventListener('mousedown', (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      // Vérifier si un point est cliqué
-      dragging = bands.find(
+      const rect = this.canvas.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) * (this.canvas.width / rect.width);
+      const mouseY = (e.clientY - rect.top) * (this.canvas.height / rect.height);
+    
+      this.dragging = this.bands.find(
         (band) => Math.hypot(band.x - mouseX, band.y - mouseY) < 10
       );
     });
+    
 
-    this.canvas.addEventListener('mousemove', (e) => {
-      if (!dragging) return;
-
-      const rect = canvas.getBoundingClientRect();
-      dragging.y = Math.min(
-        Math.max(e.clientY - rect.top, 0), // Limite supérieure
-        canvas.height // Limite inférieure
+    this.canvas.addEventListener('mousedown', (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) * (this.canvas.width / rect.width);
+      const mouseY = (e.clientY - rect.top) * (this.canvas.height / rect.height);
+    
+      // Vérifier si un point est cliqué
+      this.dragging = this.bands.find(
+        (band) => Math.hypot(band.x - mouseX, band.y - mouseY) < 10
       );
-
-      // Synchroniser le slider correspondant
-      const slider = document.getElementById(`slider-${dragging.id}`);
-      dragging.gain = Math.round(((canvas.height / 2 - dragging.y) / (canvas.height / 2)) * 12);
-      slider.value = dragging.gain;
-
-      drawGraph();
     });
-
+    
+    this.canvas.addEventListener('mousemove', (e) => {
+      if (!this.dragging) return;
+    
+      const rect = this.canvas.getBoundingClientRect();
+      this.dragging.y = Math.min(
+        Math.max(e.clientY - rect.top, 0), // Limite supérieure
+        this.canvas.height // Limite inférieure
+      );
+    
+      // Synchroniser le slider correspondant
+      const slider = this.shadowRoot.querySelector(`#slider-${this.dragging.id}`);
+      this.dragging.gain = Math.round(((this.canvas.height / 2 - this.dragging.y) / (this.canvas.height / 2)) * 12);
+      slider.value = this.dragging.gain;
+    
+      this.drawGraph();
+    });
+    
     this.canvas.addEventListener('mouseup', () => {
-      dragging = null;
+      this.dragging = null;
     });
 
     // Synchroniser sliders -> boutons
     document.querySelectorAll('.slider').forEach((slider) => {
       slider.addEventListener('input', (e) => {
         const id = parseInt(e.target.id.split('-')[1]);
-        const band = bands.find((b) => b.id === id);
-
+        const band = this.bands.find((b) => b.id === id);
+    
         band.gain = parseFloat(e.target.value);
-        band.y = canvas.height / 2 - (band.gain / 12) * canvas.height / 2;
-
-        drawGraph();
+        band.y = this.canvas.height / 2 - (band.gain / 12) * (this.canvas.height / 2);
+    
+        this.drawGraph();
       });
     });
+    
 
+
+    // Ajoutez ce log pour voir si les événements sont correctement attachés
+    console.log('Canvas event listeners attached');
   }
+
 
   initCanvas() {
     this.canvas = this.shadowRoot.querySelector('#graph-canvas');
     this.ctx = this.canvas.getContext('2d');
-
-    // Match canvas drawing size to CSS-rendered size
+  
     const rect = this.canvas.getBoundingClientRect();
     this.canvas.width = rect.width;
     this.canvas.height = rect.height;
+  
+    console.log(`Canvas dimensions: width=${this.canvas.width}, height=${this.canvas.height}`);
+  
+    this.distributePoints(); // Recalcule les positions des boutons
+    this.drawGraph(); // Redessine le graphique
   }
-
-
+  
   initAudioContext() {
-    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!this.audioContext) {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+  
+    if (this.audioContext.state === 'suspended') {
+      const resumeContext = () => {
+        this.audioContext.resume().then(() => {
+          console.log('AudioContext resumed');
+          document.removeEventListener('click', resumeContext); // Nettoyage
+        });
+      };
+  
+      document.addEventListener('click', resumeContext);
+    }
+  
     this.bands.forEach(({ freq }) => {
       const filter = this.audioContext.createBiquadFilter();
       filter.type = 'peaking';
@@ -124,14 +154,15 @@ class AudioEqualizer extends HTMLElement {
       filter.gain.value = 0;
       this.filters.push(filter);
     });
-
+  
     for (let i = 0; i < this.filters.length - 1; i++) {
       this.filters[i].connect(this.filters[i + 1]);
     }
-
+  
     this.audioDestination = this.audioContext.destination;
     this.filters[this.filters.length - 1].connect(this.audioDestination);
   }
+
 
   renderSliders() {
     const sliderContainer = this.shadowRoot.querySelector('#slider-container');
@@ -162,7 +193,11 @@ class AudioEqualizer extends HTMLElement {
       band.x = step * (index + 1);
       band.y = this.canvas.height / 2;
     });
+
+    console.log('Updated bands positions:', this.bands.map(b => `(${b.x}, ${b.y})`));
   }
+
+
 
   drawGraph() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -214,13 +249,27 @@ class AudioEqualizer extends HTMLElement {
 
   startDragging(e) {
     const rect = this.canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const mouseX = (e.clientX - rect.left) * (this.canvas.width / rect.width);
+    const mouseY = (e.clientY - rect.top) * (this.canvas.height / rect.height);
 
-    this.dragging = this.bands.find(
-      (band) => Math.hypot(band.x - mouseX, band.y - mouseY) <= 10
-    );
+    console.log(`Mouse coordinates: (${mouseX}, ${mouseY})`);
+    console.log('Bands coordinates:', this.bands.map(band => `(${band.x}, ${band.y})`));
+
+    this.dragging = this.bands.find((band) => {
+      const distance = Math.hypot(band.x - mouseX, band.y - mouseY);
+      console.log(`Distance to band ${band.id}: ${distance}`);
+      return distance <= 20; // Testez avec une tolérance plus élevée
+    });
+    
+
+
+    if (this.dragging) {
+      console.log(`Dragging band: ${this.dragging.id}`);
+    } else {
+      console.log('No band selected');
+    }
   }
+
 
   onDrag(e) {
     if (!this.dragging) return;
@@ -229,20 +278,24 @@ class AudioEqualizer extends HTMLElement {
     const mouseY = e.clientY - rect.top;
 
     this.dragging.y = Math.min(
-      Math.max(mouseY, 0),
-      this.canvas.height
+      Math.max(mouseY, 0), // Limite supérieure
+      this.canvas.height // Limite inférieure
     );
 
+    // Mettre à jour le gain basé sur la position Y
     const gain = Math.round(((this.canvas.height / 2 - this.dragging.y) / (this.canvas.height / 2)) * 12);
     this.dragging.gain = gain;
 
+    // Mettre à jour le filtre audio
     this.filters[this.dragging.id].gain.value = gain;
 
+    // Synchroniser le slider
     const slider = this.shadowRoot.querySelector(`#slider-${this.dragging.id}`);
     slider.value = gain;
 
     this.drawGraph();
   }
+
 
   stopDragging() {
     this.dragging = null;
@@ -253,7 +306,11 @@ class AudioEqualizer extends HTMLElement {
     band.gain = gain;
     band.y = this.canvas.height / 2 - (gain / 12) * (this.canvas.height / 2);
     this.filters[index].gain.value = gain;
-
+  
+    // Synchroniser le slider
+    const slider = this.shadowRoot.querySelector(`#slider-${index}`);
+    slider.value = gain;
+  
     this.drawGraph();
   }
 
