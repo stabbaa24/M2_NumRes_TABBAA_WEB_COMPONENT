@@ -1,7 +1,6 @@
 import '../playlist/audio-playlist.js';
 import '../controls-right/audio-volume.js';
 import '../controls-right/audio-mute.js';
-import '../vynil/audio-vynil.js';
 import '../controls-right/audio-speed.js';
 import '../equalizer/audio-equalizer.js';
 
@@ -61,10 +60,6 @@ export class AudioGenerator extends HTMLElement {
         const controlsRightComponentMute = document.createElement('audio-mute');
         this.shadowRoot.querySelector('.controls-right').appendChild(controlsRightComponentMute);
 
-        // Sous web component - Vynile
-        const vinylComponent = document.createElement('audio-vinyl');
-        this.shadowRoot.querySelector('.vinyl-disk').appendChild(vinylComponent);
-
         // Sous web component - Contrôles droit - Vitesse
         const controlsRightComponentSpeed = document.createElement('audio-speed');
         this.shadowRoot.querySelector('.controls-right').appendChild(controlsRightComponentSpeed);
@@ -101,41 +96,6 @@ export class AudioGenerator extends HTMLElement {
                 playlistComponent.audio.playbackRate = speed;
             }
 
-            // Mettre à jour la vitesse de rotation du vinyle
-            const vinylComponent = this.shadowRoot.querySelector('audio-vinyl');
-            if (vinylComponent) {
-                vinylComponent.dispatchEvent(new CustomEvent('playMusic', {
-                    detail: { playbackRate: speed },
-                    bubbles: true,
-                    composed: true
-                }));
-            }
-        });
-
-        // Écouter l'événement de lecture depuis la playlist
-        playlistComponent.addEventListener('playSong', (event) => {
-            const playbackRate = playlistComponent.audio?.playbackRate || 1;
-            vinylComponent.dispatchEvent(new CustomEvent('playMusic', {
-                detail: { playbackRate },
-                bubbles: true,
-                composed: true
-            }));
-        });
-
-        // Écouter l'événement de pause depuis l'audio de la playlist
-        playlistComponent.audio?.addEventListener('pause', () => {
-            vinylComponent.dispatchEvent(new CustomEvent('pauseMusic', {
-                bubbles: true,
-                composed: true
-            }));
-        });
-
-        // Écouter le clic sur le bouton reload et déclencher l'événement pour le vinyle
-        playlistComponent.addEventListener('reloadSong', () => {
-            vinylComponent.dispatchEvent(new CustomEvent('reloadMusic', {
-                bubbles: true,
-                composed: true
-            }));
         });
 
         // Connecter la source audio à l'égaliseur

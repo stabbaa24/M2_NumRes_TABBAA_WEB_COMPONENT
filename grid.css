@@ -24,7 +24,7 @@ body {
 .container {
     display: grid;
     grid-template-areas:
-        "playlist vinyl controls-right"
+        "playlist . controls-right"
         "controls-left controls-left launchpad";
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 2fr 1fr;
