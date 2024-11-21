@@ -64,14 +64,15 @@ class Playlist extends HTMLElement {
                 ? new Date(music.duration * 1000).toISOString().substr(14, 5)
                 : '...';
 
-            // Sélection de l'icône en fonction de l'état de la chanson
             const iconSrc = (this.currentIndex === index && !this.audio.paused)
-                ? `${getBaseURL() + '../../assets/img/pause.png'}` // Icône pause si la chanson est en cours de lecture
-                : `${getBaseURL() + '../../assets/img/play.png'}`; // Icône play sinon
+                ? `${getBaseURL() + '../../assets/img/pause.png'}`
+                : `${getBaseURL() + '../../assets/img/play.png'}`;
 
+            // Structure de l'élément li avec les colonnes
             li.innerHTML = `
-                <span>${music.title}</span>
-                <span>${durationText}</span>
+                <span class="track-id">${index + 1}</span>
+                <span class="track-name">${music.title}</span>
+                <span class="track-duration">${durationText}</span>
                 <div class="button-group">
                     <button class="play-pause" data-index="${index}" aria-label="Play">
                         <img src="${iconSrc}" alt="Play Icon" />
@@ -90,6 +91,19 @@ class Playlist extends HTMLElement {
             li.addEventListener('dragstart', (e) => this.handleDragStart(e, index));
             li.addEventListener('dragover', (e) => e.preventDefault());
             li.addEventListener('drop', (e) => this.handleDrop(e, index));
+
+
+        });
+
+        document.querySelectorAll('.track-name').forEach((trackName) => {
+            const textSpan = trackName.querySelector('span');
+        
+            // Vérifiez si le texte déborde du conteneur
+            if (textSpan.scrollWidth > trackName.offsetWidth) {
+                trackName.classList.add('scrollable');
+            } else {
+                trackName.classList.remove('scrollable');
+            }
         });
     }
 
@@ -103,6 +117,7 @@ class Playlist extends HTMLElement {
 
             if (playPauseButton) {
                 const index = parseInt(playPauseButton.getAttribute('data-index'), 10);
+                console.log('Play/Pause clicked for index:', index);
                 this.playPauseSong(index);
             }
 
@@ -138,7 +153,7 @@ class Playlist extends HTMLElement {
 
     playPauseSong(index) {
         const trackList = this.shadowRoot.querySelectorAll('.play-pause');
-    
+
         if (this.currentIndex === index) {
             if (this.audio.paused) {
                 this.audio.play();
@@ -150,7 +165,7 @@ class Playlist extends HTMLElement {
                 const previousButton = trackList[this.currentIndex];
                 previousButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/play.png'}`;
             }
-    
+
             this.currentIndex = index;
             const selectedMusic = this.musicList[index];
             if (selectedMusic) {
@@ -159,18 +174,9 @@ class Playlist extends HTMLElement {
             }
         }
 
-        // Émettre l'événement `playSong` pour signaler une lecture
-    this.dispatchEvent(new CustomEvent('playSong', {
-        detail: { index },
-        bubbles: true,
-        composed: true,
-    }));
-
-    console.log(`Event playSong dispatched for index: ${index}`); // Ajoutez un log pour valider
-    
         this.renderPlaylist(); // Mise à jour de l'affichage
     }
-    
+
     reloadSong(index) {
         const selectedMusic = this.musicList[index];
         this.audio.src = selectedMusic.url;
@@ -195,10 +201,27 @@ class Playlist extends HTMLElement {
 
     handleDrop(event, targetIndex) {
         const draggedIndex = parseInt(event.dataTransfer.getData('text/plain'), 10);
+
+        // Récupérer l'élément déplacé
         const [draggedItem] = this.musicList.splice(draggedIndex, 1);
+
+        // Insérer l'élément déplacé à la nouvelle position
         this.musicList.splice(targetIndex, 0, draggedItem);
-        this.renderPlaylist();
+
+        // Si la chanson jouée est déplacée, mettez à jour son index
+        if (this.currentIndex === draggedIndex) {
+            this.currentIndex = targetIndex;
+        } else if (this.currentIndex > draggedIndex && this.currentIndex <= targetIndex) {
+            // Si une chanson est déplacée devant la chanson en cours, ajustez l'index
+            this.currentIndex -= 1;
+        } else if (this.currentIndex < draggedIndex && this.currentIndex >= targetIndex) {
+            // Si une chanson est déplacée derrière la chanson en cours, ajustez l'index
+            this.currentIndex += 1;
+        }
+
+        this.renderPlaylist(); // Réafficher la liste
     }
+
 }
 
 customElements.define('audio-playlist', Playlist);

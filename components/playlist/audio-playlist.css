@@ -26,12 +26,11 @@ h3 {
 }
 
 .track-list li {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 50px 1fr 100px 150px; /* Colonnes : ID | Nom | Durée | Boutons */
     align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid #ffffff;
-    position: relative;
 }
 
 .track-list li:last-child {
@@ -39,17 +38,14 @@ h3 {
 }
 
 .track-list li span {
-    flex-grow: 1;
-    margin-right: 20px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .track-list li .button-group {
     display: flex;
     gap: 10px; /* Espacement entre les boutons */
-    position: absolute;
     right: 0; /* Aligne les boutons à droite */
 }
 
@@ -81,4 +77,53 @@ h3 {
 .track-list li.current {
     background-color: rgba(255, 255, 255, 0.1);
     font-weight: bold;
+}
+
+.track-id {
+    text-align: center;
+    font-weight: bold;
+}
+
+.track-name {
+    position: relative; /* Nécessaire pour l'animation */
+    overflow: hidden; /* Cache les débordements */
+    white-space: nowrap; /* Empêche le retour à la ligne */
+    display: inline-block; /* Nécessaire pour contenir le texte */
+    width: 100%; /* Limite la largeur au conteneur */
+}
+
+.track-name span {
+    position: absolute;
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-infinite 10s linear infinite; /* Défilement infini */
+}
+
+@keyframes scroll-infinite {
+    0% {
+        transform: translateX(100%); /* Commence hors du conteneur, à droite */
+    }
+    100% {
+        transform: translateX(-100%); /* Termine hors du conteneur, à gauche */
+    }
+}
+
+.track-duration {
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.button-group button img {
+    width: 24px; 
+    height: 24px;
+}
+
+.track-list li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
 }
