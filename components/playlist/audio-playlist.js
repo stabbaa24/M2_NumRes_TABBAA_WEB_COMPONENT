@@ -158,6 +158,15 @@ class Playlist extends HTMLElement {
                 this.audio.play();
             }
         }
+
+        // Émettre l'événement `playSong` pour signaler une lecture
+    this.dispatchEvent(new CustomEvent('playSong', {
+        detail: { index },
+        bubbles: true,
+        composed: true,
+    }));
+
+    console.log(`Event playSong dispatched for index: ${index}`); // Ajoutez un log pour valider
     
         this.renderPlaylist(); // Mise à jour de l'affichage
     }

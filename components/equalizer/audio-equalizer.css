@@ -34,7 +34,6 @@ body {
     width: 100%; /* Taille responsive */
     height: 400px;
     position: relative;
-    z-index: 1000;
 }
 
 /* Sliders : moins espacés horizontalement */

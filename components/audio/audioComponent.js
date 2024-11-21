@@ -73,13 +73,6 @@ export class AudioGenerator extends HTMLElement {
         const controlsLeftComponentEqualizer = document.createElement('audio-equalizer');
         this.shadowRoot.querySelector('.controls-left').appendChild(controlsLeftComponentEqualizer);
 
-        // Connecter la source audio à l'égaliseur
-        playlistComponent.addEventListener('playSong', () => {
-            if (playlistComponent.audio) {
-                controlsLeftComponentEqualizer.connectAudioSource(playlistComponent.audio);
-            }
-        });
-
         // Écouter les changements de volume
         controlsRightComponentVolume.addEventListener('volumeChange', (event) => {
             const volume = event.detail.volume;
@@ -143,6 +136,14 @@ export class AudioGenerator extends HTMLElement {
                 bubbles: true,
                 composed: true
             }));
+        });
+
+        // Connecter la source audio à l'égaliseur
+        playlistComponent.addEventListener('playSong', () => {
+            if (playlistComponent && playlistComponent.audio) {
+                console.log('Connecting audio source to equalizer...');
+                controlsLeftComponentEqualizer.connectAudioSource(playlistComponent.audio);
+            }
         });
 
 
