@@ -85,18 +85,22 @@ h3 {
 }
 
 .track-name {
-    position: relative; /* Nécessaire pour l'animation */
+    position: relative;
     overflow: hidden; /* Cache les débordements */
-    white-space: nowrap; /* Empêche le retour à la ligne */
-    display: inline-block; /* Nécessaire pour contenir le texte */
+    white-space: nowrap;
+    display: block; /* Assure un conteneur de bloc */
     width: 100%; /* Limite la largeur au conteneur */
+    height: 1.2em; /* Définit une hauteur pour éviter les décalages */
 }
 
 .track-name span {
     position: absolute;
-    display: inline-block;
     white-space: nowrap;
-    animation: scroll-infinite 10s linear infinite; /* Défilement infini */
+    will-change: transform; /* Optimise les performances pour l'animation */
+}
+
+.track-name.scrollable span {
+    animation: scroll-infinite 10s linear infinite;
 }
 
 @keyframes scroll-infinite {
@@ -107,6 +111,7 @@ h3 {
         transform: translateX(-100%); /* Termine hors du conteneur, à gauche */
     }
 }
+
 
 .track-duration {
     text-align: center;
@@ -126,4 +131,27 @@ h3 {
 .track-list li:hover {
     background-color: rgba(255, 255, 255, 0.1);
     cursor: pointer;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.controls button {
+    background-color: #0a5a64;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.controls button:hover {
+    background-color: #0d7987;
 }
