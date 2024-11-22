@@ -8,7 +8,6 @@ const getBaseURL = () => {
 // Template HTML pour le launchpad effect
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-launchpad-effect.css'}">
-    <h3>Launchpad Effect</h3>
     <div class="effect-container"></div>
 `;
 

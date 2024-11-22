@@ -1,11 +1,18 @@
-/* /audio-launchpad-effect.css */
-.effect-container {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.1);
+.launchpad-effect {
+    position: relative; /* S'assure que le conteneur parent est positionné */
+    width: 100%; /* Prend toute la largeur du parent */
+    height: 100%; /* Prend toute la hauteur du parent */
 }
+
+.effect-container {
+    top: 0;
+    left: 0;
+    width: 100%; /* Largeur totale du parent */
+    height: 100%; /* Hauteur totale du parent */
+    overflow: hidden; /* Masque le contenu qui dépasse */
+    z-index: -1;
+}
+
 
 .launchpad-effect-image {
     position: absolute;
