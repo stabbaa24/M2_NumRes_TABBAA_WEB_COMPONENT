@@ -27,8 +27,9 @@ body {
 .container {
     display: grid;
     grid-template-areas:
-        "playlist . controls-right"
-        "controls-left controls-left launchpad";
+        "playlist playlist . controls-right"
+        "playlist playlist . launchpad"
+        "controls-left controls-left . launchpad";
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 2fr 1fr;
     height: 100vh;

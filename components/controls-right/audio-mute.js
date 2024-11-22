@@ -7,10 +7,12 @@ const getBaseURL = () => {
 
 // Template HTML pour le composant audio-mute
 template.innerHTML = `
+    <link rel="stylesheet" href="${getBaseURL() + 'controls-right.css'}">
+    <h3>Muet</h3>
     <webaudio-switch id="muteToggle"
-                     src="${getBaseURL() + '../../assets/img/switch_toggle.png'}"
-                     width="64"
-                     height="64">
+                     src="${getBaseURL() + '../../assets/img/mute_skull.png'}"
+                     width="128"
+                     height="128">
     </webaudio-switch>
 `;
 

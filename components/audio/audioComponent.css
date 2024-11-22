@@ -23,23 +23,6 @@
 }
 
 */
-
-/* Grille principale */
-.container {
-    display: grid;
-    grid-template-areas:
-        "controls-left vinyl controls-right"
-        "playlist playlist launchpad";
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 2fr 1fr;
-    height: 100vh;
-    gap: 20px;
-    padding: 20px;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 1; /* Met la grille principale au-dessus du fond */
-}
-
 /* Contrôles Gauche */
 .controls-left {
     grid-area: controls-left;
@@ -83,14 +66,12 @@
 /* Contrôles Droite */
 .controls-right {
     grid-area: controls-right;
-    background: var(--background-dark);
-    border-radius: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Les composants alignés en ligne */
     align-items: center;
-    justify-content: space-evenly;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    padding: 15px;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px; /* Espacement entre les composants */
 }
 
 .controls-right button {
@@ -101,7 +82,6 @@
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s;
 }
 
 .controls-right button:hover {
