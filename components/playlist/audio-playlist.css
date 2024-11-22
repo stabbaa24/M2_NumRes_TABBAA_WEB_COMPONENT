@@ -169,3 +169,30 @@ h3 {
     background: linear-gradient(145deg, #b13c7c, #c6639f);
     box-shadow: 0 0 15px rgba(209, 91, 149, 0.8);
 }
+
+/* Customisation de la scrollbar */
+.track-list::-webkit-scrollbar {
+    width: 10px; /* Largeur de la scrollbar */
+}
+
+.track-list::-webkit-scrollbar-track {
+    background: linear-gradient(145deg, #1b1b29, #0f0f1f); /* Fond de la scrollbar */
+    border-radius: 10px; /* Coins arrondis */
+}
+
+.track-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(145deg, #d3a761, #b77932); /* Couleurs steampunk */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6); /* Effet en relief */
+}
+
+.track-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(145deg, #e0b874, #d3a761); /* Couleur plus lumineuse au survol */
+    box-shadow: 0 0 10px rgba(211, 167, 97, 0.8); /* Lueur dorée */
+}
+
+/* Compatibilité pour Firefox */
+.track-list {
+    scrollbar-width: thin; /* Minceur de la scrollbar */
+    scrollbar-color: #d3a761 #1b1b29; /* Couleur de la thumb et du track */
+}
