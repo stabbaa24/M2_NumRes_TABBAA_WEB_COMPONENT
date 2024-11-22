@@ -34,5 +34,5 @@ webaudio-switch {
 webaudio-knob:hover,
 webaudio-switch:hover {
     transform: rotate(5deg);
-    filter: drop-shadow(0 0 10px #ff96ec);
+    filter: drop-shadow(0 0 10px #9c6b2f71);
 }

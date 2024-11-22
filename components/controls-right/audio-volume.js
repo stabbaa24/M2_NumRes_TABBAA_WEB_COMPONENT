@@ -5,7 +5,7 @@ const getBaseURL = () => {
     return new URL('./', import.meta.url).href;
 };
 
-// // Template HTML pour le composant audio-volume
+// Template HTML pour le composant audio-volume
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'controls-right.css'}">
     <h3>Volume</h3>
@@ -23,14 +23,16 @@ class AudioVolume extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.volumeKnob = null;
+        this.volumeKnob = null; // Référence au contrôle de volume
     }
 
+    // Fonction appelée lorsque le composant est connecté au DOM
     connectedCallback() {
         this.volumeKnob = this.shadowRoot.querySelector('#volumeKnob');
         this.attachEventListeners();
     }
 
+    // Fonction pour attacher les écouteurs d'événements
     attachEventListeners() {
         this.volumeKnob.addEventListener('input', (event) => {
             const volume = parseFloat(event.target.value);
@@ -38,6 +40,7 @@ class AudioVolume extends HTMLElement {
         });
     }
 
+    // Fonction pour mettre à jour le volume
     updateVolume(volume) {
         // Émet un événement personnalisé pour transmettre le volume
         this.dispatchEvent(new CustomEvent('volumeChange', {

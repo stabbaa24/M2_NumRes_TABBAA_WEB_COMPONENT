@@ -24,19 +24,22 @@ class AudioMute extends HTMLElement {
         this.isMuted = false; // État du mute
     }
 
+    // Fonction appelée lorsque le composant est connecté au DOM
     connectedCallback() {
         this.muteToggle = this.shadowRoot.querySelector('#muteToggle');
         this.attachEventListeners();
     }
 
+    // Fonction pour attacher les écouteurs d'événements
     attachEventListeners() {
         this.muteToggle.addEventListener('click', () => {
-            this.toggleMute();
+            this.toggleMute(); // Appeler la fonction pour basculer le mute
         });
     }
 
+    // Fonction pour basculer le mute
     toggleMute() {
-        this.isMuted = !this.isMuted;
+        this.isMuted = !this.isMuted; // Inverser l'état du mute
 
         // Émet un événement personnalisé pour transmettre l'état du mute
         this.dispatchEvent(new CustomEvent('muteChange', {

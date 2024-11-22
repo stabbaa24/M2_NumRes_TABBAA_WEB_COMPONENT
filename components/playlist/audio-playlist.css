@@ -2,7 +2,7 @@
     font-family: 'Arcane Nine', sans-serif;
 }
 
-/* Conteneur principal : Design steampunk avec accents lumineux */
+/* Conteneur principal parent*/
 :host {
     display: flex;
     flex-direction: column;
@@ -16,7 +16,6 @@
     box-sizing: border-box;
 }
 
-/* Titre principal : effet gravure or / cuivre */
 h3 {
     text-align: left;
     margin: 0 0 10px 0;
@@ -29,7 +28,7 @@ h3 {
     padding-bottom: 5px;
 }
 
-/* Liste des pistes : fond texturé, lignes fines métalliques */
+/* Playlist */
 .track-list {
     flex-grow: 1;
     list-style: none;
@@ -42,7 +41,6 @@ h3 {
     box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
 }
 
-/* Élément de piste : effet métallique, dynamique sur hover */
 .track-list li {
     display: grid;
     grid-template-columns: 50px 1fr 100px 150px; /* Colonnes : ID | Nom | Durée | Boutons */
@@ -55,36 +53,33 @@ h3 {
 
 .track-list li:hover {
     background: linear-gradient(145deg, rgba(57, 162, 219, 0.3), rgba(57, 162, 219, 0.1));
-    transform: scale(1.02);
+    transform: scale(1.0);
     cursor: pointer;
     border-color: rgba(57, 162, 219, 0.3);
 }
 
-/* Élément en cours de lecture : effet doré/brillant */
 .track-list li.current {
-    background: linear-gradient(145deg, #b77a32, #d3a761);
+    background: linear-gradient(145deg, #b77932bb, #d3a761b3);
     color: #fff;
     font-weight: bold;
     box-shadow: 0 0 10px rgba(211, 167, 97, 0.5);
 }
 
-/* ID de piste */
 .track-id {
     text-align: center;
     font-weight: bold;
     color: #8c918e;
 }
 
-/* Nom de piste : effets dynamiques si débordement */
 .track-name {
     position: relative;
-    overflow: hidden; /* Cache les débordements */
+    overflow: hidden; 
     white-space: nowrap;
     display: block;
     color: #f8f3e6;
-    width: 100%; /* Limite la largeur au conteneur */
-    height: 1.5em; /* Définit une hauteur pour éviter les décalages */
-    line-height: 1.5em; /* Aligne le texte verticalement */
+    width: 100%; 
+    height: 1.5em; 
+    line-height: 1.5em;
 }
 
 /* Texte défilant */
@@ -92,7 +87,7 @@ h3 {
     position: absolute;
     display: inline-block;
     white-space: nowrap;
-    will-change: transform; /* Optimisation de l'animation */
+    will-change: transform; 
 }
 
 .track-name.scrollable span {
@@ -100,7 +95,6 @@ h3 {
 }
 
 /* Animation défilement */
-/* Animation pour un défilement infini */
 @keyframes scroll-infinite {
     0% {
         transform: translateX(100%); /* Commence à droite du conteneur */
@@ -110,14 +104,12 @@ h3 {
     }
 }
 
-/* Durée de la piste */
 .track-duration {
     text-align: center;
     color: #a6a6b1;
     font-style: italic;
 }
 
-/* Groupe de boutons */
 .button-group {
     display: flex;
     justify-content: space-between;
