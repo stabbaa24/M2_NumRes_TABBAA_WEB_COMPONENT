@@ -8,7 +8,9 @@ const getBaseURL = () => {
 // Template HTML pour le launchpad
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-launchpad.css'}">
-    <h3>Launchpad</h3>
+    <div class="title-container">
+        <h3>Launchpad</h3>
+    </div>
     <div class="launchpad-grid"></div>
 `;
 
