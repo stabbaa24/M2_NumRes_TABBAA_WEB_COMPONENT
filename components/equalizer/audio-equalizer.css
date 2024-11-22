@@ -32,7 +32,7 @@ body {
     border: 1px solid #444;
     display: block;
     width: 100%; /* Taille responsive */
-    height: 400px;
+    height: 200px; /* Taille responsive */
     position: relative;
 }
 

@@ -29,7 +29,7 @@ body {
     grid-template-areas:
         "playlist playlist launchpad-effect controls-right"
         "playlist playlist launchpad-effect launchpad"
-        "controls-left controls-left launchpad-effect launchpad";
+        "equalizer equalizer launchpad-effect launchpad";
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 2fr 1fr;
     height: 100vh;

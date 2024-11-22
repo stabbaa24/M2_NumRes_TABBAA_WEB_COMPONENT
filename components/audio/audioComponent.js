@@ -68,7 +68,7 @@ export class AudioGenerator extends HTMLElement {
 
         // Sous web component - Contrôles gauche - Égaliseur
         const controlsLeftComponentEqualizer = document.createElement('audio-equalizer');
-        this.shadowRoot.querySelector('.controls-left').appendChild(controlsLeftComponentEqualizer);
+        this.shadowRoot.querySelector('.equalizer').appendChild(controlsLeftComponentEqualizer);
 
         // Sous web component - Launchpad
         const launchpadComponent = document.createElement('audio-launchpad');

@@ -15,9 +15,9 @@
 */
 
 /* Contrôles Gauche */
-.controls-left {
-    grid-area: controls-left;
-    background: var(--background-dark);
+.equalizer {
+    grid-area: equalizer;
+    background: radial-gradient(circle, #1b1b29 40%, #0f0f1f 90%);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
