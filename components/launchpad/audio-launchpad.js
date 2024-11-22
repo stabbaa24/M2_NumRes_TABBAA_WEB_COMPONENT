@@ -36,11 +36,20 @@ class AudioLaunchpad extends HTMLElement {
             const audio = new Audio(`${getBaseURL()}../../assets/music/launchpad/sound${i + 1}.mp3`);
             this.launchpadSounds.push(audio);
 
+            // Ajoute un événement de clic pour jouer le son et gérer l'animation
             button.addEventListener('click', () => {
                 audio.currentTime = 0;
                 audio.play();
 
-                // Dispatch an event to notify about the sound and its images
+                // Ajoute la classe "clicked" pour l'animation
+                button.classList.add('clicked');
+
+                // Retire la classe après 5 secondes (durée de l'animation)
+                setTimeout(() => {
+                    button.classList.remove('clicked');
+                }, 5000);
+
+                // Dispatch un événement pour transmettre des images associées au son
                 const images = [];
                 for (let j = 1; j <= 4; j++) {
                     images.push(`${getBaseURL()}../../assets/img/launchpad/sound${i + 1}/sound_${i + 1}_image_${j}.png`);
