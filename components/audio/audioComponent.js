@@ -3,6 +3,8 @@ import '../controls-right/audio-volume.js';
 import '../controls-right/audio-mute.js';
 import '../controls-right/audio-speed.js';
 import '../equalizer/audio-equalizer.js';
+import '../launchpad/audio-launchpad.js';
+import '../launchpad/audio-launchpad-effect.js';
 
 const template = document.createElement('template');
 
@@ -67,6 +69,14 @@ export class AudioGenerator extends HTMLElement {
         // Sous web component - Contrôles gauche - Égaliseur
         const controlsLeftComponentEqualizer = document.createElement('audio-equalizer');
         this.shadowRoot.querySelector('.controls-left').appendChild(controlsLeftComponentEqualizer);
+
+        // Sous web component - Launchpad
+        const launchpadComponent = document.createElement('audio-launchpad');
+        this.shadowRoot.querySelector('.launchpad').appendChild(launchpadComponent);
+
+        // Sous web component - Launchpad Effect
+        const launchpadEffectComponent = document.createElement('audio-launchpad-effect');
+        this.shadowRoot.querySelector('.launchpad-effect').appendChild(launchpadEffectComponent);
 
         // Écouter les changements de volume
         controlsRightComponentVolume.addEventListener('volumeChange', (event) => {
