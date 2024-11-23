@@ -9,7 +9,7 @@ const getBaseURL = () => {
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-launchpad.css'}">
     <div class="title-container">
-        <h3>Launchpad</h3>
+        <h3>Soundboard</h3>
     </div>
     <div class="launchpad-grid"></div>
 `;
@@ -30,7 +30,7 @@ class AudioLaunchpad extends HTMLElement {
     loadLaunchpad() {
         const grid = this.shadowRoot.querySelector('.launchpad-grid');
 
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 9; i++) {
             const button = document.createElement('button');
             button.classList.add('launchpad-button');
             button.textContent = `Sound ${i + 1}`;
@@ -53,7 +53,7 @@ class AudioLaunchpad extends HTMLElement {
 
                 // Dispatch un événement pour transmettre des images associées au son
                 const images = [];
-                for (let j = 1; j <= 4; j++) {
+                for (let j = 1; j <= 3; j++) {
                     images.push(`${getBaseURL()}../../assets/img/launchpad/sound${i + 1}/sound_${i + 1}_image_${j}.png`);
                 }
                 this.dispatchEvent(new CustomEvent('launchpadSoundPlayed', {
