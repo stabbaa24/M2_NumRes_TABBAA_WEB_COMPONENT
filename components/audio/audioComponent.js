@@ -5,6 +5,7 @@ import '../controls-right/audio-speed.js';
 import '../equalizer/audio-equalizer.js';
 import '../launchpad/audio-launchpad.js';
 import '../launchpad/audio-launchpad-effect.js';
+import '../spacilazider/audio-spacilazider.js';
 
 const template = document.createElement('template');
 
@@ -78,6 +79,10 @@ export class AudioGenerator extends HTMLElement {
         const launchpadEffectComponent = document.createElement('audio-launchpad-effect');
         this.shadowRoot.querySelector('.launchpad-effect').appendChild(launchpadEffectComponent);
 
+        // Sous web component - Spacilazider
+        const spacilaziderComponent = document.createElement('audio-spacilazider');
+        this.shadowRoot.querySelector('.spacilazider').appendChild(spacilaziderComponent);
+
         // Écouter les changements de volume
         controlsRightComponentVolume.addEventListener('volumeChange', (event) => {
             const volume = event.detail.volume;
@@ -113,6 +118,14 @@ export class AudioGenerator extends HTMLElement {
             if (playlistComponent && playlistComponent.audio) {
                 console.log('Connecting audio source to equalizer...');
                 controlsLeftComponentEqualizer.connectAudioSource(playlistComponent.audio);
+            }
+        });
+
+        // Connecter la source audio au spacilazider
+        playlistComponent.addEventListener('playSong', () => {
+            if (playlistComponent && playlistComponent.audio) {
+                console.log('Connecting audio source to spacilazider...');
+                spacilaziderComponent.connectAudioSource(playlistComponent.audio);
             }
         });
 
