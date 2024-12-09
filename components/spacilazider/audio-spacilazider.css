@@ -13,84 +13,41 @@
     box-sizing: border-box;
 }
 
-/* Titre steampunk */
 h3 {
-    margin: 0 0 20px 0;
-    font-size: 1.8rem;
+    text-align: left;
+    margin: 0 0 10px 0;
     color: #d3a761;
+    font-size: 2rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 2px 5px rgba(211, 167, 97, 0.7), 0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 5px rgba(211, 167, 97, 0.7), 0 2px 3px rgba(0, 0, 0, 0.5);
     border-bottom: 1px solid rgba(211, 167, 97, 0.5);
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 
-/* Grille des indicateurs */
 .spatialize-container {
-    display: grid;
-    grid-template-areas:
-        ".    up    ."
-        "left .    right"
-        ".   down   .";
-    grid-template-columns: 2fr auto 2fr; /* Plus d'espace horizontal */
-    grid-template-rows: auto 1fr auto; /* Moins d'espace vertical */
-    gap: 5px 20px; /* (vertical, horizontal) : Plus de gap horizontal */
-    position: relative;
-    width: 200px; /* Largeur ajustée */
-    height: 200px; /* Hauteur ajustée */
-}
-
-
-/* Positionnement des boutons */
-.spatialize-indicator#up {
-    grid-area: up;
-}
-
-.spatialize-indicator#left {
-    grid-area: left;
-}
-
-.spatialize-indicator#right {
-    grid-area: right;
-}
-
-.spatialize-indicator#down {
-    grid-area: down;
-}
-
-/* Indicateurs avec images */
-.spatialize-indicator {
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(145deg, #1f202b, #29293f);
-    border: 2px solid rgba(211, 167, 97, 0.5);
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8), inset 0 0 8px rgba(211, 167, 97, 0.4);
+    gap: 10px;
+}
+
+.pan-button {
+    background: none;
+    border: none;
+    padding: 0;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-/* Images dans les indicateurs */
-.spatialize-indicator img {
-    width: 50%;
-    height: 50%;
-    object-fit: contain;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+.pan-button img {
+    width: 50px;
+    height: 50px;
+    transition: transform 0.2s ease;
 }
 
-/* Hover et focus */
-.spatialize-indicator:hover {
+.pan-button img:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(0, 255, 255, 0.8);
-    background: linear-gradient(145deg, #29293f, #3a3e4f);
 }
 
-/* Bouton actif */
-.spatialize-indicator.active {
-    transform: scale(1.2);
-    background: linear-gradient(145deg, #3e0032, #55116a);
-    box-shadow: 0 0 20px rgba(255, 0, 150, 0.8), 0 0 40px rgba(0, 255, 255, 0.8);
+.pan-button img:active {
+    transform: scale(0.9);
 }

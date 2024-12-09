@@ -8,11 +8,18 @@ template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-spacilazider.css'}">
     <h3>Balance</h3>
     <div class="spatialize-container">
-        <button id="pan-left">Gauche</button>
-        <button id="pan-center">Centre</button>
-        <button id="pan-right">Droite</button>
+        <button id="pan-left" class="pan-button" aria-label="Pan Left">
+            <img src="${getBaseURL()}../../assets/img/left-arrow.png" alt="Pan Left">
+        </button>
+        <button id="pan-center" class="pan-button" aria-label="Pan Center">
+            <img src="${getBaseURL()}../../assets/img/center.png" alt="Pan Center">
+        </button>
+        <button id="pan-right" class="pan-button" aria-label="Pan Right">
+            <img src="${getBaseURL()}../../assets/img/right-arrow.png" alt="Pan Right">
+        </button>
     </div>
 `;
+
 
 class AudioSpacilazider extends HTMLElement {
     constructor() {
