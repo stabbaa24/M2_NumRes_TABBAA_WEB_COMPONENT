@@ -1,29 +1,17 @@
 const template = document.createElement('template');
 
-// Base URL for the component
 const getBaseURL = () => {
     return new URL('./', import.meta.url).href;
 };
 
-// HTML Template
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-spacilazider.css'}">
-    <h3>Spacilazider</h3>
+    <h3>Balance</h3>
     <div class="spatialize-container">
-        <div class="spatialize-indicator" id="up">
-            <img src="${getBaseURL()}../../assets/img/up-arrow.png" alt="Up">
-        </div>
-        <div class="spatialize-indicator" id="left">
-            <img src="${getBaseURL()}../../assets/img/left-arrow.png" alt="Left">
-        </div>
-        <div class="spatialize-indicator" id="right">
-            <img src="${getBaseURL()}../../assets/img/right-arrow.png" alt="Right">
-        </div>
-        <div class="spatialize-indicator" id="down">
-            <img src="${getBaseURL()}../../assets/img/down-arrow.png" alt="Down">
-        </div>
+        <button id="pan-left">Gauche</button>
+        <button id="pan-center">Centre</button>
+        <button id="pan-right">Droite</button>
     </div>
-
 `;
 
 class AudioSpacilazider extends HTMLElement {
@@ -34,68 +22,49 @@ class AudioSpacilazider extends HTMLElement {
 
         this.audioContext = null;
         this.stereoPanner = null;
-        this.audioSource = null;
-        this.activeIndicator = null; // Track the active indicator
     }
 
     connectedCallback() {
-        this.initAudioContext();
         this.addEventListeners();
     }
 
-    initAudioContext() {
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    connectAudioSource(audioSource, audioContext) {
+        if (audioSource && audioContext) {
+            this.audioContext = audioContext;
 
-        // Create a StereoPannerNode
-        this.stereoPanner = this.audioContext.createStereoPanner();
-        this.stereoPanner.connect(this.audioContext.destination);
-    }
+            if (!this.stereoPanner) {
+                this.stereoPanner = this.audioContext.createStereoPanner();
+            }
 
-    connectAudioSource(audioElement) {
-        if (!this.audioSource) {
-            this.audioSource = this.audioContext.createMediaElementSource(audioElement);
-            this.audioSource.connect(this.stereoPanner);
+            audioSource.disconnect();
+            audioSource.connect(this.stereoPanner).connect(this.audioContext.destination);
+
+            console.log('Audio source connected to stereo panner.');
         }
-    }
-
-    addEventListeners() {
-        const leftIndicator = this.shadowRoot.querySelector('#left');
-        const rightIndicator = this.shadowRoot.querySelector('#right');
-        const upIndicator = this.shadowRoot.querySelector('#up'); // Up and down are ignored for stereo panning
-        const downIndicator = this.shadowRoot.querySelector('#down');
-
-        leftIndicator.addEventListener('click', () => {
-            this.setPan(-1); // Full left
-            this.activateIndicator(leftIndicator);
-        });
-
-        rightIndicator.addEventListener('click', () => {
-            this.setPan(1); // Full right
-            this.activateIndicator(rightIndicator);
-        });
-
-        upIndicator.addEventListener('click', () => {
-            this.setPan(0); // Center for simplicity
-            this.activateIndicator(upIndicator);
-        });
-
-        downIndicator.addEventListener('click', () => {
-            this.setPan(0); // Center for simplicity
-            this.activateIndicator(downIndicator);
-        });
     }
 
     setPan(value) {
         if (this.stereoPanner) {
             this.stereoPanner.pan.setValueAtTime(value, this.audioContext.currentTime);
-            console.log(`Setting stereo pan to: ${value}`);
+            console.log(`Panning défini à : ${value}`);
+            this.dispatchEvent(new CustomEvent('panChange', {
+                detail: { panValue: value },
+                bubbles: true,
+                composed: true,
+            }));
+        } else {
+            console.warn('StereoPannerNode is not initialized.');
         }
     }
 
-    activateIndicator(indicator) {
-        const indicators = this.shadowRoot.querySelectorAll('.spatialize-indicator');
-        indicators.forEach((el) => el.classList.remove('active'));
-        indicator.classList.add('active');
+    addEventListeners() {
+        const panLeft = this.shadowRoot.querySelector('#pan-left');
+        const panCenter = this.shadowRoot.querySelector('#pan-center');
+        const panRight = this.shadowRoot.querySelector('#pan-right');
+
+        panLeft.addEventListener('click', () => this.setPan(-1)); // Gauche
+        panCenter.addEventListener('click', () => this.setPan(0)); // Centre
+        panRight.addEventListener('click', () => this.setPan(1)); // Droite
     }
 }
 

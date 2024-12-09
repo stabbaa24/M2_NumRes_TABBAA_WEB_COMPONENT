@@ -83,6 +83,27 @@ export class AudioGenerator extends HTMLElement {
         const spacilaziderComponent = document.createElement('audio-spacilazider');
         this.shadowRoot.querySelector('.spacilazider').appendChild(spacilaziderComponent);
 
+        let audioContext = null;
+        let mediaSource = null;
+
+        playlistComponent.addEventListener('playSong', () => {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        
+            if (!mediaSource) {
+                mediaSource = audioContext.createMediaElementSource(playlistComponent.audio);
+            }
+    
+            spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
+        });
+        
+        // Écouter les changements de pan
+        spacilaziderComponent.addEventListener('panChange', (event) => {
+            const panValue = event.detail.panValue;
+            console.log(`Spatialisation : Pan défini à ${panValue}`);
+        });
+
         // Écouter les changements de volume
         controlsRightComponentVolume.addEventListener('volumeChange', (event) => {
             const volume = event.detail.volume;
@@ -120,15 +141,6 @@ export class AudioGenerator extends HTMLElement {
                 controlsLeftComponentEqualizer.connectAudioSource(playlistComponent.audio);
             }
         });
-
-        // Connecter la source audio au spacilazider
-        playlistComponent.addEventListener('playSong', () => {
-            if (playlistComponent && playlistComponent.audio) {
-                console.log('Connecting audio source to spacilazider...');
-                spacilaziderComponent.connectAudioSource(playlistComponent.audio);
-            }
-        });
-
 
     }
 }

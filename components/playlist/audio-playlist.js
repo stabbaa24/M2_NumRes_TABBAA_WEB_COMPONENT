@@ -173,30 +173,36 @@ class Playlist extends HTMLElement {
     // Fonction pour jouer ou mettre en pause une chanson
     playPauseSong(index) {
         const trackList = this.shadowRoot.querySelectorAll('.play-pause'); // Récupérer les boutons play/pause
-
+    
         if (this.currentIndex === index) { // Si la chanson en cours est cliquée
-            if (this.audio.paused) { // Si la chanson est en pause
+            if (this.audio.paused) {
                 this.audio.play(); // Jouer la chanson
-            } else { // Si la chanson est jouée
-                this.audio.pause(); // Mettre en pause la chanson
+            } else {
+                this.audio.pause(); // Mettre en pause
             }
         } else { // Si une autre chanson est cliquée
-            if (this.currentIndex !== null) { // Si une chanson est en cours de lecture
-                const previousButton = trackList[this.currentIndex]; // Récupérer le bouton play/pause
-                previousButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/play.png'}`; // Mettre à jour l'icône
+            if (this.currentIndex !== null) {
+                const previousButton = trackList[this.currentIndex];
+                previousButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/play.png'}`;
             }
-
-            this.currentIndex = index; // Mettre à jour l'index 
-            const selectedMusic = this.musicList[index]; // Récupérer la chanson sélectionnée
-            if (selectedMusic) { // Si la chanson existe
-                this.audio.src = selectedMusic.url; // Charger la chanson
-                this.audio.play(); // Jouer la chanson
+    
+            this.currentIndex = index;
+            const selectedMusic = this.musicList[index];
+            if (selectedMusic) {
+                this.audio.src = selectedMusic.url;
+                this.audio.play();
+    
+                this.dispatchEvent(new CustomEvent('playSong', {
+                    detail: { currentSong: selectedMusic },
+                    bubbles: true,
+                    composed: true,
+                }));
             }
         }
-
+    
         this.renderPlaylist(); // Mise à jour de l'affichage
     }
-
+    
     // Fonction pour recharger une chanson
     reloadSong(index) {
         const selectedMusic = this.musicList[index]; // Récupérer la chanson sélectionnée
