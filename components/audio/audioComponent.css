@@ -70,3 +70,11 @@
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+
+.butterchurn {
+    grid-area: butterchurn;
+    background: radial-gradient(circle, #1b1b29 40%, #0f0f1f 90%);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

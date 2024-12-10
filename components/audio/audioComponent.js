@@ -6,6 +6,7 @@ import '../equalizer/audio-equalizer.js';
 import '../launchpad/audio-launchpad.js';
 import '../launchpad/audio-launchpad-effect.js';
 import '../spacilazider/audio-spacilazider.js';
+import '../butterchurn/audio-butterchurn.js';
 
 const template = document.createElement('template');
 
@@ -83,6 +84,10 @@ export class AudioGenerator extends HTMLElement {
         const spacilaziderComponent = document.createElement('audio-spacilazider');
         this.shadowRoot.querySelector('.spacilazider').appendChild(spacilaziderComponent);
 
+        // Sous web component - Butterchurn
+        const butterchurnComponent = document.createElement('audio-butterchurn');
+        this.shadowRoot.querySelector('.butterchurn').appendChild(butterchurnComponent);
+
         let audioContext = null;
         let mediaSource = null;
 
@@ -90,14 +95,20 @@ export class AudioGenerator extends HTMLElement {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
-        
+
             if (!mediaSource) {
                 mediaSource = audioContext.createMediaElementSource(playlistComponent.audio);
             }
-    
+
             spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
+            
+            // Initialiser Butterchurn avec le contexte audio et la source
+            butterchurnComponent.initialize(audioContext, playlistComponent.audio);
+
+            // Démarrer la visualisation
+            butterchurnComponent.startVisualization();
         });
-        
+
         // Écouter les changements de pan
         spacilaziderComponent.addEventListener('panChange', (event) => {
             const panValue = event.detail.panValue;
@@ -133,15 +144,6 @@ export class AudioGenerator extends HTMLElement {
             }
 
         });
-
-        // Connecter la source audio à l'égaliseur
-        playlistComponent.addEventListener('playSong', () => {
-            if (playlistComponent && playlistComponent.audio) {
-                console.log('Connecting audio source to equalizer...');
-                controlsLeftComponentEqualizer.connectAudioSource(playlistComponent.audio);
-            }
-        });
-
     }
 }
 
