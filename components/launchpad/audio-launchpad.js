@@ -25,6 +25,7 @@ class AudioLaunchpad extends HTMLElement {
     // Fonction appelée lorsque le composant est connecté au DOM
     connectedCallback() {
         this.loadLaunchpad(); // Charge le launchpad
+        this.setupKeyboardEvents(); // Configure les événements du clavier
     }
 
     loadLaunchpad() {
@@ -65,6 +66,40 @@ class AudioLaunchpad extends HTMLElement {
 
             grid.appendChild(button);
         }
+    }
+
+    triggerSound(index) {
+        const audio = this.launchpadSounds[index];
+        const button = this.shadowRoot.querySelectorAll('.launchpad-button')[index];
+
+        audio.currentTime = 0;
+        audio.play();
+
+        button.classList.add('clicked');
+        setTimeout(() => {
+            button.classList.remove('clicked');
+        }, 5000);
+
+        // Dispatch de l'événement avec images
+        const images = [];
+        for (let j = 1; j <= 3; j++) {
+            images.push(`${getBaseURL()}../../assets/img/launchpad/sound${index + 1}/sound_${index + 1}_image_${j}.png`);
+        }
+        this.dispatchEvent(new CustomEvent('launchpadSoundPlayed', {
+            detail: { images },
+            bubbles: true,
+            composed: true
+        }));
+    }
+
+    setupKeyboardEvents() {
+        document.addEventListener('keydown', (e) => {
+            const key = e.key;
+            if (key >= '1' && key <= '9') {
+                const index = key - '1'; // Converti la touche en index (0 à 8)
+                this.triggerSound(index);
+            }
+        });
     }
 }
 
