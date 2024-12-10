@@ -2,13 +2,12 @@
 :host {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: le;
+    align-items: left;
     width: 100%;
     height: 100%;
     padding: 15px;
     color: #f4e9d6;
-    background: radial-gradient(circle, #1b1b29 40%, #0f0f1f 90%);
     border-radius: 12px;
     box-sizing: border-box;
 }
@@ -27,8 +26,9 @@ h3 {
 
 .spatialize-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     gap: 10px;
+    padding-top: 30px;
 }
 
 .pan-button {

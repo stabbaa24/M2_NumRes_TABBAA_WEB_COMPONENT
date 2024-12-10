@@ -170,6 +170,24 @@ h3 {
     box-shadow: 0 0 15px rgba(209, 91, 149, 0.8);
 }
 
+.controls .loop-btn.single {
+    background: #9c6b2f;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(232, 80, 255, 0.8);
+}
+
+.controls .loop-btn.all {
+    background: #114B5F; /* Or pour toute la playlist */
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(232, 80, 255, 0.8);
+}
+
+.controls .shuffle-btn.active {
+    background: #9c6b2f;
+    color: #ffffff; 
+    box-shadow: 0 0 10px rgba(232, 80, 255, 0.8); 
+}
+
 /* Customisation de la scrollbar */
 .track-list::-webkit-scrollbar {
     width: 10px; /* Largeur de la scrollbar */

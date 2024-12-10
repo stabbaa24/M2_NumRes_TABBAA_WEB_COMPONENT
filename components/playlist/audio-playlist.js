@@ -32,7 +32,7 @@ class Playlist extends HTMLElement {
         this.audio = new Audio(); // Créer un élément audio
         this.currentIndex = null; // Index de la chanson en cours de lecture
         this.isShuffle = false; // Mode aléatoire
-        this.loopMode = 'all'; // 'all', 'one', or 'none'
+        this.loopMode = 'none'; // 'all', 'one', or 'none'
     }
 
     // Fonction appelée lorsque le composant est connecté au DOM
@@ -150,24 +150,31 @@ class Playlist extends HTMLElement {
         // Gérer les clics sur les boutons
         shuffleButton.addEventListener('click', () => {
             this.isShuffle = !this.isShuffle; // Activer ou désactiver le mode aléatoire
-            shuffleButton.textContent = this.isShuffle ? '🔀 Mode Aléatoire : ON' : '🔀 Mode Aléatoire : OFF';
-            console.log(`Shuffle mode is now ${this.isShuffle ? 'ON' : 'OFF'}`); 
+            shuffleButton.classList.toggle('active', this.isShuffle); // Ajouter ou retirer la classe 'active'
+            shuffleButton.textContent = this.isShuffle ? '🔀 Mode Aléatoire' : '🔀 Mode Aléatoire';
+            console.log(`Shuffle mode is now ${this.isShuffle ? 'ON' : 'OFF'}`);
         });
 
         // Gérer les clics sur les boutons
         loopButton.addEventListener('click', () => {
-            if (this.loopMode === 'none') { // Si la boucle est désactivée
-                this.loopMode = 'one'; // Activer la boucle sur une seule chanson
-                loopButton.textContent = '🔂 Boucle : Une seule chanson'; // Mise à jour du texte
-            } else if (this.loopMode === 'one') { // Si la boucle sur une seule chanson est activée
-                this.loopMode = 'all'; // Activer la boucle sur toute la playlist
-                loopButton.textContent = '🔁 Boucle : Toute la playlist'; // Mise à jour du texte
-            } else { // Si la boucle sur toute la playlist est activée
-                this.loopMode = 'none'; // Désactiver la boucle
-                loopButton.textContent = '🔂 Boucle : Désactivée'; // Mise à jour du texte
-            } 
-            console.log(`Loop mode is now: ${this.loopMode}`);
-        });
+            // Supprime les classes pour réinitialiser l'état visuel du bouton
+            loopButton.classList.remove('single', 'all');
+        
+            if (this.loopMode === 'none') {
+                this.loopMode = 'one'; // Active la boucle sur une seule chanson
+                loopButton.textContent = '🔂 Une seule chanson'; // Mise à jour du texte
+                loopButton.classList.add('single'); // Applique la classe pour le style visuel
+            } else if (this.loopMode === 'one') {
+                this.loopMode = 'all'; // Active la boucle sur toute la playlist
+                loopButton.textContent = '🔁 Toute la playlist';
+                loopButton.classList.add('all');
+            } else {
+                this.loopMode = 'none'; // Désactive la boucle
+                loopButton.textContent = '🔂 Jouer en boucle ?';
+            }
+        
+            console.log(`Loop mode is now: ${this.loopMode}`); // Affiche le mode actuel dans la console
+        });        
     }
 
     // Fonction pour jouer ou mettre en pause une chanson
