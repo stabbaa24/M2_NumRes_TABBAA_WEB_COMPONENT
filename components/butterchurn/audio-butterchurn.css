@@ -28,22 +28,28 @@ canvas {
     margin: 0 auto;
 }
 
-#preset-select {
-    width: 80%;
-    margin: 10px auto;
-    padding: 5px;
-    background: rgba(27, 27, 41, 0.8);
-    color: #d3a761;
-    border: 1px solid #444450;
-    border-radius: 5px;
-    font-size: 14px;
-    z-index: 10;
-}
-
 #container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%; 
+}
+
+#preset-select {
+    width: 80%;
+    margin: 10px auto;
+    padding: 5px;
+    background: #202033;
+    color: #d3a761;
+    border: 1px solid #444450;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 10;
+    overflow-y: auto;
+}
+
+#preset-select::-webkit-scrollbar {
+    width: 10px; 
+    background: #202033;
 }

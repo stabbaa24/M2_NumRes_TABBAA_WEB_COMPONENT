@@ -15,7 +15,6 @@ template.innerHTML = `
     <select id="preset-select"></select>
     <canvas></canvas>
 </div>
-
 `;
 
 export class AudioButterchurn extends HTMLElement {
