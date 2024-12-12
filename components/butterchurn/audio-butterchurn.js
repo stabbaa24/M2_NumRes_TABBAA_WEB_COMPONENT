@@ -53,30 +53,48 @@ export class AudioButterchurn extends HTMLElement {
         this.animationFrame = null;
     }
 
-    async initVisualizer(audioContext, audioElement) {
-        try {
-            // Create canvas
-            this.canvas = document.createElement('canvas');
-            this.visualizerContainer.innerHTML = '';
-            this.visualizerContainer.appendChild(this.canvas);
+    async connectedCallback() {
+        // Initialize audio context
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create canvas immediately
+        this.canvas = document.createElement('canvas');
+        this.visualizerContainer.innerHTML = '';
+        this.visualizerContainer.appendChild(this.canvas);
 
-            // Set canvas dimensions based on container size
+        // Set initial canvas dimensions
+        const rect = this.visualizerContainer.getBoundingClientRect();
+        this.canvas.width = rect.width;
+        this.canvas.height = rect.height;
+
+        // Create visualizer
+        this.visualizer = butterchurn.default.createVisualizer(
+            this.audioContext,
+            this.canvas,
+            {
+                width: this.canvas.width,
+                height: this.canvas.height,
+                pixelRatio: window.devicePixelRatio || 1,
+            }
+        );
+
+        // Load presets immediately
+        await this.loadPresets();
+
+        // Setup resize handler
+        window.addEventListener('resize', () => {
             const rect = this.visualizerContainer.getBoundingClientRect();
             this.canvas.width = rect.width;
             this.canvas.height = rect.height;
+            if (this.visualizer) {
+                this.visualizer.setRendererSize(this.canvas.width, this.canvas.height);
+            }
+        });
+    }
 
-            // Create visualizer
-            this.visualizer = butterchurn.default.createVisualizer(
-                audioContext,
-                this.canvas,
-                {
-                    width: this.canvas.width,
-                    height: this.canvas.height,
-                    pixelRatio: window.devicePixelRatio || 1,
-                }
-            );
-
-            // Listen to audio play/pause events
+    async initVisualizer(audioContext, audioElement) {
+        try {
+            // Attach audio event listeners
             audioElement.addEventListener('play', () => {
                 this.isPlaying = true;
                 this.startVisualization();
@@ -91,19 +109,6 @@ export class AudioButterchurn extends HTMLElement {
                 this.isPlaying = false;
                 this.stopVisualization();
             });
-
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                const rect = this.visualizerContainer.getBoundingClientRect();
-                this.canvas.width = rect.width;
-                this.canvas.height = rect.height;
-                if (this.visualizer) {
-                    this.visualizer.setRendererSize(this.canvas.width, this.canvas.height);
-                }
-            });
-
-            // Load and populate presets
-            await this.loadPresets();
 
             return true;
         } catch (error) {

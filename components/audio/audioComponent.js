@@ -102,13 +102,8 @@ export class AudioGenerator extends HTMLElement {
         
             spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
             
-            // Utiliser initVisualizer au lieu de initialize
-            const isInitialized = await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
-            
-            // Ne démarrer la visualisation que si l'initialisation a réussi
-            if (isInitialized) {
-                butterchurnComponent.startVisualization();
-            }
+            // Initialiser le visualizer avec l'audio
+            await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
         });
 
         // Écouter les changements de pan
