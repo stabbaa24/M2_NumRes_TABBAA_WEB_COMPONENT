@@ -1,4 +1,3 @@
-// audio-butterchurn.js
 import "../../libs/butterchurn.js";
 import "../../libs/butterchurnPresets.min.js";
 
@@ -50,63 +49,71 @@ export class AudioButterchurn extends HTMLElement {
         this.visualizer = null;
         this.canvas = null;
         this.isPlaying = false;
-        this.animationFrame = null;
+        this.animationFrameId = null;
     }
 
     async connectedCallback() {
-        // Initialize audio context
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Create canvas immediately
-        this.canvas = document.createElement('canvas');
-        this.visualizerContainer.innerHTML = '';
-        this.visualizerContainer.appendChild(this.canvas);
+        if (!this.isInitialized) {
+            // Add styles
+            const style = document.createElement('style');
+            style.textContent = `
+                canvas {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                }
+                select {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    z-index: 1;
+                }
+            `;
+            this.shadowRoot.appendChild(style);
 
-        // Set initial canvas dimensions
-        const rect = this.visualizerContainer.getBoundingClientRect();
-        this.canvas.width = rect.width;
-        this.canvas.height = rect.height;
+            // Create canvas and select elements
+            this.canvas = document.createElement('canvas');
+            this.visualizerContainer.appendChild(this.canvas);
+            this.shadowRoot.appendChild(this.presetSelect);
 
-        // Create visualizer
-        this.visualizer = butterchurn.default.createVisualizer(
-            this.audioContext,
-            this.canvas,
-            {
-                width: this.canvas.width,
-                height: this.canvas.height,
-                pixelRatio: window.devicePixelRatio || 1,
-            }
-        );
+            // Load presets immediately
+            await this.loadPresetList();
 
-        // Load presets immediately
-        await this.loadPresets();
-
-        // Setup resize handler
-        window.addEventListener('resize', () => {
-            const rect = this.visualizerContainer.getBoundingClientRect();
-            this.canvas.width = rect.width;
-            this.canvas.height = rect.height;
-            if (this.visualizer) {
-                this.visualizer.setRendererSize(this.canvas.width, this.canvas.height);
-            }
-        });
+            this.isInitialized = true;
+        }
     }
 
     async initVisualizer(audioContext, audioElement) {
         try {
+            // Initialize visualizer with provided audioContext
+            this.visualizer = butterchurn.default.createVisualizer(
+                audioContext,
+                this.canvas, {
+                    width: this.canvas.width,
+                    height: this.canvas.height
+                }
+            );
+
+            // Set second preset as default
+            const presetKeys = Object.keys(butterchurnPresets.getPresets());
+            if (presetKeys.length > 1) {
+                await this.visualizer.loadPreset(
+                    butterchurnPresets.getPresets()[presetKeys[1]], 
+                    0.0
+                );
+                this.presetSelect.value = presetKeys[1];
+            }
+
             // Attach audio event listeners
             audioElement.addEventListener('play', () => {
-                this.isPlaying = true;
                 this.startVisualization();
             });
 
             audioElement.addEventListener('pause', () => {
-                this.isPlaying = false;
                 this.stopVisualization();
             });
 
             audioElement.addEventListener('ended', () => {
-                this.isPlaying = false;
                 this.stopVisualization();
             });
 
@@ -118,43 +125,39 @@ export class AudioButterchurn extends HTMLElement {
     }
 
     startVisualization() {
-        if (!this.visualizer || !this.isPlaying) return;
-
-        const render = () => {
-            if (this.isPlaying) {
-                this.visualizer.render();
-                this.animationFrame = requestAnimationFrame(render);
-            }
-        };
-
-        this.animationFrame = requestAnimationFrame(render);
+        if (!this.visualizer) return;
+        
+        this.isPlaying = true;
+        this.renderLoop();
     }
 
     stopVisualization() {
-        if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame);
-            this.animationFrame = null;
+        this.isPlaying = false;
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
         }
     }
 
-    async loadPresets() {
+    renderLoop = () => {
+        if (this.visualizer && this.isPlaying) {
+            this.visualizer.render();
+            this.animationFrameId = requestAnimationFrame(this.renderLoop);
+        }
+    }
+
+    async loadPresetList() {
         try {
             const presets = butterchurnPresets.getPresets();
+            const presetKeys = Object.keys(presets);
             
-            // Clear and populate preset select
-            this.presetSelect.innerHTML = '';
-            Object.keys(presets).forEach(presetName => {
+            presetKeys.forEach(presetName => {
                 const option = document.createElement('option');
                 option.value = presetName;
                 option.textContent = presetName;
                 this.presetSelect.appendChild(option);
             });
 
-            // Load default preset
-            const defaultPreset = Object.keys(presets)[0];
-            await this.visualizer.loadPreset(presets[defaultPreset], 0.0);
-
-            // Handle preset changes
             this.presetSelect.addEventListener('change', async (e) => {
                 const selectedPreset = e.target.value;
                 await this.visualizer.loadPreset(presets[selectedPreset], 0.0);
@@ -163,6 +166,10 @@ export class AudioButterchurn extends HTMLElement {
         } catch (error) {
             console.error('Error loading presets:', error);
         }
+    }
+
+    disconnectedCallback() {
+        this.stopVisualization();
     }
 }
 
