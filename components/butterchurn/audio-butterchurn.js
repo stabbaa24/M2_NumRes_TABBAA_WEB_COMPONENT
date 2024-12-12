@@ -1,82 +1,100 @@
-const template = document.createElement('template');
+// audio-butterchurn.js
+import "../../libs/butterchurn.js";
+import "../../libs/butterchurnPresets.min.js";
 
-// Fonction pour obtenir l'URL de base
-const getBaseURL = () => {
-    return new URL('./', import.meta.url).href;
-};
-
-// Template HTML pour le composant audio-butterchurn
-template.innerHTML = `
-    <link rel="stylesheet" href="${getBaseURL() + 'audio-butterchurn.css'}">
-    <h3>Butterchurn</h3>
+// audio-butterchurn.js
+const templateButterchurn = document.createElement('template');
+templateButterchurn.innerHTML = `
     <style>
+        
         #visualizer {
             width: 100%;
             height: 100%;
-            background: black;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
         }
     </style>
     <div id="visualizer"></div>
 `;
 
-class AudioButterchurn extends HTMLElement {
+export class AudioButterchurn extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.visualizerContainer = null;
-        this.visualizer = null; // Instance Butterchurn
-        this.audioContext = null;
-        this.mediaSource = null;
-    }
-
-    connectedCallback() {
+        this.shadowRoot.appendChild(templateButterchurn.content.cloneNode(true));
         this.visualizerContainer = this.shadowRoot.querySelector('#visualizer');
+        this.visualizer = null;
+        this.presets = null;
+        this.currentPreset = null;
+        this.canvas = null;
+        this.autoResize = true;
     }
 
-    initialize(audioContext, audioElement) {
-        if (!this.visualizer) {
-            // Créer une instance Butterchurn
-            this.visualizer = butterchurn.createVisualizer(audioContext, this.visualizerContainer, {
-                width: this.visualizerContainer.offsetWidth,
-                height: this.visualizerContainer.offsetHeight,
-                pixelRatio: window.devicePixelRatio || 1,
+    async initVisualizer(audioContext, audioElement) {
+        try {
+            // Create canvas
+            this.canvas = document.createElement('canvas'); 
+            this.visualizerContainer.innerHTML = '';
+            this.visualizerContainer.appendChild(this.canvas);
+    
+            // Set initial dimensions
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            this.canvas.width = width * window.devicePixelRatio;
+            this.canvas.height = height * window.devicePixelRatio;
+    
+            // Create visualizer using butterchurn.default
+            this.visualizer = butterchurn.default.createVisualizer(
+                audioContext,
+                this.canvas, 
+                {
+                    width: this.canvas.width,
+                    height: this.canvas.height,
+                    pixelRatio: window.devicePixelRatio || 1,
+                }
+            );
+    
+            // Handle resize
+            window.addEventListener('resize', () => {
+                if (!this.autoResize) return;
+                const width = window.innerWidth;
+                const height = window.innerHeight; 
+                this.canvas.width = width * window.devicePixelRatio;
+                this.canvas.height = height * window.devicePixelRatio;
+                if (this.visualizer) {
+                    this.visualizer.setRendererSize(this.canvas.width, this.canvas.height);
+                }
             });
-
-            // Charger un preset inspiré d'Arcane
-            const presets = butterchurnPresets.getPresets();
-            const arcanePreset = presets['Ethereal Vibrations'] || Object.values(presets)[0];
-            this.visualizer.loadPreset(arcanePreset, 1.0);
-
-            // Mettre à jour la visualisation en boucle
-            this.resizeObserver = new ResizeObserver(() => {
-                this.visualizer.setRendererSize(
-                    this.visualizerContainer.offsetWidth,
-                    this.visualizerContainer.offsetHeight
-                );
-            });
-            this.resizeObserver.observe(this.visualizerContainer);
-
-            // Connecter la source audio
-            this.mediaSource = audioContext.createMediaElementSource(audioElement);
-            this.mediaSource.connect(audioContext.destination);
-            this.visualizer.connectAudio(audioContext);
+    
+            return true;
+        } catch (error) {
+            console.error('Error initializing visualizer:', error);
+            return false;
         }
     }
 
     startVisualization() {
-        if (this.visualizer) {
+        if (!this.visualizer) return;
+
+        const render = () => {
             this.visualizer.render();
-        }
+            requestAnimationFrame(render);
+        };
+
+        render();
     }
 
-    stopVisualization() {
-        if (this.visualizer) {
-            this.visualizer.destroy();
-            this.visualizer = null;
+    async loadPresets() {
+        try {
+            this.presets = butterchurnPresets.getPresets();
+            const defaultPreset = Object.keys(this.presets)[0];
+            await this.visualizer.loadPreset(this.presets[defaultPreset], 0.0);
+        } catch (error) {
+            console.error('Error loading presets:', error); 
         }
     }
 }
 
-// Définir le custom element <audio-butterchurn>
 customElements.define('audio-butterchurn', AudioButterchurn);
