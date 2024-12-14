@@ -36,7 +36,8 @@ class Playlist extends HTMLElement {
     }
 
     // Fonction appelée lorsque le composant est connecté au DOM
-    connectedCallback() {
+    async connectedCallback() {
+        await this.loadMusicFiles();
         this.loadDurations();
         this.renderPlaylist();
         this.attachEventListeners();
@@ -47,6 +48,30 @@ class Playlist extends HTMLElement {
             console.log('Song ended, playing next.');
             this.playNext(); // Jouer la chanson suivante
         });
+    }
+
+    async loadMusicFiles() {
+        try {
+            const response = await fetch('/assets/music/'); // Chemin où les fichiers MP3 sont exposés
+            if (!response.ok) {
+                throw new Error(`Failed to fetch music files: ${response.statusText}`);
+            }
+
+            const htmlText = await response.text(); // Récupérer le contenu HTML du dossier
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+            const links = Array.from(doc.querySelectorAll('a[href$=".mp3"]')); // Trouver les liens MP3
+
+            this.musicList = links.map((link) => {
+                const url = link.href;
+                const title = decodeURIComponent(url.split('/').pop().replace('.mp3', '').replace(/[-_]/g, ' '));
+                return { title, url, duration: null };
+            });
+
+            console.log('Loaded music list:', this.musicList);
+        } catch (error) {
+            console.error('Error loading music files:', error);
+        }
     }
 
     // Fonction appelée lorsque le composant est déconnecté du DOM
