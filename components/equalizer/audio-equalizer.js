@@ -47,7 +47,6 @@ class AudioEqualizer extends HTMLElement {
 
     connectedCallback() {
         this.initCanvas();
-        this.initAudioContext();
         this.renderSliders();
         this.distributePoints();
         this.drawGraph();
@@ -57,65 +56,124 @@ class AudioEqualizer extends HTMLElement {
         this.canvas.addEventListener('mouseup', () => this.stopDragging());
     }
 
-    initAudioContext() {
-        if (!this.audioContext) {
-            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    connectAudioSource(audioSourceNode, audioContext) {
+        if (!audioSourceNode || !audioContext) {
+            console.warn('Audio source or AudioContext is missing!');
+            return;
         }
-
-        this.bands.forEach(({ freq }) => {
-            const filter = this.audioContext.createBiquadFilter();
-            filter.type = 'peaking';
-            filter.frequency.value = freq;
-            filter.Q.value = 1;
-            filter.gain.value = 0;
-            this.filters.push(filter);
-        });
-
-        // Connect filters in series
+        
+        this.audioContext = audioContext;
+        this.audioSource = audioSourceNode; // Stocker la source audio
+    
+        if (this.filters.length === 0) {
+            this.initFilters();
+        }
+    
+        // Déconnecter la source audio de sa destination précédente
+        try {
+            this.audioSource.disconnect();
+        } catch (e) {
+            console.log("Rien à déconnecter");
+        }
+    
+        // Reconnecter la chaîne complète
+        this.audioSource.connect(this.filters[0]);
+        
+        // Connecter les filtres en chaîne
         for (let i = 0; i < this.filters.length - 1; i++) {
+            try {
+                this.filters[i].disconnect();
+            } catch (e) {
+                console.log(`Rien à déconnecter pour le filtre ${i}`);
+            }
             this.filters[i].connect(this.filters[i + 1]);
         }
-
-        // Connect last filter to the destination
-        this.filters[this.filters.length - 1].connect(this.audioContext.destination);
-        console.log('Audio context and filters initialized.');
-    }
-
-    connectAudioSource(audioElement) {
-        if (!this.audioSource || this.audioSource.mediaElement !== audioElement) {
-            this.audioSource = this.audioContext.createMediaElementSource(audioElement);
-
-            // Connect the source to the first filter
-            this.audioSource.connect(this.filters[0]);
-
-            // Ensure the last filter is connected to the destination
-            this.filters[this.filters.length - 1].connect(this.audioContext.destination);
-
-            console.log('Audio source connected to equalizer filters.');
+    
+        // Connecter le dernier filtre à la destination
+        try {
+            this.filters[this.filters.length - 1].disconnect();
+        } catch (e) {
+            console.log("Rien à déconnecter pour le dernier filtre");
         }
+        this.filters[this.filters.length - 1].connect(this.audioContext.destination);
+        
+        console.log("Chaîne audio complètement reconnectée");
+    }
+    
+    
+
+    initFilters() {
+        this.bands.forEach(({ freq }, index) => {
+            const filter = this.audioContext.createBiquadFilter();
+            filter.type = 'peaking';
+            filter.frequency.value = freq; // Fréquence centrale
+            filter.Q.value = 1; // Qualité
+            filter.gain.value = 0; // Gain initial
+            this.filters.push(filter);
+            console.log(`Filter ${index}: type=${filter.type}, freq=${filter.frequency.value} Hz, gain=${filter.gain.value}`);
+        });
+    
+        console.log('Filters initialized with frequencies:', this.bands.map(b => b.freq));
     }
 
+    // Dans la méthode renderSliders(), modifions l'événement input:
     renderSliders() {
         const sliderContainer = this.shadowRoot.querySelector('#slider-container');
-
+    
         this.bands.forEach((band, index) => {
             const sliderWrapper = document.createElement('div');
             sliderWrapper.classList.add('slider-wrapper');
             sliderWrapper.dataset.id = index;
-
+    
             sliderWrapper.innerHTML = `
                 <div class="slider-color" id="color-${index}" style="background-color: ${band.color}"></div>
                 <input type="range" min="-12" max="12" value="0" class="slider" id="slider-${index}">
                 <label>${band.freq} Hz</label>
             `;
-
+    
             sliderContainer.appendChild(sliderWrapper);
-
-            sliderWrapper.querySelector('input').addEventListener('input', (e) => {
+    
+            const slider = sliderWrapper.querySelector('input');
+    
+            slider.addEventListener('input', (e) => {
                 const gain = parseFloat(e.target.value);
+    
+                if (this.filters[index]) {
+                    this.filters[index].gain.setValueAtTime(gain, this.audioContext.currentTime);
+                    console.log(`Slider ${index} updated: freq=${this.filters[index].frequency.value} Hz, gain=${gain} dB`);
+                }
+    
                 this.updateSliderGain(index, gain);
             });
         });
+    }
+
+    // Dans la méthode updateSliderGain(), assurons-nous de mettre à jour le filtre:
+    updateSliderGain(index, gain) {
+        const band = this.bands[index];
+        band.gain = gain;
+        band.y = this.canvas.height / 2 - (gain / 12) * (this.canvas.height / 2);
+
+        if (this.filters[index]) {
+            // Mise à jour immédiate du gain
+            this.filters[index].gain.value = gain;
+            // Optionnel: transition douce
+            // this.filters[index].gain.setTargetAtTime(gain, this.audioContext.currentTime, 0.1);
+            
+            console.log(`Filter ${index} gain set to ${gain} dB at frequency ${this.filters[index].frequency.value} Hz`);
+            
+            // Reconnecter la chaîne audio pour s'assurer que les changements sont appliqués
+            if (this.audioSource) {
+                this.connectAudioSource(this.audioSource, this.audioContext);
+            }
+        }
+
+        const slider = this.shadowRoot.querySelector(`#slider-${index}`);
+        if (slider) {
+            slider.value = gain;
+        }
+
+        this.drawGraph();
     }
 
     distributePoints() {
@@ -129,12 +187,16 @@ class AudioEqualizer extends HTMLElement {
     drawGraph() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawGrid();
-
-        // Draw curve
+    
         this.ctx.strokeStyle = '#ffcc00';
         this.ctx.lineWidth = 2;
         this.ctx.beginPath();
+    
         this.bands.forEach((band, index) => {
+            // Calculez la position verticale en fonction du gain
+            const y = this.canvas.height / 2 - (band.gain / 12) * (this.canvas.height / 2);
+            band.y = y; // Mettez à jour la position de la bande
+    
             if (index === 0) {
                 this.ctx.moveTo(band.x, band.y);
             } else {
@@ -143,9 +205,10 @@ class AudioEqualizer extends HTMLElement {
                 this.ctx.bezierCurveTo(cpX, prev.y, cpX, band.y, band.x, band.y);
             }
         });
+    
         this.ctx.stroke();
-
-        // Draw points
+    
+        // Dessinez les points
         this.bands.forEach((band) => {
             this.ctx.beginPath();
             this.ctx.arc(band.x, band.y, 8, 0, Math.PI * 2);
@@ -203,23 +266,6 @@ class AudioEqualizer extends HTMLElement {
 
     stopDragging() {
         this.dragging = null;
-    }
-
-    updateSliderGain(index, gain) {
-        const band = this.bands[index];
-        band.gain = gain;
-        band.y = this.canvas.height / 2 - (gain / 12) * (this.canvas.height / 2);
-
-        if (this.filters[index]) {
-            this.filters[index].gain.value = gain;
-        }
-
-        const slider = this.shadowRoot.querySelector(`#slider-${index}`);
-        if (slider) {
-            slider.value = gain;
-        }
-
-        this.drawGraph();
     }
 
     initCanvas() {

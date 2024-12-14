@@ -102,6 +102,8 @@ export class AudioGenerator extends HTMLElement {
                 mediaSource = audioContext.createMediaElementSource(playlistComponent.audio);
             }
         
+            controlsLeftComponentEqualizer.connectAudioSource(mediaSource, audioContext);
+            console.log('Audio source connected to equalizer.');
             spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
             
             await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
