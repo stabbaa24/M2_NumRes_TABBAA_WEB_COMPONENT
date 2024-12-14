@@ -30,7 +30,6 @@ h3 {
     padding-top: 50px;
 }
 
-
 .pan-button {
     background: none;
     border: none;
@@ -46,6 +45,8 @@ h3 {
 
 .pan-button img:hover {
     transform: scale(1.1);
+    transform: rotate(5deg);
+    filter: drop-shadow(0 0 10px #9c6b2f71);
 }
 
 .pan-button img:active {

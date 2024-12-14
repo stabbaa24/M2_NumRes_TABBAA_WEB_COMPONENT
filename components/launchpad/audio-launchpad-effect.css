@@ -1,15 +1,15 @@
 .launchpad-effect {
-    position: relative; /* S'assure que le conteneur parent est positionné */
-    width: 100%; /* Prend toute la largeur du parent */
-    height: 100%; /* Prend toute la hauteur du parent */
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .effect-container {
     top: 0;
     left: 0;
-    width: 100%; /* Largeur totale du parent */
-    height: 100%; /* Hauteur totale du parent */
-    overflow: hidden; /* Masque le contenu qui dépasse */
+    width: 100%; 
+    height: 100%;
+    overflow: hidden; 
     z-index: -1;
 }
 
