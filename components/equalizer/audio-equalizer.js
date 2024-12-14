@@ -119,6 +119,7 @@ class AudioEqualizer extends HTMLElement {
     // Dans la méthode renderSliders(), modifions l'événement input:
     renderSliders() {
         const sliderContainer = this.shadowRoot.querySelector('#slider-container');
+        sliderContainer.innerHTML = ''; // Nettoie les anciens sliders
     
         this.bands.forEach((band, index) => {
             const sliderWrapper = document.createElement('div');
@@ -126,18 +127,31 @@ class AudioEqualizer extends HTMLElement {
             sliderWrapper.dataset.id = index;
     
             sliderWrapper.innerHTML = `
-                <div class="slider-color" id="color-${index}" style="background-color: ${band.color}"></div>
-                <input type="range" min="-12" max="12" value="0" class="slider" id="slider-${index}">
                 <label>${band.freq} Hz</label>
+                <webaudio-slider 
+                    id="slider-${index}" 
+                    class="audio-slider" 
+                    basesrc="./assets/img/slicer/slicer-${index + 1}.png" 
+                    knobsrc="./assets/img/slicer/slider.png" 
+                    min="-12" 
+                    max="12" 
+                    value="0" 
+                    step="1" 
+                    basewidth="76" 
+                    baseheight="300" 
+                    knobwidth="35" 
+                    knobheight="50" 
+                    ditchLength="230">
+                </webaudio-slider>
             `;
     
             sliderContainer.appendChild(sliderWrapper);
     
-            const slider = sliderWrapper.querySelector('input');
+            const slider = sliderWrapper.querySelector('webaudio-slider');
     
-            slider.addEventListener('input', (e) => {
-                const gain = parseFloat(e.target.value);
-    
+            // Mise à jour des valeurs du filtre lors des changements de slider
+            slider.addEventListener('change', (e) => {
+                const gain = parseFloat(slider.value);
                 if (this.filters[index]) {
                     this.filters[index].gain.setValueAtTime(gain, this.audioContext.currentTime);
                     console.log(`Slider ${index} updated: freq=${this.filters[index].frequency.value} Hz, gain=${gain} dB`);
@@ -147,6 +161,7 @@ class AudioEqualizer extends HTMLElement {
             });
         });
     }
+    
 
     // Dans la méthode updateSliderGain(), assurons-nous de mettre à jour le filtre:
     updateSliderGain(index, gain) {
