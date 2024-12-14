@@ -1,0 +1,54 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    color: #f4e9d6;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+h3 {
+    text-align: left;
+    margin: 0 0 10px 0;
+    color: #d3a761;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(211, 167, 97, 0.7), 0 2px 3px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(211, 167, 97, 0.5);
+    padding-bottom: 5px;
+}
+
+.spatialize-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    padding-top: 50px;
+}
+
+.pan-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.pan-button img {
+    width: 80%;
+    height: 80%;
+    transition: transform 0.2s ease;
+}
+
+.pan-button img:hover {
+    transform: scale(1.1);
+    transform: rotate(5deg);
+    filter: drop-shadow(0 0 10px #9c6b2f71);
+}
+
+.pan-button img:active {
+    transform: scale(0.9);
+}

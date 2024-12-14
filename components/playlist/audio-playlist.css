@@ -1,0 +1,216 @@
+* {
+    font-family: 'Arcane Nine', sans-serif;
+}
+
+/* Conteneur principal parent*/
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #1b1b29 40%, #0f0f1f 90%);
+    border-radius: 12px;
+    color: #f4e9d6;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+h3 {
+    text-align: left;
+    margin: 0 0 10px 0;
+    color: #d3a761;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(211, 167, 97, 0.7), 0 2px 3px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(211, 167, 97, 0.5);
+    padding-bottom: 5px;
+}
+
+/* Playlist */
+.track-list {
+    flex-grow: 1;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    overflow-y: auto;
+    background: linear-gradient(145deg, #29293f, #1e1e30);
+    border: 1px solid #444450;
+    border-radius: 10px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.track-list li {
+    display: grid;
+    grid-template-columns: 50px 1fr 100px 150px; /* Colonnes : ID | Nom | Durée | Boutons */
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #d4d4d4;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.track-list li:hover {
+    background: linear-gradient(145deg, rgba(57, 162, 219, 0.3), rgba(57, 162, 219, 0.1));
+    transform: scale(1.0);
+    cursor: pointer;
+    border-color: rgba(57, 162, 219, 0.3);
+}
+
+.track-list li.current {
+    background: linear-gradient(145deg, #b77932bb, #d3a761b3);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(211, 167, 97, 0.5);
+}
+
+.track-id {
+    text-align: center;
+    font-weight: bold;
+    color: #8c918e;
+}
+
+.track-name {
+    position: relative;
+    overflow: hidden; 
+    white-space: nowrap;
+    display: block;
+    color: #f8f3e6;
+    width: 100%; 
+    height: 1.5em; 
+    line-height: 1.5em;
+}
+
+/* Texte défilant */
+.track-name span {
+    position: absolute;
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform; 
+}
+
+.track-name.scrollable span {
+    animation: scroll-infinite 12s linear infinite;
+}
+
+/* Animation défilement */
+@keyframes scroll-infinite {
+    0% {
+        transform: translateX(100%); /* Commence à droite du conteneur */
+    }
+    100% {
+        transform: translateX(-100%); /* Termine à gauche du conteneur */
+    }
+}
+
+.track-duration {
+    text-align: center;
+    color: #a6a6b1;
+    font-style: italic;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.button-group button {
+    background: #1f202b;
+    border: 1px solid #444450;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.button-group button:hover {
+    background: #4a7f99;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(74, 127, 153, 0.8);
+}
+
+.button-group button img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: brightness(0.9);
+}
+
+.track-list li button:hover img {
+    filter: brightness(1.2);
+}
+
+/* Contrôles : Steampunk / néon */
+.controls {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.controls button {
+    background: linear-gradient(145deg, #4a1d41, #6a2c70);
+    color: #f9e1d7;
+    border: 1px solid #9c6b2f;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.controls button:hover {
+    background: linear-gradient(145deg, #b13c7c, #c6639f);
+    box-shadow: 0 0 15px rgba(209, 91, 149, 0.8);
+}
+
+.controls .loop-btn.single {
+    background: #9c6b2f;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(232, 80, 255, 0.8);
+}
+
+.controls .loop-btn.all {
+    background: #114B5F; /* Or pour toute la playlist */
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(232, 80, 255, 0.8);
+}
+
+.controls .shuffle-btn.active {
+    background: #9c6b2f;
+    color: #ffffff; 
+    box-shadow: 0 0 10px rgba(232, 80, 255, 0.8); 
+}
+
+/* Customisation de la scrollbar */
+.track-list::-webkit-scrollbar {
+    width: 10px; /* Largeur de la scrollbar */
+}
+
+.track-list::-webkit-scrollbar-track {
+    background: linear-gradient(145deg, #1b1b29, #0f0f1f); /* Fond de la scrollbar */
+    border-radius: 10px; /* Coins arrondis */
+}
+
+.track-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(145deg, #d3a761, #b77932); /* Couleurs steampunk */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6); /* Effet en relief */
+}
+
+.track-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(145deg, #e0b874, #d3a761); /* Couleur plus lumineuse au survol */
+    box-shadow: 0 0 10px rgba(211, 167, 97, 0.8); /* Lueur dorée */
+}
+
+/* Compatibilité pour Firefox */
+.track-list {
+    scrollbar-width: thin; /* Minceur de la scrollbar */
+    scrollbar-color: #d3a761 #1b1b29; /* Couleur de la thumb et du track */
+}

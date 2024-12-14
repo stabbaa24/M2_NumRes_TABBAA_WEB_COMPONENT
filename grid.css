@@ -1,0 +1,27 @@
+* {
+    font-family: 'Arcane Nine', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: white;
+    overflow: hidden;
+    font-family: 'Arcane Nine', sans-serif;
+}
+
+.container {
+    display: grid;
+    grid-template-areas:
+        "playlist playlist launchpad-effect controls-right"
+        "playlist playlist launchpad-effect launchpad"
+        "equalizer equalizer spacilazider butterchurn";
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
+    height: 100vh;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}

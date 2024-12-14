@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Arcane Web Audio</title>
+    <script type="module" src="./components/audio/audioComponent.js"></script>
+    <script src="./libs/webaudio-controls.js"></script>
+</head>
+<style>
+    * {
+        background-image: url("/assets/img/background.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    @font-face {
+        font-family: 'Arcane Nine';
+        src: url('./assets/fonts/Arcane Nine.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+    }
+</style>
+
+<body style="margin: 0px ">
+    <audio-generator id="audioComponent"></audio-generator>
+</body>
+
+</html>
