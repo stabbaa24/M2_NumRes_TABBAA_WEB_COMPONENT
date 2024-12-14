@@ -90,10 +90,6 @@ export class AudioGenerator extends HTMLElement {
         const butterchurnComponent = document.createElement('audio-butterchurn');
         this.shadowRoot.querySelector('.butterchurn').appendChild(butterchurnComponent);
 
-        // Sous web component - Visualizer
-        const visualizerComponent = document.createElement('audio-visualizer');
-        this.shadowRoot.querySelector('.visualizer-container').appendChild(visualizerComponent);
-
         let audioContext = null;
         let mediaSource = null;
 
@@ -108,7 +104,6 @@ export class AudioGenerator extends HTMLElement {
         
             spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
             
-            // Initialiser le visualizer avec l'audio
             await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
         });
 
