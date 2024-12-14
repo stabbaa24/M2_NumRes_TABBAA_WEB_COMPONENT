@@ -8,6 +8,8 @@ import '../launchpad/audio-launchpad-effect.js';
 import '../spacilazider/audio-spacilazider.js';
 import '../butterchurn/audio-butterchurn.js';
 
+import '../equalizer/audio-visualizer.js';
+
 const template = document.createElement('template');
 
 // Définition de l'URL de base pour accéder aux fichiers dans le répertoire "components/audio"
@@ -87,6 +89,10 @@ export class AudioGenerator extends HTMLElement {
         // Sous web component - Butterchurn
         const butterchurnComponent = document.createElement('audio-butterchurn');
         this.shadowRoot.querySelector('.butterchurn').appendChild(butterchurnComponent);
+
+        // Sous web component - Visualizer
+        const visualizerComponent = document.createElement('audio-visualizer');
+        this.shadowRoot.querySelector('.visualizer-container').appendChild(visualizerComponent);
 
         let audioContext = null;
         let mediaSource = null;

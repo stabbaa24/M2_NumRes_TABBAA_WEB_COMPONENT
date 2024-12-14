@@ -1,3 +1,5 @@
+import './audio-visualizer.js';
+
 const template = document.createElement('template');
 
 // Fonction pour obtenir l'URL de base

@@ -27,6 +27,16 @@
     padding: 15px;
 }
 
+.visualizer-container {
+    width: 100%;
+    height: 200px; /* Définissez une hauteur appropriée */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000; /* Juste pour tester la visibilité */
+}
+
+
 /* Contrôles Droite */
 .controls-right {
     grid-area: controls-right;
