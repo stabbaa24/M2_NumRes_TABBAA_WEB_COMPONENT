@@ -9,17 +9,16 @@ template.innerHTML = `
     <h3>Balance</h3>
     <div class="spatialize-container">
         <button id="pan-left" class="pan-button" aria-label="Pan Left">
-            <img src="${getBaseURL()}../../assets/img/left-arrow.png" alt="Pan Left">
+            <img src="${getBaseURL()}../../assets/img/btngauche_rose.png" alt="Pan Left">
         </button>
         <button id="pan-center" class="pan-button" aria-label="Pan Center">
             <img src="${getBaseURL()}../../assets/img/center.png" alt="Pan Center">
         </button>
         <button id="pan-right" class="pan-button" aria-label="Pan Right">
-            <img src="${getBaseURL()}../../assets/img/right-arrow.png" alt="Pan Right">
+            <img src="${getBaseURL()}../../assets/img/btndroite_rose.png" alt="Pan Right">
         </button>
     </div>
 `;
-
 
 class AudioSpacilazider extends HTMLElement {
     constructor() {
@@ -54,6 +53,7 @@ class AudioSpacilazider extends HTMLElement {
         if (this.stereoPanner) {
             this.stereoPanner.pan.setValueAtTime(value, this.audioContext.currentTime);
             console.log(`Panning défini à : ${value}`);
+            this.updateButtonStyles(value);
             this.dispatchEvent(new CustomEvent('panChange', {
                 detail: { panValue: value },
                 bubbles: true,
@@ -61,6 +61,26 @@ class AudioSpacilazider extends HTMLElement {
             }));
         } else {
             console.warn('StereoPannerNode is not initialized.');
+        }
+    }
+
+    updateButtonStyles(value) {
+        const panLeft = this.shadowRoot.querySelector('#pan-left img');
+        const panCenter = this.shadowRoot.querySelector('#pan-center img');
+        const panRight = this.shadowRoot.querySelector('#pan-right img');
+
+        // Reset all buttons to their default state (rose)
+        panLeft.src = `${getBaseURL()}../../assets/img/btngauche_rose.png`;
+        panCenter.src = `${getBaseURL()}../../assets/img/center.png`;
+        panRight.src = `${getBaseURL()}../../assets/img/btndroite_rose.png`;
+
+        // Highlight the active button (blue)
+        if (value === -1) {
+            panLeft.src = `${getBaseURL()}../../assets/img/btngauche_bleu.png`;
+        } else if (value === 0) {
+            panCenter.src = `${getBaseURL()}../../assets/img/center.png`;
+        } else if (value === 1) {
+            panRight.src = `${getBaseURL()}../../assets/img/btndroite_bleu.png`;
         }
     }
 
