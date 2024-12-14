@@ -1,13 +1,26 @@
-/* Global styling */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #1d1d1d;
-  color: #fff;
-  margin: 0;
+:host {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  color: #f4e9d6;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+h3 {
+  text-align: left;
+  margin: 0 0 10px 0;
+  color: #d3a761;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(211, 167, 97, 0.7), 0 2px 3px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(211, 167, 97, 0.5);
+  padding-bottom: 5px;
 }
 
 #eq-container {
@@ -36,43 +49,16 @@ body {
     position: relative;
 }
 
-/* Sliders : moins espacés horizontalement */
+/* Sliders */
 #slider-container {
   flex: 1;
   display: flex;
-  justify-content: space-evenly; /* Resserre les sliders */
+  justify-content: space-between;
   align-items: flex-end;
+  gap: 30px;
 }
 
-.slider-wrapper {
-    padding: 10px;
+.freq-label {
+  font-size: 0.8em;
+  color: #d3a761;
 }
-
-.slider {
-  width: 70px; /* Réduit la largeur des sliders */
-  transform: rotate(-90deg);
-  margin-bottom: 10px;
-}
-
-label {
-  font-size: 12px;
-  margin-top: 35%;
-  text-align: center;
-}
-
-/* Cercles au-dessus des sliders */
-.slider-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-bottom: 50px;
-}
-
-/* Couleurs Arcane (inspirées) */
-#color-0, #slider-0 { background-color: #9b5de5; } /* Violet */
-#color-1, #slider-1 { background-color: #f15bb5; } /* Rose */
-#color-2, #slider-2 { background-color: #fee440; } /* Jaune */
-#color-3, #slider-3 { background-color: #00bbf9; } /* Bleu clair */
-#color-4, #slider-4 { background-color: #00f5d4; } /* Vert menthe */
-#color-5, #slider-5 { background-color: #ff5f57; } /* Rouge */
-#color-6, #slider-6 { background-color: #56b4d3; } /* Bleu arcane */

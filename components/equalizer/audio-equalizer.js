@@ -10,6 +10,7 @@ const getBaseURL = () => {
 // Template HTML pour l'égaliseur
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-equalizer.css'}">
+    <h3>Egaliseur de fréquence</h3>
     <div id="eq-container">
         <!-- Container pour le graphique -->
         <div id="graph-container">
@@ -125,7 +126,6 @@ class AudioEqualizer extends HTMLElement {
                 band.freq;
 
             sliderWrapper.innerHTML = `
-                <div class="slider-color" id="color-${index}" style="background-color: ${band.color}"></div>
                 <webaudio-slider
                     class="eq-slider"
                     data-id="${index}"

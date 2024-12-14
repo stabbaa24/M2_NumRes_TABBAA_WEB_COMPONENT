@@ -9,13 +9,13 @@ template.innerHTML = `
     <h3>Balance</h3>
     <div class="spatialize-container">
         <button id="pan-left" class="pan-button" aria-label="Pan Left">
-            <img src="${getBaseURL()}../../assets/img/btngauche_rose.png" alt="Pan Left">
+            <img src="${getBaseURL()}../../assets/img/btngauche_bleu.png" alt="Pan Left">
         </button>
         <button id="pan-center" class="pan-button" aria-label="Pan Center">
             <img src="${getBaseURL()}../../assets/img/center.png" alt="Pan Center">
         </button>
         <button id="pan-right" class="pan-button" aria-label="Pan Right">
-            <img src="${getBaseURL()}../../assets/img/btndroite_rose.png" alt="Pan Right">
+            <img src="${getBaseURL()}../../assets/img/btndroite_bleu.png" alt="Pan Right">
         </button>
     </div>
 `;
@@ -69,18 +69,16 @@ class AudioSpacilazider extends HTMLElement {
         const panCenter = this.shadowRoot.querySelector('#pan-center img');
         const panRight = this.shadowRoot.querySelector('#pan-right img');
 
-        // Reset all buttons to their default state (rose)
-        panLeft.src = `${getBaseURL()}../../assets/img/btngauche_rose.png`;
+        panLeft.src = `${getBaseURL()}../../assets/img/btngauche_bleu.png`;
         panCenter.src = `${getBaseURL()}../../assets/img/center.png`;
-        panRight.src = `${getBaseURL()}../../assets/img/btndroite_rose.png`;
+        panRight.src = `${getBaseURL()}../../assets/img/btndroite_bleu.png`;
 
-        // Highlight the active button (blue)
         if (value === -1) {
-            panLeft.src = `${getBaseURL()}../../assets/img/btngauche_bleu.png`;
+            panLeft.src = `${getBaseURL()}../../assets/img/btngauche_rose.png`;
         } else if (value === 0) {
             panCenter.src = `${getBaseURL()}../../assets/img/center.png`;
         } else if (value === 1) {
-            panRight.src = `${getBaseURL()}../../assets/img/btndroite_bleu.png`;
+            panRight.src = `${getBaseURL()}../../assets/img/btndroite_rose.png`;
         }
     }
 
