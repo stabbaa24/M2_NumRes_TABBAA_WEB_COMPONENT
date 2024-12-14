@@ -2,22 +2,41 @@ import './audio-visualizer.js';
 
 const template = document.createElement('template');
 
-// Fonction pour obtenir l'URL de base
 const getBaseURL = () => {
     return new URL('./', import.meta.url).href;
 };
 
-// Template HTML pour l'égaliseur
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-equalizer.css'}">
     <div id="eq-container">
-        <!-- Container pour le graphique -->
         <div id="graph-container">
             <canvas id="graph-canvas"></canvas>
         </div>
-
-        <!-- Container pour les sliders -->
-        <div id="slider-container"></div>
+        <div id="slider-container">
+            ${[63, 136, 294, 632, 1363, 2936, 6324]
+                .map((freq, index) => `
+                    <div class="eq-band">
+                        <div class="slider-color" id="color-${index}"></div>
+                        <webaudio-slider
+                            class="eq-slider"
+                            data-id="${index}"
+                            data-frequency="${freq}"
+                            min="-12"
+                            max="12"
+                            step="1"
+                            value="0"
+                            direction="vertical"
+                            src="${getBaseURL() + '../../assets/img/slicer/slicer-' + (index + 1) + '.png'}"
+                            knobsrc="${getBaseURL() + '../../assets/img/slicer/slider.png'}"
+                            width="50"
+                            height="150"
+                            knobwidth="25"
+                            knobheight="25">
+                        </webaudio-slider>
+                        <span class="freq-label">${freq >= 1000 ? (freq / 1000) + 'k' : freq} Hz</span>
+                    </div>
+                `).join('')}
+        </div>
     </div>
 `;
 
@@ -27,33 +46,22 @@ class AudioEqualizer extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        this.bands = [
-            { id: 0, freq: 63, gain: 0, color: '#9b5de5' },
-            { id: 1, freq: 136, gain: 0, color: '#f15bb5' },
-            { id: 2, freq: 294, gain: 0, color: '#fee440' },
-            { id: 3, freq: 632, gain: 0, color: '#00bbf9' },
-            { id: 4, freq: 1363, gain: 0, color: '#00f5d4' },
-            { id: 5, freq: 2936, gain: 0, color: '#ff5f57' },
-            { id: 6, freq: 6324, gain: 0, color: '#56b4d3' },
-        ];
-
-        this.filters = [];
         this.audioContext = null;
         this.audioSource = null;
+        this.filters = [];
+        this.sliders = [];
         this.canvas = null;
         this.ctx = null;
-        this.dragging = null;
+
+        this.bands = [63, 136, 294, 632, 1363, 2936, 6324];
     }
 
     connectedCallback() {
-        this.initCanvas();
-        this.renderSliders();
-        this.distributePoints();
-        this.drawGraph();
-
-        this.canvas.addEventListener('mousedown', (e) => this.startDragging(e));
-        this.canvas.addEventListener('mousemove', (e) => this.onDrag(e));
-        this.canvas.addEventListener('mouseup', () => this.stopDragging());
+        this.sliders = Array.from(this.shadowRoot.querySelectorAll('.eq-slider'));
+        this.canvas = this.shadowRoot.querySelector('#graph-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.initializeCanvas();
+        this.attachEventListeners();
     }
 
     connectAudioSource(audioSourceNode, audioContext) {
@@ -61,176 +69,83 @@ class AudioEqualizer extends HTMLElement {
             console.warn('Audio source or AudioContext is missing!');
             return;
         }
-        
+
         this.audioContext = audioContext;
-        this.audioSource = audioSourceNode; // Stocker la source audio
-    
+        this.audioSource = audioSourceNode;
+
         if (this.filters.length === 0) {
             this.initFilters();
         }
-    
-        // Déconnecter la source audio de sa destination précédente
-        try {
-            this.audioSource.disconnect();
-        } catch (e) {
-            console.log("Rien à déconnecter");
-        }
-    
-        // Reconnecter la chaîne complète
+
+        // Reconnect the audio chain
+        this.audioSource.disconnect();
         this.audioSource.connect(this.filters[0]);
-        
-        // Connecter les filtres en chaîne
+
         for (let i = 0; i < this.filters.length - 1; i++) {
-            try {
-                this.filters[i].disconnect();
-            } catch (e) {
-                console.log(`Rien à déconnecter pour le filtre ${i}`);
-            }
             this.filters[i].connect(this.filters[i + 1]);
         }
-    
-        // Connecter le dernier filtre à la destination
-        try {
-            this.filters[this.filters.length - 1].disconnect();
-        } catch (e) {
-            console.log("Rien à déconnecter pour le dernier filtre");
-        }
+
         this.filters[this.filters.length - 1].connect(this.audioContext.destination);
-        
-        console.log("Chaîne audio complètement reconnectée");
     }
-    
-    
 
     initFilters() {
-        this.bands.forEach(({ freq }, index) => {
+        this.filters = this.bands.map(freq => {
             const filter = this.audioContext.createBiquadFilter();
             filter.type = 'peaking';
-            filter.frequency.value = freq; // Fréquence centrale
-            filter.Q.value = 1; // Qualité
-            filter.gain.value = 0; // Gain initial
-            this.filters.push(filter);
-            console.log(`Filter ${index}: type=${filter.type}, freq=${filter.frequency.value} Hz, gain=${filter.gain.value}`);
+            filter.frequency.value = freq;
+            filter.Q.value = 1; // Adjust quality factor for sharper/narrower filters
+            filter.gain.value = 0;
+            return filter;
         });
-    
-        console.log('Filters initialized with frequencies:', this.bands.map(b => b.freq));
     }
 
-    // Dans la méthode renderSliders(), modifions l'événement input:
-    renderSliders() {
-        const sliderContainer = this.shadowRoot.querySelector('#slider-container');
-        sliderContainer.innerHTML = ''; // Nettoie les anciens sliders
-    
-        this.bands.forEach((band, index) => {
-            const sliderWrapper = document.createElement('div');
-            sliderWrapper.classList.add('slider-wrapper');
-            sliderWrapper.dataset.id = index;
-    
-            sliderWrapper.innerHTML = `
-                <label>${band.freq} Hz</label>
-                <webaudio-slider 
-                    id="slider-${index}" 
-                    class="audio-slider" 
-                    basesrc="./assets/img/slicer/slicer-${index + 1}.png" 
-                    knobsrc="./assets/img/slicer/slider.png" 
-                    min="-12" 
-                    max="12" 
-                    value="0" 
-                    step="1" 
-                    basewidth="76" 
-                    baseheight="300" 
-                    knobwidth="35" 
-                    knobheight="50" 
-                    ditchLength="230">
-                </webaudio-slider>
-            `;
-    
-            sliderContainer.appendChild(sliderWrapper);
-    
-            const slider = sliderWrapper.querySelector('webaudio-slider');
-    
-            // Mise à jour des valeurs du filtre lors des changements de slider
-            slider.addEventListener('change', (e) => {
+    attachEventListeners() {
+        this.sliders.forEach((slider, index) => {
+            slider.addEventListener('input', () => {
                 const gain = parseFloat(slider.value);
-                if (this.filters[index]) {
-                    this.filters[index].gain.setValueAtTime(gain, this.audioContext.currentTime);
-                    console.log(`Slider ${index} updated: freq=${this.filters[index].frequency.value} Hz, gain=${gain} dB`);
-                }
-    
                 this.updateSliderGain(index, gain);
             });
         });
     }
-    
 
-    // Dans la méthode updateSliderGain(), assurons-nous de mettre à jour le filtre:
     updateSliderGain(index, gain) {
-        const band = this.bands[index];
-        band.gain = gain;
-        band.y = this.canvas.height / 2 - (gain / 12) * (this.canvas.height / 2);
-
         if (this.filters[index]) {
-            // Mise à jour immédiate du gain
-            this.filters[index].gain.value = gain;
-            // Optionnel: transition douce
-            // this.filters[index].gain.setTargetAtTime(gain, this.audioContext.currentTime, 0.1);
-            
-            console.log(`Filter ${index} gain set to ${gain} dB at frequency ${this.filters[index].frequency.value} Hz`);
-            
-            // Reconnecter la chaîne audio pour s'assurer que les changements sont appliqués
-            if (this.audioSource) {
-                this.connectAudioSource(this.audioSource, this.audioContext);
-            }
+            this.filters[index].gain.setValueAtTime(gain, this.audioContext.currentTime);
         }
-
-        const slider = this.shadowRoot.querySelector(`#slider-${index}`);
-        if (slider) {
-            slider.value = gain;
-        }
-
-        this.drawGraph();
+        this.updateVisualization();
     }
 
-    distributePoints() {
-        const step = this.canvas.width / (this.bands.length + 1);
-        this.bands.forEach((band, index) => {
-            band.x = step * (index + 1);
-            band.y = this.canvas.height / 2;
-        });
+    initializeCanvas() {
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.offsetHeight;
+        this.updateVisualization();
     }
 
-    drawGraph() {
+    updateVisualization() {
+        // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw grid
         this.drawGrid();
-    
-        this.ctx.strokeStyle = '#ffcc00';
-        this.ctx.lineWidth = 2;
+
+        // Draw EQ curve
         this.ctx.beginPath();
-    
-        this.bands.forEach((band, index) => {
-            // Calculez la position verticale en fonction du gain
-            const y = this.canvas.height / 2 - (band.gain / 12) * (this.canvas.height / 2);
-            band.y = y; // Mettez à jour la position de la bande
-    
+        this.ctx.strokeStyle = '#56b4d3';
+        this.ctx.lineWidth = 2;
+
+        this.sliders.forEach((slider, index) => {
+            const x = (index / (this.sliders.length - 1)) * this.canvas.width;
+            const gain = parseFloat(slider.value);
+            const y = ((-gain + 12) / 24) * this.canvas.height;
+
             if (index === 0) {
-                this.ctx.moveTo(band.x, band.y);
+                this.ctx.moveTo(x, y);
             } else {
-                const prev = this.bands[index - 1];
-                const cpX = (prev.x + band.x) / 2;
-                this.ctx.bezierCurveTo(cpX, prev.y, cpX, band.y, band.x, band.y);
+                this.ctx.lineTo(x, y);
             }
         });
-    
+
         this.ctx.stroke();
-    
-        // Dessinez les points
-        this.bands.forEach((band) => {
-            this.ctx.beginPath();
-            this.ctx.arc(band.x, band.y, 8, 0, Math.PI * 2);
-            this.ctx.fillStyle = band.color;
-            this.ctx.fill();
-            this.ctx.stroke();
-        });
     }
 
     drawGrid() {
@@ -250,49 +165,6 @@ class AudioEqualizer extends HTMLElement {
             this.ctx.lineTo(this.canvas.width, y);
             this.ctx.stroke();
         }
-    }
-
-    startDragging(e) {
-        const rect = this.canvas.getBoundingClientRect();
-        const mouseX = (e.clientX - rect.left) * (this.canvas.width / rect.width);
-        const mouseY = (e.clientY - rect.top) * (this.canvas.height / rect.height);
-
-        this.dragging = this.bands.find((band) =>
-            Math.hypot(band.x - mouseX, band.y - mouseY) < 10
-        );
-    }
-
-    onDrag(e) {
-        if (!this.dragging) return;
-
-        const rect = this.canvas.getBoundingClientRect();
-        const mouseY = e.clientY - rect.top;
-
-        this.dragging.y = Math.min(
-            Math.max(mouseY, 0),
-            this.canvas.height
-        );
-
-        const gain = Math.round(
-            ((this.canvas.height / 2 - this.dragging.y) / (this.canvas.height / 2)) * 12
-        );
-        this.updateSliderGain(this.dragging.id, gain);
-    }
-
-    stopDragging() {
-        this.dragging = null;
-    }
-
-    initCanvas() {
-        this.canvas = this.shadowRoot.querySelector('#graph-canvas');
-        this.ctx = this.canvas.getContext('2d');
-
-        const rect = this.canvas.getBoundingClientRect();
-        this.canvas.width = rect.width;
-        this.canvas.height = rect.height;
-
-        this.distributePoints();
-        this.drawGraph();
     }
 }
 
