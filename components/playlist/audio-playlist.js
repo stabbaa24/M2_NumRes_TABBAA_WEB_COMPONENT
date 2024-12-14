@@ -47,7 +47,7 @@ class Playlist extends HTMLElement {
     async loadMusicFiles() {
         try {
             const baseURL = getBaseURL();
-            const response = await fetch(`${baseURL}../../assets/music/`);
+            const response = await fetch(`${getBaseURL() + '../../assets/music/'}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch music files: ${response.statusText}`);
             }
