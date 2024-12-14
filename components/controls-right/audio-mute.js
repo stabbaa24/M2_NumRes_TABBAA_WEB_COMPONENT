@@ -10,7 +10,7 @@ template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'controls-right.css'}">
     <h3>Muet</h3>
     <webaudio-switch id="muteToggle"
-                     src="${getBaseURL() + '../../assets/img/mute_skull.png'}"
+                     src="${getBaseURL() + '../../assets/img/smiles.png'}"
                      width="128"
                      height="128">
     </webaudio-switch>

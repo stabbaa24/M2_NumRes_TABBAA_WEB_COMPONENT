@@ -97,22 +97,19 @@ export class AudioGenerator extends HTMLElement {
         let audioContext = null;
         let mediaSource = null;
 
-        playlistComponent.addEventListener('playSong', () => {
+        playlistComponent.addEventListener('playSong', async () => {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
-
+        
             if (!mediaSource) {
                 mediaSource = audioContext.createMediaElementSource(playlistComponent.audio);
             }
-
+        
             spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
             
-            // Initialiser Butterchurn avec le contexte audio et la source
-            butterchurnComponent.initialize(audioContext, playlistComponent.audio);
-
-            // Démarrer la visualisation
-            butterchurnComponent.startVisualization();
+            // Initialiser le visualizer avec l'audio
+            await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
         });
 
         // Écouter les changements de pan
