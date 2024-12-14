@@ -23,12 +23,6 @@ class Playlist extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        // Liste des morceaux
-        this.musicList = [
-            { title: "Snakes - Miyavi & PVRIS", url: "/assets/music/snakes-arcane.mp3", duration: null },
-            { title: "To Ashes and Blood - Woodkid", url: "/assets/music/to-ashes-and-blood-arcane.mp3", duration: null }
-        ];
-
         this.audio = new Audio(); // Créer un élément audio
         this.currentIndex = null; // Index de la chanson en cours de lecture
         this.isShuffle = false; // Mode aléatoire
@@ -52,15 +46,16 @@ class Playlist extends HTMLElement {
 
     async loadMusicFiles() {
         try {
-            const response = await fetch('/assets/music/'); // Chemin où les fichiers MP3 sont exposés
+            const baseURL = getBaseURL();
+            const response = await fetch(`${baseURL}../../assets/music/`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch music files: ${response.statusText}`);
             }
 
-            const htmlText = await response.text(); // Récupérer le contenu HTML du dossier
+            const htmlText = await response.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlText, 'text/html');
-            const links = Array.from(doc.querySelectorAll('a[href$=".mp3"]')); // Trouver les liens MP3
+            const links = Array.from(doc.querySelectorAll('a[href$=".mp3"]')); 
 
             this.musicList = links.map((link) => {
                 const url = link.href;
@@ -184,7 +179,7 @@ class Playlist extends HTMLElement {
         loopButton.addEventListener('click', () => {
             // Supprime les classes pour réinitialiser l'état visuel du bouton
             loopButton.classList.remove('single', 'all');
-        
+
             if (this.loopMode === 'none') {
                 this.loopMode = 'one'; // Active la boucle sur une seule chanson
                 loopButton.textContent = '🔂 Une seule chanson'; // Mise à jour du texte
@@ -197,15 +192,15 @@ class Playlist extends HTMLElement {
                 this.loopMode = 'none'; // Désactive la boucle
                 loopButton.textContent = '🔂 Jouer en boucle ?';
             }
-        
+
             console.log(`Loop mode is now: ${this.loopMode}`); // Affiche le mode actuel dans la console
-        });        
+        });
     }
 
     // Fonction pour jouer ou mettre en pause une chanson
     playPauseSong(index) {
         const trackList = this.shadowRoot.querySelectorAll('.play-pause'); // Récupérer les boutons play/pause
-    
+
         if (this.currentIndex === index) { // Si la chanson en cours est cliquée
             if (this.audio.paused) {
                 this.audio.play(); // Jouer la chanson
@@ -217,13 +212,13 @@ class Playlist extends HTMLElement {
                 const previousButton = trackList[this.currentIndex];
                 previousButton.querySelector('img').src = `${getBaseURL() + '../../assets/img/play.png'}`;
             }
-    
+
             this.currentIndex = index;
             const selectedMusic = this.musicList[index];
             if (selectedMusic) {
                 this.audio.src = selectedMusic.url;
                 this.audio.play();
-    
+
                 this.dispatchEvent(new CustomEvent('playSong', {
                     detail: { currentSong: selectedMusic },
                     bubbles: true,
@@ -231,10 +226,10 @@ class Playlist extends HTMLElement {
                 }));
             }
         }
-    
+
         this.renderPlaylist(); // Mise à jour de l'affichage
     }
-    
+
     // Fonction pour recharger une chanson
     reloadSong(index) {
         const selectedMusic = this.musicList[index]; // Récupérer la chanson sélectionnée
