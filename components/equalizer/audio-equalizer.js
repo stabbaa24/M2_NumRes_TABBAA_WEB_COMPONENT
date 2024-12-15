@@ -54,7 +54,7 @@ class AudioEqualizer extends HTMLElement {
     setupAudioMotion() {
         import('https://cdn.skypack.dev/audiomotion-analyzer').then(({ default: AudioMotionAnalyzer }) => {
             const container = this.shadowRoot.querySelector('#visualizer-container');
-            
+
             if (!this.audioContext) {
                 console.log('Waiting for audio context...');
                 return;
@@ -188,6 +188,8 @@ class AudioEqualizer extends HTMLElement {
                     console.log(`Gain adjusted for ${band.freq}Hz: ${gain}dB`);
 
                     this.updateSliderGain(index, gain);
+                    // Réappliquer les connexions pour tenir compte des nouvelles valeurs
+                    this.updateAudioChain();
                 }
             });
         });
@@ -211,6 +213,26 @@ class AudioEqualizer extends HTMLElement {
             slider.value = gain;
         }
     }
+
+    updateAudioChain() {
+        try {
+            // Déconnecter tout d'abord
+            this.audioSource.disconnect();
+            console.log('Previous connections cleared');
+
+            // Connecter dans l'ordre : source -> filters -> analyser -> destination
+            this.audioSource.connect(this.filters[0]);
+            for (let i = 0; i < this.filters.length - 1; i++) {
+                this.filters[i].connect(this.filters[i + 1]);
+            }
+            this.filters[this.filters.length - 1].connect(this.analyser);
+            this.analyser.connect(this.audioContext.destination);
+            console.log('Audio chain updated successfully');
+        } catch (error) {
+            console.error('Error updating audio chain:', error);
+        }
+    }
+
 }
 
 customElements.define('audio-equalizer', AudioEqualizer);
