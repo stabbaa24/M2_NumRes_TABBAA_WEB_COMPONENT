@@ -25,13 +25,13 @@ class AudioEqualizer extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.bands = [
-            { id: 0, freq: 63, gain: 0, color: '#9b5de5' },
-            { id: 1, freq: 136, gain: 0, color: '#f15bb5' },
-            { id: 2, freq: 294, gain: 0, color: '#fee440' },
-            { id: 3, freq: 632, gain: 0, color: '#00bbf9' },
-            { id: 4, freq: 1363, gain: 0, color: '#00f5d4' },
-            { id: 5, freq: 2936, gain: 0, color: '#ff5f57' },
-            { id: 6, freq: 6324, gain: 0, color: '#56b4d3' },
+            { id: 0, freq: 63, gain: 0, color: '#000080' },    // bleu foncé
+            { id: 1, freq: 136, gain: 0, color: '#00FFFF' },   // bleu cyan
+            { id: 2, freq: 294, gain: 0, color: '#FFA500' },   // orange
+            { id: 3, freq: 632, gain: 0, color: '#FF69B4' },   // rose
+            { id: 4, freq: 1363, gain: 0, color: '#FF0000' },  // rouge
+            { id: 5, freq: 2936, gain: 0, color: '#00FF00' },  // vert
+            { id: 6, freq: 6324, gain: 0, color: '#800080' },  // violet
         ];
 
         this.filters = [];
@@ -43,20 +43,60 @@ class AudioEqualizer extends HTMLElement {
         this.canvas = null;
         this.canvasCtx = null;
         this.dataArray = null;
+        this.audioMotion = null;
     }
 
     connectedCallback() {
         this.renderSliders();
+        this.setupAudioMotion();
+    }
+
+    setupAudioMotion() {
+        import('https://cdn.skypack.dev/audiomotion-analyzer').then(({ default: AudioMotionAnalyzer }) => {
+            const container = this.shadowRoot.querySelector('#visualizer-container');
+            
+            if (!this.audioContext) {
+                console.log('Waiting for audio context...');
+                return;
+            }
+
+            try {
+                this.audioMotion = new AudioMotionAnalyzer(container, {
+                    source: this.analyser, // Connecter directement à l'analyseur
+                    height: 150,
+                    width: container.clientWidth,
+                    bgAlpha: 0.7,
+                    mode: 2,
+                    smoothing: 0.7,
+                    gradient: 'prism',
+                    minFreq: 20,
+                    maxFreq: 16000,
+                    showScaleX: true,
+                    showPeaks: true,
+                    fillAlpha: 0.7,
+                    useCanvas: true,
+                    radial: false,
+                    showBgColor: true,
+                    overlay: true
+                });
+
+                console.log('AudioMotion initialized successfully');
+            } catch (error) {
+                console.error('Error initializing AudioMotion:', error);
+            }
+        });
     }
 
     connectAudioSource(audioSourceNode, audioContext) {
         this.audioContext = audioContext;
         this.audioSource = audioSourceNode;
 
+        // Créer l'analyseur avant tout
         if (!this.analyser) {
             this.analyser = this.audioContext.createAnalyser();
             this.analyser.fftSize = 2048;
-            this.analyser.smoothingTimeConstant = 0.8;
+            this.analyser.smoothingTimeConstant = 0.7;
+            console.log('Analyser created');
         }
 
         if (this.filters.length === 0) {
@@ -64,21 +104,28 @@ class AudioEqualizer extends HTMLElement {
         }
 
         try {
+            // Déconnecter tout d'abord
             this.audioSource.disconnect();
-        } catch (e) {
-            console.log("Nothing to disconnect");
-        }
+            console.log('Previous connections cleared');
 
-        this.audioSource.connect(this.filters[0]);
-        for (let i = 0; i < this.filters.length - 1; i++) {
-            this.filters[i].connect(this.filters[i + 1]);
+            // Connecter dans l'ordre : source -> filters -> analyser -> destination
+            this.audioSource.connect(this.filters[0]);
+            for (let i = 0; i < this.filters.length - 1; i++) {
+                this.filters[i].connect(this.filters[i + 1]);
+            }
+            this.filters[this.filters.length - 1].connect(this.analyser);
+            this.analyser.connect(this.audioContext.destination);
+            console.log('Audio connections established');
+
+            // Initialiser audioMotion après les connexions
+            if (!this.audioMotion) {
+                this.setupAudioMotion();
+            }
+        } catch (error) {
+            console.error('Error in audio connections:', error);
         }
-        this.filters[this.filters.length - 1].connect(this.analyser);
-        this.analyser.connect(this.audioContext.destination);
-        this.startVisualizer();
     }
 
-   
     initFilters() {
         this.bands.forEach(({ freq }, index) => {
             const filter = this.audioContext.createBiquadFilter();
@@ -162,46 +209,6 @@ class AudioEqualizer extends HTMLElement {
         const slider = this.shadowRoot.querySelector(`#slider-${index}`);
         if (slider) {
             slider.value = gain;
-        }
-    }
-
-    startVisualizer() {
-        this.canvas = this.shadowRoot.querySelector('#visualizer');
-        this.canvasCtx = this.canvas.getContext('2d');
-        
-        // Ajuster la taille du canvas
-        this.canvas.width = this.shadowRoot.querySelector('#visualizer-container').offsetWidth;
-        this.canvas.height = this.shadowRoot.querySelector('#visualizer-container').offsetHeight;
-        
-        this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-        this.drawVisualizer();
-    }
-
-    drawVisualizer() {
-        if (!this.analyser) return;
-
-        this.animationFrameId = requestAnimationFrame(() => this.drawVisualizer());
-        
-        const width = this.canvas.width;
-        const height = this.canvas.height;
-        const bufferLength = this.analyser.frequencyBinCount;
-        
-        this.analyser.getByteFrequencyData(this.dataArray);
-        
-        this.canvasCtx.fillStyle = '#000';
-        this.canvasCtx.fillRect(0, 0, width, height);
-        
-        const barWidth = width / bufferLength * 2.5;
-        let x = 0;
-        
-        for (let i = 0; i < bufferLength; i++) {
-            const barHeight = (this.dataArray[i] / 255) * height;
-            const hue = (i / bufferLength) * 360;
-            
-            this.canvasCtx.fillStyle = `hsl(${hue}, 100%, 50%)`;
-            this.canvasCtx.fillRect(x, height - barHeight, barWidth, barHeight);
-            
-            x += barWidth + 1;
         }
     }
 }
