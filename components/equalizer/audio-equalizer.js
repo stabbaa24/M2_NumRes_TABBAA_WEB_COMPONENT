@@ -11,8 +11,8 @@ template.innerHTML = `
     <h3>Egaliseur de fréquence</h3>
     <div id="eq-container">
         <div id="visualizer-container">
+            <canvas id="visualizer"></canvas>
         </div>
-
         <!-- Container pour les sliders -->
         <div id="slider-container"></div>
     </div>
@@ -40,6 +40,9 @@ class AudioEqualizer extends HTMLElement {
         this.audioSource = null;
         this.animationFrameId = null;
         this.isRunning = false;
+        this.canvas = null;
+        this.canvasCtx = null;
+        this.dataArray = null;
     }
 
     connectedCallback() {
@@ -72,6 +75,7 @@ class AudioEqualizer extends HTMLElement {
         }
         this.filters[this.filters.length - 1].connect(this.analyser);
         this.analyser.connect(this.audioContext.destination);
+        this.startVisualizer();
     }
 
    
@@ -158,6 +162,46 @@ class AudioEqualizer extends HTMLElement {
         const slider = this.shadowRoot.querySelector(`#slider-${index}`);
         if (slider) {
             slider.value = gain;
+        }
+    }
+
+    startVisualizer() {
+        this.canvas = this.shadowRoot.querySelector('#visualizer');
+        this.canvasCtx = this.canvas.getContext('2d');
+        
+        // Ajuster la taille du canvas
+        this.canvas.width = this.shadowRoot.querySelector('#visualizer-container').offsetWidth;
+        this.canvas.height = this.shadowRoot.querySelector('#visualizer-container').offsetHeight;
+        
+        this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+        this.drawVisualizer();
+    }
+
+    drawVisualizer() {
+        if (!this.analyser) return;
+
+        this.animationFrameId = requestAnimationFrame(() => this.drawVisualizer());
+        
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        const bufferLength = this.analyser.frequencyBinCount;
+        
+        this.analyser.getByteFrequencyData(this.dataArray);
+        
+        this.canvasCtx.fillStyle = '#000';
+        this.canvasCtx.fillRect(0, 0, width, height);
+        
+        const barWidth = width / bufferLength * 2.5;
+        let x = 0;
+        
+        for (let i = 0; i < bufferLength; i++) {
+            const barHeight = (this.dataArray[i] / 255) * height;
+            const hue = (i / bufferLength) * 360;
+            
+            this.canvasCtx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+            this.canvasCtx.fillRect(x, height - barHeight, barWidth, barHeight);
+            
+            x += barWidth + 1;
         }
     }
 }
