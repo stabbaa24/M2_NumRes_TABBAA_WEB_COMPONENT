@@ -46,28 +46,18 @@ class Playlist extends HTMLElement {
 
     async loadMusicFiles() {
         try {
-            const baseURL = getBaseURL();
-            const response = await fetch(`${getBaseURL() + '../../assets/music/'}`);
+            const response = await fetch(`${getBaseURL()}musicList.json`);
             if (!response.ok) {
-                throw new Error(`Failed to fetch music files: ${response.statusText}`);
+                throw new Error(`Failed to fetch music list: ${response.statusText}`);
             }
-
-            const htmlText = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlText, 'text/html');
-            const links = Array.from(doc.querySelectorAll('a[href$=".mp3"]')); 
-
-            this.musicList = links.map((link) => {
-                const url = link.href;
-                const title = decodeURIComponent(url.split('/').pop().replace('.mp3', '').replace(/[-_]/g, ' '));
-                return { title, url, duration: null };
-            });
-
+    
+            this.musicList = await response.json();
             console.log('Loaded music list:', this.musicList);
         } catch (error) {
-            console.error('Error loading music files:', error);
+            console.error('Error loading music list:', error);
         }
     }
+    
 
     // Fonction appelée lorsque le composant est déconnecté du DOM
     loadDurations() {
