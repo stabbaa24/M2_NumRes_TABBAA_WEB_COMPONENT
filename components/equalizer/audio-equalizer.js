@@ -25,13 +25,14 @@ class AudioEqualizer extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.bands = [
-            { id: 0, freq: 63, gain: 0, color: '#000080' },    // bleu foncé
-            { id: 1, freq: 136, gain: 0, color: '#00FFFF' },   // bleu cyan
-            { id: 2, freq: 294, gain: 0, color: '#FFA500' },   // orange
-            { id: 3, freq: 632, gain: 0, color: '#FF69B4' },   // rose
-            { id: 4, freq: 1363, gain: 0, color: '#FF0000' },  // rouge
-            { id: 5, freq: 2936, gain: 0, color: '#00FF00' },  // vert
-            { id: 6, freq: 6324, gain: 0, color: '#800080' },  // violet
+            { id: 0, freq: 32, gain: 0 },    // Basses extrêmes
+            { id: 1, freq: 65, gain: 0 },   // Basses
+            { id: 2, freq: 130, gain: 0 },  // Médiums-basses
+            { id: 3, freq: 261, gain: 0 },  // Bas-médiums
+            { id: 4, freq: 523, gain: 0 },  // Médiums
+            { id: 5, freq: 1000, gain: 0 }, // Médiums-hauts
+            { id: 6, freq: 2000, gain: 0 }, // Hautes fréquences
+            { id: 7, freq: 4100, gain: 0 }  // Très hautes fréquences
         ];
 
         this.filters = [];
@@ -71,8 +72,8 @@ class AudioEqualizer extends HTMLElement {
                     mode: 10,
                     smoothing: 0.7,
                     gradient: 'rainbow',
-                    minFreq: 30,
-                    maxFreq: 7000,
+                    minFreq: 20,
+                    maxFreq: 6000,
                     showScaleX: true,
                     showPeaks: true,
                     fillAlpha: 0.5,
@@ -82,8 +83,8 @@ class AudioEqualizer extends HTMLElement {
                     overlay: true,
                     showScaleY: true,
                     lineWidth: 2,
-                    maxDecibels: -10,
-                    minDecibels: -70
+                    maxDecibels: -20,
+                    minDecibels: -60
                 });
 
                 console.log('AudioMotion initialized successfully');
