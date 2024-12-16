@@ -12,11 +12,11 @@ template.innerHTML = `
     <ul class="track-list"></ul>
     <div class="controls">
         <button class="shuffle-btn">
-            <img src="${getBaseURL()}../../assets/img/btnrdm_rose.png" alt="Mode Aléatoire" />
+            <img src="${getBaseURL()}../../assets/img/btnrdm_bleu.png" alt="Mode Aléatoire" />
             <span>Mode Normal</span>
         </button>
         <button class="loop-btn">
-            <img src="${getBaseURL()}../../assets/img/btnrepeat_pink.png" alt="Jouer en boucle" />
+            <img src="${getBaseURL()}../../assets/img/btnrepeat_bleu.png" alt="Jouer en boucle" />
             <span>Type d\'écoute</span>
         </button>
     </div>
@@ -170,8 +170,8 @@ class Playlist extends HTMLElement {
             const shuffleImg = shuffleButton.querySelector('img');
             const shuffleText = shuffleButton.querySelector('span');
             shuffleImg.src = this.isShuffle 
-                ? `${getBaseURL()}../../assets/img/btnrdm_bleu.png`
-                : `${getBaseURL()}../../assets/img/btnrdm_rose.png`;
+                ? `${getBaseURL()}../../assets/img/btnrdm_rose.png`
+                : `${getBaseURL()}../../assets/img/btnrdm_bleu.png`;
             shuffleText.textContent = this.isShuffle ? 'Mode Aléatoire' : 'Mode Normal';
             console.log(`Shuffle mode is now ${this.isShuffle ? 'ON' : 'OFF'}`);
         });
@@ -186,16 +186,16 @@ class Playlist extends HTMLElement {
             if (this.loopMode === 'none') {
                 this.loopMode = 'one'; // Active la boucle sur une seule chanson
                 loopButton.classList.add('single'); // Applique la classe pour le style visuel
-                loopImg.src = `${getBaseURL()}../../assets/img/btnrepeat_bleu.png`;
+                loopImg.src = `${getBaseURL()}../../assets/img/btnrepeat_pink.png`;
                 loopText.textContent = 'Répéter une fois';
             } else if (this.loopMode === 'one') {
                 this.loopMode = 'all'; // Active la boucle sur toute la playlist
                 loopButton.classList.add('all');
-                loopImg.src = `${getBaseURL()}../../assets/img/btnrepeat_bleu.png`;
+                loopImg.src = `${getBaseURL()}../../assets/img/btnrepeat_pink.png`;
                 loopText.textContent = 'En boucle';
             } else {
                 this.loopMode = 'none'; // Désactive la boucle
-                loopImg.src = `${getBaseURL()}../../assets/img/btnrepeat_pink.png`;
+                loopImg.src = `${getBaseURL()}../../assets/img/btnrepeat_bleu.png`;
                 loopText.textContent = 'Type d\'écoute';
             }
 
