@@ -48,21 +48,23 @@ class AudioEqualizer extends HTMLElement {
 
     connectedCallback() {
         this.renderSliders();
-        this.setupAudioMotion();
     }
 
-    setupAudioMotion() {
+    async setupAudioMotion() {
         import('https://cdn.skypack.dev/audiomotion-analyzer').then(({ default: AudioMotionAnalyzer }) => {
             const container = this.shadowRoot.querySelector('#visualizer-container');
 
             if (!this.audioContext) {
-                console.log('Waiting for audio context...');
+                console.log('Audio context not available');
                 return;
+            }
+            else {
+                console.log('MIAOOOOOO');
             }
 
             try {
                 this.audioMotion = new AudioMotionAnalyzer(container, {
-                    source: this.analyser, // Connecter directement à l'analyseur
+                    source: this.analyser, 
                     height: 150,
                     width: container.clientWidth,
                     bgAlpha: 0.7,
@@ -87,11 +89,10 @@ class AudioEqualizer extends HTMLElement {
         });
     }
 
-    connectAudioSource(audioSourceNode, audioContext) {
+    async connectAudioSource(audioSourceNode, audioContext) {
         this.audioContext = audioContext;
         this.audioSource = audioSourceNode;
 
-        // Créer l'analyseur avant tout
         if (!this.analyser) {
             this.analyser = this.audioContext.createAnalyser();
             this.analyser.fftSize = 2048;
@@ -103,12 +104,12 @@ class AudioEqualizer extends HTMLElement {
             this.initFilters();
         }
 
+         await this.setupAudioMotion();
+
         try {
-            // Déconnecter tout d'abord
             this.audioSource.disconnect();
             console.log('Previous connections cleared');
 
-            // Connecter dans l'ordre : source -> filters -> analyser -> destination
             this.audioSource.connect(this.filters[0]);
             for (let i = 0; i < this.filters.length - 1; i++) {
                 this.filters[i].connect(this.filters[i + 1]);
@@ -117,7 +118,6 @@ class AudioEqualizer extends HTMLElement {
             this.analyser.connect(this.audioContext.destination);
             console.log('Audio connections established');
 
-            // Initialiser audioMotion après les connexions
             if (!this.audioMotion) {
                 this.setupAudioMotion();
             }
@@ -188,7 +188,6 @@ class AudioEqualizer extends HTMLElement {
                     console.log(`Gain adjusted for ${band.freq}Hz: ${gain}dB`);
 
                     this.updateSliderGain(index, gain);
-                    // Réappliquer les connexions pour tenir compte des nouvelles valeurs
                     this.updateAudioChain();
                 }
             });
@@ -216,11 +215,9 @@ class AudioEqualizer extends HTMLElement {
 
     updateAudioChain() {
         try {
-            // Déconnecter tout d'abord
             this.audioSource.disconnect();
             console.log('Previous connections cleared');
 
-            // Connecter dans l'ordre : source -> filters -> analyser -> destination
             this.audioSource.connect(this.filters[0]);
             for (let i = 0; i < this.filters.length - 1; i++) {
                 this.filters[i].connect(this.filters[i + 1]);
