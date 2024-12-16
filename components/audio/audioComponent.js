@@ -95,15 +95,17 @@ export class AudioGenerator extends HTMLElement {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
-
+        
             if (!mediaSource) {
                 mediaSource = audioContext.createMediaElementSource(playlistComponent.audio);
             }
-
+        
+            // Connect the chain: mediaSource -> equalizer -> spacilazider -> destination
             controlsLeftComponentEqualizer.connectAudioSource(mediaSource, audioContext);
-            console.log('Audio source connected to equalizer.');
-            spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
-
+            const equalizerOutput = controlsLeftComponentEqualizer.getOutput();
+            spacilaziderComponent.connectAudioSource(equalizerOutput, audioContext, true);
+            spacilaziderComponent.getOutput().connect(audioContext.destination);
+        
             await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
         });
 

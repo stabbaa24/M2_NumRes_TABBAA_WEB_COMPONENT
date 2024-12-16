@@ -34,7 +34,11 @@ class AudioSpacilazider extends HTMLElement {
         this.addEventListeners();
     }
 
-    connectAudioSource(audioSource, audioContext) {
+    getOutput() {
+        return this.stereoPanner;
+    }
+
+    connectAudioSource(audioSource, audioContext, isChained = false) {
         if (audioSource && audioContext) {
             this.audioContext = audioContext;
 
@@ -42,8 +46,15 @@ class AudioSpacilazider extends HTMLElement {
                 this.stereoPanner = this.audioContext.createStereoPanner();
             }
 
-            audioSource.disconnect();
-            audioSource.connect(this.stereoPanner).connect(this.audioContext.destination);
+            if (!isChained) {
+                audioSource.disconnect();
+            }
+            
+            audioSource.connect(this.stereoPanner);
+            // Only connect to destination if not chained
+            if (!isChained) {
+                this.stereoPanner.connect(this.audioContext.destination);
+            }
 
             console.log('Audio source connected to stereo panner.');
         }

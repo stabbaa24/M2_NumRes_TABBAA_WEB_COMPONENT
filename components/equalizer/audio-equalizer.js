@@ -94,6 +94,10 @@ class AudioEqualizer extends HTMLElement {
         });
     }
 
+    getOutput() {
+        return this.analyser;
+    }
+
     async connectAudioSource(audioSourceNode, audioContext) {
         this.audioContext = audioContext;
         this.audioSource = audioSourceNode;
@@ -102,30 +106,25 @@ class AudioEqualizer extends HTMLElement {
             this.analyser = this.audioContext.createAnalyser();
             this.analyser.fftSize = 2048;
             this.analyser.smoothingTimeConstant = 0.7;
-            console.log('Analyser created');
         }
 
         if (this.filters.length === 0) {
             this.initFilters();
         }
 
-        await this.setupAudioMotion();
-
         try {
+            // Connect the chain
             this.audioSource.disconnect();
-            console.log('Previous connections cleared');
-
             this.audioSource.connect(this.filters[0]);
+            
             for (let i = 0; i < this.filters.length - 1; i++) {
                 this.filters[i].connect(this.filters[i + 1]);
             }
+            
+            // Connect last filter to analyser
             this.filters[this.filters.length - 1].connect(this.analyser);
-            this.analyser.connect(this.audioContext.destination);
-            console.log('Audio connections established');
-
-            if (!this.audioMotion) {
-                this.setupAudioMotion();
-            }
+            
+            await this.setupAudioMotion();
         } catch (error) {
             console.error('Error in audio connections:', error);
         }
