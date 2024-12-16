@@ -52,7 +52,7 @@ class Playlist extends HTMLElement {
 
     async loadMusicFiles() {
         try {
-            const response = await fetch(`${getBaseURL()}musicList.json`);
+            const response = await fetch(`${getBaseURL()}../../assets/music/musicList.json`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch music list: ${response.statusText}`);
             }
