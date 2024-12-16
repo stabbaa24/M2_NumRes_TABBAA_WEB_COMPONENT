@@ -100,16 +100,16 @@ export class AudioGenerator extends HTMLElement {
                 mediaSource = audioContext.createMediaElementSource(playlistComponent.audio);
             }
         
-            // Connect the chain: mediaSource -> equalizer -> spacilazider -> destination
-            controlsLeftComponentEqualizer.connectAudioSource(mediaSource, audioContext);
+            spacilaziderComponent.connectAudioSource(mediaSource, audioContext, true);
+            const spacilaziderOutput = spacilaziderComponent.getOutput();
+            controlsLeftComponentEqualizer.connectAudioSource(spacilaziderOutput, audioContext);
             const equalizerOutput = controlsLeftComponentEqualizer.getOutput();
-            spacilaziderComponent.connectAudioSource(equalizerOutput, audioContext, true);
-            spacilaziderComponent.getOutput().connect(audioContext.destination);
+            equalizerOutput.connect(audioContext.destination);
         
             await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
         });
 
-        // Écouter les changements de pan
+        // Écouter les changements de la balance
         spacilaziderComponent.addEventListener('panChange', (event) => {
             const panValue = event.detail.panValue;
             console.log(`Spatialisation : Pan défini à ${panValue}`);

@@ -44,6 +44,22 @@ class AudioSpacilazider extends HTMLElement {
 
             if (!this.stereoPanner) {
                 this.stereoPanner = this.audioContext.createStereoPanner();
+                this.leftGain = this.audioContext.createGain();
+                this.rightGain = this.audioContext.createGain();
+                
+                // Split channels
+                const splitter = this.audioContext.createChannelSplitter(2);
+                const merger = this.audioContext.createChannelMerger(2);
+                
+                this.stereoPanner.connect(splitter);
+                splitter.connect(this.leftGain, 0);  // Left channel
+                splitter.connect(this.rightGain, 1); // Right channel
+                this.leftGain.connect(merger, 0, 0);
+                this.rightGain.connect(merger, 0, 1);
+                
+                if (!isChained) {
+                    merger.connect(this.audioContext.destination);
+                }
             }
 
             if (!isChained) {
@@ -51,27 +67,31 @@ class AudioSpacilazider extends HTMLElement {
             }
             
             audioSource.connect(this.stereoPanner);
-            // Only connect to destination if not chained
-            if (!isChained) {
-                this.stereoPanner.connect(this.audioContext.destination);
-            }
-
-            console.log('Audio source connected to stereo panner.');
         }
     }
 
     setPan(value) {
         if (this.stereoPanner) {
             this.stereoPanner.pan.setValueAtTime(value, this.audioContext.currentTime);
-            console.log(`Panning défini à : ${value}`);
+            
+            // Adjust channel gains for more extreme separation
+            if (value === -1) {
+                this.leftGain.gain.setValueAtTime(1, this.audioContext.currentTime);
+                this.rightGain.gain.setValueAtTime(0, this.audioContext.currentTime);
+            } else if (value === 1) {
+                this.leftGain.gain.setValueAtTime(0, this.audioContext.currentTime);
+                this.rightGain.gain.setValueAtTime(1, this.audioContext.currentTime);
+            } else {
+                this.leftGain.gain.setValueAtTime(1, this.audioContext.currentTime);
+                this.rightGain.gain.setValueAtTime(1, this.audioContext.currentTime);
+            }
+
             this.updateButtonStyles(value);
             this.dispatchEvent(new CustomEvent('panChange', {
                 detail: { panValue: value },
                 bubbles: true,
-                composed: true,
+                composed: true
             }));
-        } else {
-            console.warn('StereoPannerNode is not initialized.');
         }
     }
 
