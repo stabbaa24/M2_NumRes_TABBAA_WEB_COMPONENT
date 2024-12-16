@@ -8,8 +8,6 @@ import '../launchpad/audio-launchpad-effect.js';
 import '../spacilazider/audio-spacilazider.js';
 import '../butterchurn/audio-butterchurn.js';
 
-import '../equalizer/audio-visualizer.js';
-
 const template = document.createElement('template');
 
 // Définition de l'URL de base pour accéder aux fichiers dans le répertoire "components/audio"
