@@ -95,15 +95,15 @@ export class AudioGenerator extends HTMLElement {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
-        
+
             if (!mediaSource) {
                 mediaSource = audioContext.createMediaElementSource(playlistComponent.audio);
             }
-        
+
             controlsLeftComponentEqualizer.connectAudioSource(mediaSource, audioContext);
             console.log('Audio source connected to equalizer.');
             spacilaziderComponent.connectAudioSource(mediaSource, audioContext);
-            
+
             await butterchurnComponent.initVisualizer(audioContext, playlistComponent.audio);
         });
 
@@ -126,8 +126,20 @@ export class AudioGenerator extends HTMLElement {
         controlsRightComponentMute.addEventListener('muteChange', (event) => {
             const isMuted = event.detail.isMuted;
             const playlistComponent = this.shadowRoot.querySelector('audio-playlist');
+            const butterchurnComponent = this.shadowRoot.querySelector('audio-butterchurn');
+
             if (playlistComponent && playlistComponent.audio) {
                 playlistComponent.audio.muted = isMuted;
+
+                // Arrêter/reprendre l'animation en fonction de l'état muet
+                if (isMuted) {
+                    butterchurnComponent.stopVisualization();
+                } else {
+                    // Ne reprendre l'animation que si l'audio est en lecture
+                    if (!playlistComponent.audio.paused) {
+                        butterchurnComponent.startVisualization();
+                    }
+                }
             }
         });
 
