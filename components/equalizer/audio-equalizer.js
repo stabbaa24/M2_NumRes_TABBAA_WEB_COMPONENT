@@ -64,22 +64,26 @@ class AudioEqualizer extends HTMLElement {
 
             try {
                 this.audioMotion = new AudioMotionAnalyzer(container, {
-                    source: this.analyser, 
+                    source: this.analyser,
                     height: 150,
                     width: container.clientWidth,
-                    bgAlpha: 0.7,
-                    mode: 2,
+                    bgAlpha: 0.1,
+                    mode: 10,
                     smoothing: 0.7,
-                    gradient: 'prism',
-                    minFreq: 20,
-                    maxFreq: 16000,
+                    gradient: 'rainbow',
+                    minFreq: 30,
+                    maxFreq: 7000,
                     showScaleX: true,
                     showPeaks: true,
-                    fillAlpha: 0.7,
+                    fillAlpha: 0.5,
                     useCanvas: true,
                     radial: false,
-                    showBgColor: true,
-                    overlay: true
+                    showBgColor: false,
+                    overlay: true,
+                    showScaleY: true,
+                    lineWidth: 2,
+                    maxDecibels: -10,
+                    minDecibels: -70
                 });
 
                 console.log('AudioMotion initialized successfully');
@@ -104,7 +108,7 @@ class AudioEqualizer extends HTMLElement {
             this.initFilters();
         }
 
-         await this.setupAudioMotion();
+        await this.setupAudioMotion();
 
         try {
             this.audioSource.disconnect();
