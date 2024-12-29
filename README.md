@@ -203,7 +203,7 @@ Voici une vue d'ensemble de l'organisation du projet :
 Le projet a été réalisé grâce à la collaboration de **A. PRUDENT** et **S. TABBAA**, chacun ayant contribué sur des aspects spécifiques du projet :
 
 ### **A. PRUDENT :**
-- Design des dessins
+- Intégration des dessins
 - Recherche/Ajout des ressources multimédia
 - Développement des sous web components :
   - Volume
@@ -218,6 +218,12 @@ Le projet a été réalisé grâce à la collaboration de **A. PRUDENT** et **S.
   - Equalizer
   - Spacilazider
   - Butterchurn
+
+### **Léa CUMONT**
+Elève de l'école ... et passionnée de dessin, elle a réalisé les images que nous avons intégré aux projet
+- Dessins pour les sliders
+- Dessins pour les boutons de contrôle
+- Dessins pour le mute
 
 ---
 
