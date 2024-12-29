@@ -141,6 +141,17 @@ template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-playlist.css'}">
     <h3>Playlist</h3>
     <ul class="track-list"></ul>
+    <div class="progress-container">
+    <div>
+        <button class="seek-backward" aria-label="Reculer de 15 secondes">-15s</button>
+        <input type="range" class="progress-slider" min="0" max="100" value="0" step="1">
+        <button class="seek-forward" aria-label="Avancer de 15 secondes">+15s</button>
+    </div>
+    <div class="time-display">
+        <span class="current-time">0:00</span> <span class="total-time">0:00</span>
+    </div>
+</div>
+
     <div class="controls">
         <div class="add-music">
             <input type="file" class="upload-music" accept="audio/*" />
@@ -174,10 +185,13 @@ class Playlist extends HTMLElement {
     // Fonction appelée lorsque le composant est connecté au DOM
     async connectedCallback() {
         try {
-            await this.loadDurations(); 
+            await this.loadDurations();
             this.renderPlaylist();
             this.attachEventListeners();
             this.initResizeObserver();
+
+            this.audio.addEventListener('timeupdate', this.updateProgress.bind(this));
+            this.audio.addEventListener('loadedmetadata', this.updateTotalTime.bind(this));
 
             this.audio.addEventListener('ended', () => {
                 console.log('Song ended, playing next.');
@@ -199,7 +213,7 @@ class Playlist extends HTMLElement {
                     });
                     tempAudio.addEventListener('error', (err) => {
                         console.warn(`Failed to load metadata for: ${music.title}`, err);
-                        this.musicList[index].duration = null; 
+                        this.musicList[index].duration = null;
                         resolve();
                     });
                 });
@@ -276,6 +290,9 @@ class Playlist extends HTMLElement {
         const loopButton = this.shadowRoot.querySelector('.loop-btn'); // Récupérer le bouton de boucle
         const addButton = this.shadowRoot.querySelector('.add-to-playlist'); // Récupérer le bouton d'ajout de musique
         const uploadInput = this.shadowRoot.querySelector('.upload-music'); // Récupérer l'input de téléchargement
+        const progressSlider = this.shadowRoot.querySelector('.progress-slider');
+        const seekBackwardButton = this.shadowRoot.querySelector('.seek-backward');
+        const seekForwardButton = this.shadowRoot.querySelector('.seek-forward');
 
         // Gestion du bouton d'ajout de musique à la playlist
         addButton.addEventListener('click', () => {
@@ -314,6 +331,30 @@ class Playlist extends HTMLElement {
                 const index = parseInt(deleteButton.getAttribute('data-index'), 10); // Récupérer l'index
                 this.deleteSong(index); // Supprimer la chanson
             }
+        });
+
+        // Mise à jour de la position dans la musique lors du changement du slider
+        progressSlider.addEventListener('input', (event) => {
+            const value = event.target.value;
+            const newTime = (this.audio.duration * value) / 100;
+            this.audio.currentTime = newTime;
+
+            // Mettez à jour la couleur du slider
+            this.updateProgress();
+        });
+
+        // Gestion du bouton de recul de 15 secondes
+        seekBackwardButton.addEventListener('click', () => {
+            this.audio.currentTime = Math.max(this.audio.currentTime - 15, 0);
+            this.updateProgress(); // Met à jour la couleur
+            this.updateSliderValue(); // Met à jour la position du slider
+        });
+
+        // Gestion du bouton d'avance de 15 secondes
+        seekForwardButton.addEventListener('click', () => {
+            this.audio.currentTime = Math.min(this.audio.currentTime + 15, this.audio.duration || 0);
+            this.updateProgress(); // Met à jour la couleur
+            this.updateSliderValue(); // Met à jour la position du slider
         });
 
         // Gérer les clics sur les boutons
@@ -377,6 +418,9 @@ class Playlist extends HTMLElement {
             if (selectedMusic) {
                 this.audio.src = selectedMusic.url;
                 this.audio.play();
+
+                // Réinitialise le slider à 0
+                this.resetSlider();
 
                 this.dispatchEvent(new CustomEvent('playSong', {
                     detail: { currentSong: selectedMusic },
@@ -493,9 +537,56 @@ class Playlist extends HTMLElement {
             }
         }
 
+        // Réinitialise le slider à 0
+        this.resetSlider();
+
         this.renderPlaylist(); // Mettre à jour l'affichage
     }
 
+    updateProgress() {
+        const progressSlider = this.shadowRoot.querySelector('.progress-slider');
+        const currentTimeDisplay = this.shadowRoot.querySelector('.current-time');
+        const totalDuration = this.audio.duration || 0;
+        const currentTime = this.audio.currentTime || 0;
+    
+        if (totalDuration) {
+            const progressPercent = (currentTime / totalDuration) * 100;
+            progressSlider.value = progressPercent; // Met à jour la valeur du slider
+            progressSlider.style.background = `linear-gradient(to right, #d3a761 ${progressPercent}%, #444450 ${progressPercent}%)`;
+        }
+    
+        currentTimeDisplay.textContent = this.formatTime(currentTime);
+    }
+    
+
+    updateTotalTime() {
+        const totalTimeDisplay = this.shadowRoot.querySelector('.total-time');
+        totalTimeDisplay.textContent = this.formatTime(this.audio.duration);
+    }
+
+    formatTime(seconds) {
+        if (!seconds) return '0:00';
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${minutes}:${remainingSeconds}`;
+    }
+
+    updateSliderValue() {
+        const progressSlider = this.shadowRoot.querySelector('.progress-slider');
+        const totalDuration = this.audio.duration || 0;
+        const currentTime = this.audio.currentTime || 0;
+
+        if (totalDuration) {
+            const progressPercent = (currentTime / totalDuration) * 100;
+            progressSlider.value = progressPercent; // Met à jour la valeur du slider
+        }
+    }
+
+    resetSlider() {
+        const progressSlider = this.shadowRoot.querySelector('.progress-slider');
+        progressSlider.value = 0; // Réinitialise la position du slider
+        progressSlider.style.background = 'linear-gradient(to right, #d3a761 0%, #444450 0%)'; // Réinitialise la couleur
+    }
 }
 
 customElements.define('audio-playlist', Playlist);

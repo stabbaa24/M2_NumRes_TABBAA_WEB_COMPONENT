@@ -262,3 +262,94 @@ h3 {
     color: #0f0f1f;
     box-shadow: 0 0 15px rgba(211, 167, 97, 0.8);
 }
+
+/* Conteneur pour le slider avec les boutons */
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: linear-gradient(145deg, #29293f, #1e1e30);
+    border: 1px solid #444450;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    gap: 10px; /* Ajoute un espace entre les éléments */
+}
+
+/* Ligne des boutons et du slider */
+.progress-container > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Slider */
+.progress-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 60%;
+    height: 8px;
+    background: linear-gradient(to right, #d3a761 0%, #444450 0%);
+    border-radius: 5px;
+    outline: none;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Thumb personnalisé */
+.progress-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #d3a761;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(211, 167, 97, 0.8);
+    cursor: pointer;
+    z-index: 3;
+}
+
+.progress-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #d3a761;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(211, 167, 97, 0.8);
+    cursor: pointer;
+    z-index: 3;
+}
+
+/* Boutons de recul et d'avance */
+.seek-backward, .seek-forward {
+    background: #1f202b;
+    border: 1px solid #444450;
+    border-radius: 8px;
+    padding: 5px 15px;
+    color: #f9e1d7;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.seek-backward:hover, .seek-forward:hover {
+    background: #d3a761;
+    color: #0f0f1f;
+    box-shadow: 0 0 15px rgba(211, 167, 97, 0.8);
+}
+
+/* Temps de lecture */
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: #f9e1d7;
+    font-size: 0.9rem;
+    margin-top: 5px; /* Ajoute de l'espace entre le slider et le time display */
+    padding-top: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Séparateur visuel */
+}
