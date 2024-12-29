@@ -169,27 +169,41 @@ class Playlist extends HTMLElement {
 
     // Fonction appelée lorsque le composant est connecté au DOM
     async connectedCallback() {
-        this.loadDurations();
-        this.renderPlaylist();
-        this.attachEventListeners();
-        this.initResizeObserver();
+        try {
+            await this.loadDurations(); 
+            this.renderPlaylist();
+            this.attachEventListeners();
+            this.initResizeObserver();
 
-        // Passer à la chanson suivante automatiquement à la fin de la chanson
-        this.audio.addEventListener('ended', () => {
-            console.log('Song ended, playing next.');
-            this.playNext(); // Jouer la chanson suivante
-        });
+            this.audio.addEventListener('ended', () => {
+                console.log('Song ended, playing next.');
+                this.playNext();
+            });
+        } catch (error) {
+            console.error('Error in connectedCallback:', error);
+        }
     }
 
-    // Fonction appelée lorsque le composant est déconnecté du DOM
-    loadDurations() {
-        this.musicList.forEach((music, index) => {
-            const tempAudio = new Audio(music.url); // Créer un élément audio temporaire
-            tempAudio.addEventListener('loadedmetadata', () => {
-                this.musicList[index].duration = tempAudio.duration; // Mettre à jour la durée
-                this.renderPlaylist(); // Mettre à jour l'affichage
-            });
-        });
+    async loadDurations() {
+        for (const [index, music] of this.musicList.entries()) {
+            try {
+                const tempAudio = new Audio(music.url);
+                await new Promise((resolve, reject) => {
+                    tempAudio.addEventListener('loadedmetadata', () => {
+                        this.musicList[index].duration = tempAudio.duration;
+                        resolve();
+                    });
+                    tempAudio.addEventListener('error', (err) => {
+                        console.warn(`Failed to load metadata for: ${music.title}`, err);
+                        this.musicList[index].duration = null; 
+                        resolve();
+                    });
+                });
+            } catch (error) {
+                console.error(`Error loading metadata for: ${music.title}`, error);
+            }
+        }
+        this.renderPlaylist();
     }
 
     // Fonction pour afficher la playlist
