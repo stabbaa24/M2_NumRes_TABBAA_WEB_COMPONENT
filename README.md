@@ -184,6 +184,8 @@ Le composant **spacilazider** est conçu pour manipuler la spatialisation audio,
    - Le composant exploite les capacités des **Web Audio Nodes** pour manipuler le panorama stéréo.
    - Utilisation d'un **PannerNode** pour ajuster la position du son dans l'espace.
 
+---
+
 ## 📂 Structure du projet
 
 Voici une vue d'ensemble de l'organisation du projet :
@@ -193,6 +195,29 @@ Voici une vue d'ensemble de l'organisation du projet :
 - **libs/** : Bibliothèques nécessaires au fonctionnement du projet.
 - **grid.css** : Feuille de style pour organiser le layout.
 - **index.html** : Point d'entrée principal de l'application.
+
+---
+
+## 🤝 Contributions
+
+Le projet a été réalisé grâce à la collaboration de **A. PRUDENT** et **S. TABBAA**, chacun ayant contribué sur des aspects spécifiques du projet :
+
+### **A. PRUDENT :**
+- Design des dessins
+- Recherche/Ajout des ressources multimédia
+- Développement des sous web components :
+  - Volume
+  - Playlist
+  - Speed
+
+### **S. TABBAA :**
+- Architecture du projet
+- Web Component Parent
+- Développement des sous web components
+  - Muet
+  - Equalizer
+  - Spacilazider
+  - Butterchurn
 
 ---
 
