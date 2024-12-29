@@ -5,6 +5,137 @@ const getBaseURL = () => {
     return new URL('./', import.meta.url).href;
 };
 
+const musicList = [
+    {
+        "title": "A New World Awaits  Assassins Creed Mirage (Original Game Soundtrack)  Brendan Angelides",
+        "url": "${getBaseURL()}../../assets/music/A New World Awaits  Assassins Creed Mirage (Original Game Soundtrack)  Brendan Angelides.mp3"
+    },
+    {
+        "title": "Blood Sweat & Tears (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Blood Sweat & Tears (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Cocktail Molotov (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Cocktail Molotov (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Come Play (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Come Play (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Dirty Little Animals (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Dirty Little Animals (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Dynasties and Dystopia (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Dynasties and Dystopia (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Enemy (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Enemy (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Fantastic (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Fantastic (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Goodbye (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Goodbye (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Guns for Hire (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Guns for Hire (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Heavy Is The Crown (Original Score)",
+        "url": "${getBaseURL()}../../assets/music/Heavy Is The Crown (Original Score).mp3"
+    },
+    {
+        "title": "Hellfire (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Hellfire (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "I Cant Hear It Now (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/I Cant Hear It Now (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Ma Meilleure Ennemie (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Ma Meilleure Ennemie (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Misfit Toys (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Misfit Toys (from the series Arcane League of Legends).mp3"
+    }
+    ,
+    {
+        "title": "Our Love (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Our Love (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Paint The Town Blue (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Paint The Town Blue (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Playground (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Playground (from the series Arcane League of Legends).mp3"
+    }
+    ,
+    {
+        "title": "Rebel Heart (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Rebel Heart (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Renegade (We Never Run)",
+        "url": "${getBaseURL()}../../assets/music/Renegade (We Never Run).mp3"
+    },
+    {
+        "title": "Snakes (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Snakes (from the series Arcane League of Legends).mp3"
+    }
+    ,
+    {
+        "title": "Spin The Wheel (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../ssets/music/Spin The Wheel (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Sucker (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Sucker (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "The Beast (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/The Beast (from the series Arcane League of Legends).mp3"
+    }
+    ,
+    {
+        "title": "The Line (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/The Line (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "To Ashes and Blood (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/To Ashes and Blood (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "Wasteland (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/Wasteland (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "What Could Have Been (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/What Could Have Been (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "What Have They Done To Us (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/What Have They Done To Us (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "When Everything Went Wrong (from the series Arcane League of Legends)",
+        "url": "${getBaseURL()}../../assets/music/When Everything Went Wrong (from the series Arcane League of Legends).mp3"
+    },
+    {
+        "title": "这样很好 (Ishas Song)",
+        "url": "${getBaseURL()}../../assets/music/这样很好 (Ishas Song).mp3"
+    }
+];
+
 // Template HTML pour la playlist
 template.innerHTML = `
     <link rel="stylesheet" href="${getBaseURL() + 'audio-playlist.css'}">
@@ -30,6 +161,7 @@ class Playlist extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.audio = new Audio(); // Créer un élément audio
+        this.musicList = musicList;
         this.currentIndex = null; // Index de la chanson en cours de lecture
         this.isShuffle = false; // Mode aléatoire
         this.loopMode = 'none'; // 'all', 'one', or 'none'
@@ -37,7 +169,6 @@ class Playlist extends HTMLElement {
 
     // Fonction appelée lorsque le composant est connecté au DOM
     async connectedCallback() {
-        await this.loadMusicFiles();
         this.loadDurations();
         this.renderPlaylist();
         this.attachEventListeners();
@@ -49,21 +180,6 @@ class Playlist extends HTMLElement {
             this.playNext(); // Jouer la chanson suivante
         });
     }
-
-    async loadMusicFiles() {
-        try {
-            const response = await fetch(`${getBaseURL()}../../assets/music/musicList.json`);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch music list: ${response.statusText}`);
-            }
-    
-            this.musicList = await response.json();
-            console.log('Loaded music list:', this.musicList);
-        } catch (error) {
-            console.error('Error loading music list:', error);
-        }
-    }
-    
 
     // Fonction appelée lorsque le composant est déconnecté du DOM
     loadDurations() {
@@ -169,7 +285,7 @@ class Playlist extends HTMLElement {
             shuffleButton.classList.toggle('active', this.isShuffle); // Ajouter ou retirer la classe 'active'
             const shuffleImg = shuffleButton.querySelector('img');
             const shuffleText = shuffleButton.querySelector('span');
-            shuffleImg.src = this.isShuffle 
+            shuffleImg.src = this.isShuffle
                 ? `${getBaseURL()}../../assets/img/btnrdm_rose.png`
                 : `${getBaseURL()}../../assets/img/btnrdm_bleu.png`;
             shuffleText.textContent = this.isShuffle ? 'Mode Aléatoire' : 'Mode Normal';
