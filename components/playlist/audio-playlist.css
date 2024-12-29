@@ -211,3 +211,54 @@ h3 {
     border: none;
     padding: 0;
 }
+
+/* Conteneur pour l'ajout de musique */
+.add-music {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: linear-gradient(145deg, #29293f, #1e1e30);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Champ de fichier */
+.add-music .upload-music {
+    flex: 1;
+    margin-right: 10px;
+    padding: 8px;
+    background: #1f202b;
+    border: 1px solid #444450;
+    border-radius: 8px;
+    color: #f4e9d6;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-music .upload-music:hover {
+    background: #2a2b3c;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Bouton pour ajouter à la playlist */
+.add-music .add-to-playlist {
+    background: #1f202b;
+    border: 1px solid #9c6b2f;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #f9e1d7;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.add-music .add-to-playlist:hover {
+    background-color: #d3a761;
+    color: #0f0f1f;
+    box-shadow: 0 0 15px rgba(211, 167, 97, 0.8);
+}

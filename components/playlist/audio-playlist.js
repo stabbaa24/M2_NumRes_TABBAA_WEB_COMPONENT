@@ -142,6 +142,10 @@ template.innerHTML = `
     <h3>Playlist</h3>
     <ul class="track-list"></ul>
     <div class="controls">
+        <div class="add-music">
+            <input type="file" class="upload-music" accept="audio/*" />
+            <button class="add-to-playlist">Ajouter à la playlist</button>
+        </div>
         <button class="shuffle-btn">
             <img src="${getBaseURL()}../../assets/img/btnrdm_bleu.png" alt="Mode Aléatoire" />
             <span>Mode Normal</span>
@@ -270,6 +274,25 @@ class Playlist extends HTMLElement {
         const trackList = this.shadowRoot.querySelector('.track-list'); // Récupérer la liste des morceaux 
         const shuffleButton = this.shadowRoot.querySelector('.shuffle-btn'); // Récupérer le bouton de mode aléatoire
         const loopButton = this.shadowRoot.querySelector('.loop-btn'); // Récupérer le bouton de boucle
+        const addButton = this.shadowRoot.querySelector('.add-to-playlist'); // Récupérer le bouton d'ajout de musique
+        const uploadInput = this.shadowRoot.querySelector('.upload-music'); // Récupérer l'input de téléchargement
+
+        // Gestion du bouton d'ajout de musique à la playlist
+        addButton.addEventListener('click', () => {
+            if (uploadInput.files.length > 0) {
+                const file = uploadInput.files[0];
+                const objectURL = URL.createObjectURL(file);
+
+                this.musicList.push({
+                    title: file.name,
+                    url: objectURL,
+                    duration: null,
+                });
+
+                this.loadDurations();
+                console.log(`Added ${file.name} to the playlist.`);
+            }
+        });
 
         // Gérer les clics sur les boutons
         trackList.addEventListener('click', (event) => {
