@@ -43,6 +43,9 @@ Le générateur de logo permet de personnaliser différents aspects du logo. Voi
 ## Comment démarrer
 Pour commencer à utiliser le générateur de logo, clonez la branche `LogoGenerator` du projet et ouvrez le fichier `index.html` dans votre navigateur. Aucune configuration supplémentaire n'est requise, vous pouvez commencer à créer vos logos immédiatement.
 
+## Difficultés rencontrées
+Générer le code du logo avec les animations fonctionnelles. Pour l'instant ceci ne fonctionne pas.
+
 ## Fonctionnalités futures
 Actuellement, le générateur de logo est en version initiale, et nous prévoyons d'ajouter plus de fonctionnalités telles que :
 
@@ -52,5 +55,4 @@ Actuellement, le générateur de logo est en version initiale, et nous prévoyon
 - Mettre les effets d'ombre et de lumière sur les icones
 - Ajout de couche pour pouvoir superposer les éléments
 - Ajout de plus d'options pour les animations
-- Générer un code pour pouvoir intégrer le logo sur un site web (avec css et html)
 - Ajout d'autre options (to be continued...)
