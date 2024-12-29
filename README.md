@@ -30,7 +30,6 @@ Nous avons créé une collection sur **CodePen** regroupant tous les web compone
 3. **Utilisation des web components :**
   Une fois la playlist chargée et une musique ajoutée, vous pouvez explorer et utiliser les fonctionnalités de tous les web components selon vos besoins.
 
-
 ## 🎯 Fonctionnalités principales
 
 L'application repose sur un ensemble de web components modulaires, chacun ayant un rôle spécifique :
@@ -220,7 +219,7 @@ Le projet a été réalisé grâce à la collaboration de **A. PRUDENT** et **S.
   - Butterchurn
 
 ### **Léa CUMONT**
-Elève de l'école ... et passionnée de dessin, elle a réalisé les images que nous avons intégré aux projet
+Elève de l'école IPI Lyon et passionnée de dessin, elle a réalisé les images que nous avons intégré aux projet
 - Dessins pour les sliders
 - Dessins pour les boutons de contrôle
 - Dessins pour le mute
