@@ -11,39 +11,39 @@ const musicList = [
         "url": `${getBaseURL()}../../assets/music/A New World Awaits  Assassins Creed Mirage (Original Game Soundtrack)  Brendan Angelides.mp3`
     },
     {
-        "title": "Blood Sweat & Tears (from the series Arcane League of Legends)",
+        "title": "Blood Sweat & Tears",
         "url": `${getBaseURL()}../../assets/music/Blood Sweat & Tears (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Cocktail Molotov (from the series Arcane League of Legends)",
+        "title": "Cocktail Molotov",
         "url": `${getBaseURL()}../../assets/music/Cocktail Molotov (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Come Play (from the series Arcane League of Legends)",
+        "title": "Come Play",
         "url": `${getBaseURL()}../../assets/music/Come Play (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Dirty Little Animals (from the series Arcane League of Legends)",
+        "title": "Dirty Little Animals",
         "url": `${getBaseURL()}../../assets/music/Dirty Little Animals (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Dynasties and Dystopia (from the series Arcane League of Legends)",
+        "title": "Dynasties and Dystopia",
         "url": `${getBaseURL()}../../assets/music/Dynasties and Dystopia (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Enemy (from the series Arcane League of Legends)",
+        "title": "Enemy",
         "url": `${getBaseURL()}../../assets/music/Enemy (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Fantastic (from the series Arcane League of Legends)",
+        "title": "Fantastic",
         "url": `${getBaseURL()}../../assets/music/Fantastic (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Goodbye (from the series Arcane League of Legends)",
+        "title": "Goodbye",
         "url": `${getBaseURL()}../../assets/music/Goodbye (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Guns for Hire (from the series Arcane League of Legends)",
+        "title": "Guns for Hire",
         "url": `${getBaseURL()}../../assets/music/Guns for Hire (from the series Arcane League of Legends).mp3`
     },
     {
@@ -51,83 +51,83 @@ const musicList = [
         "url": `${getBaseURL()}../../assets/music/Heavy Is The Crown (Original Score).mp3`
     },
     {
-        "title": "Hellfire (from the series Arcane League of Legends)",
+        "title": "Hellfire",
         "url": `${getBaseURL()}../../assets/music/Hellfire (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "I Cant Hear It Now (from the series Arcane League of Legends)",
+        "title": "I Cant Hear It Now",
         "url": `${getBaseURL()}../../assets/music/I Cant Hear It Now (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Ma Meilleure Ennemie (from the series Arcane League of Legends)",
+        "title": "Ma Meilleure Ennemie",
         "url": `${getBaseURL()}../../assets/music/Ma Meilleure Ennemie (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Misfit Toys (from the series Arcane League of Legends)",
+        "title": "Misfit Toys",
         "url": `${getBaseURL()}../../assets/music/Misfit Toys (from the series Arcane League of Legends).mp3`
     }
     ,
     {
-        "title": "Our Love (from the series Arcane League of Legends)",
+        "title": "Our Love",
         "url": `${getBaseURL()}../../assets/music/Our Love (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Paint The Town Blue (from the series Arcane League of Legends)",
+        "title": "Paint The Town Blue",
         "url": `${getBaseURL()}../../assets/music/Paint The Town Blue (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Playground (from the series Arcane League of Legends)",
+        "title": "Playground",
         "url": `${getBaseURL()}../../assets/music/Playground (from the series Arcane League of Legends).mp3`
     }
     ,
     {
-        "title": "Rebel Heart (from the series Arcane League of Legends)",
+        "title": "Rebel Heart",
         "url": `${getBaseURL()}../../assets/music/Rebel Heart (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Renegade (We Never Run)",
+        "title": "Renegade",
         "url": `${getBaseURL()}../../assets/music/Renegade (We Never Run).mp3`
     },
     {
-        "title": "Snakes (from the series Arcane League of Legends)",
+        "title": "Snakes",
         "url": `${getBaseURL()}../../assets/music/Snakes (from the series Arcane League of Legends).mp3`
     }
     ,
     {
-        "title": "Spin The Wheel (from the series Arcane League of Legends)",
-        "url": `${getBaseURL()}../../ssets/music/Spin The Wheel (from the series Arcane League of Legends).mp3`
+        "title": "Spin The Wheel",
+        "url": `${getBaseURL()}../../assets/music/Spin The Wheel (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Sucker (from the series Arcane League of Legends)",
+        "title": "Sucker",
         "url": `${getBaseURL()}../../assets/music/Sucker (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "The Beast (from the series Arcane League of Legends)",
+        "title": "The Beast",
         "url": `${getBaseURL()}../../assets/music/The Beast (from the series Arcane League of Legends).mp3`
     }
     ,
     {
-        "title": "The Line (from the series Arcane League of Legends)",
+        "title": "The Line",
         "url": `${getBaseURL()}../../assets/music/The Line (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "To Ashes and Blood (from the series Arcane League of Legends)",
+        "title": "To Ashes and Blood",
         "url": `${getBaseURL()}../../assets/music/To Ashes and Blood (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "Wasteland (from the series Arcane League of Legends)",
+        "title": "Wasteland",
         "url": `${getBaseURL()}../../assets/music/Wasteland (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "What Could Have Been (from the series Arcane League of Legends)",
+        "title": "What Could Have Been",
         "url": `${getBaseURL()}../../assets/music/What Could Have Been (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "What Have They Done To Us (from the series Arcane League of Legends)",
+        "title": "What Have They Done To Us",
         "url": `${getBaseURL()}../../assets/music/What Have They Done To Us (from the series Arcane League of Legends).mp3`
     },
     {
-        "title": "When Everything Went Wrong (from the series Arcane League of Legends)",
+        "title": "When Everything Went Wrong",
         "url": `${getBaseURL()}../../assets/music/When Everything Went Wrong (from the series Arcane League of Legends).mp3`
     },
     {
@@ -154,7 +154,8 @@ template.innerHTML = `
 
     <div class="controls">
         <div class="add-music">
-            <input type="file" class="upload-music" accept="audio/*" />
+            <label for="upload-music" class="upload-label">Choisir un fichier</label>
+            <input type="file" class="upload-music" id="upload-music" accept="audio/*" />
             <button class="add-to-playlist">Ajouter à la playlist</button>
         </div>
         <button class="shuffle-btn">
@@ -234,7 +235,7 @@ class Playlist extends HTMLElement {
             li.setAttribute('draggable', true); // Activer le drag-and-drop
             li.dataset.index = index; // Stocker l'index de la chanson
 
-            li.classList.toggle('current', index === this.currentIndex); // Ajouter la classe 'current' si c'est la chanson en cours
+            li.classList.toggle('current', index === this.currentIndex);
 
             // Mettre à jour l'affichage de la durée
             const durationText = music.duration
@@ -267,7 +268,7 @@ class Playlist extends HTMLElement {
             `;
             trackList.appendChild(li);
 
-            li.addEventListener('dragstart', (e) => this.handleDragStart(e, index)); // Gérer le drag-and-drop
+            li.addEventListener('dragstart', (e) => this.handleDragStart(e, index)); // Drag-and-drop
             li.addEventListener('dragover', (e) => e.preventDefault()); // Empêcher le comportement par défaut
             li.addEventListener('drop', (e) => this.handleDrop(e, index)); // Gérer le drop
         });
@@ -290,9 +291,9 @@ class Playlist extends HTMLElement {
         const loopButton = this.shadowRoot.querySelector('.loop-btn'); // Récupérer le bouton de boucle
         const addButton = this.shadowRoot.querySelector('.add-to-playlist'); // Récupérer le bouton d'ajout de musique
         const uploadInput = this.shadowRoot.querySelector('.upload-music'); // Récupérer l'input de téléchargement
-        const progressSlider = this.shadowRoot.querySelector('.progress-slider');
-        const seekBackwardButton = this.shadowRoot.querySelector('.seek-backward');
-        const seekForwardButton = this.shadowRoot.querySelector('.seek-forward');
+        const progressSlider = this.shadowRoot.querySelector('.progress-slider'); // Récupérer le slider de progression
+        const seekBackwardButton = this.shadowRoot.querySelector('.seek-backward'); // Récupérer le bouton de recul
+        const seekForwardButton = this.shadowRoot.querySelector('.seek-forward'); // Récupérer le bouton d'avance
 
         // Gestion du bouton d'ajout de musique à la playlist
         addButton.addEventListener('click', () => {
@@ -548,43 +549,57 @@ class Playlist extends HTMLElement {
         const currentTimeDisplay = this.shadowRoot.querySelector('.current-time');
         const totalDuration = this.audio.duration || 0;
         const currentTime = this.audio.currentTime || 0;
-    
+
         if (totalDuration) {
             const progressPercent = (currentTime / totalDuration) * 100;
             progressSlider.value = progressPercent; // Met à jour la valeur du slider
             progressSlider.style.background = `linear-gradient(to right, #d3a761 ${progressPercent}%, #444450 ${progressPercent}%)`;
         }
-    
-        currentTimeDisplay.textContent = this.formatTime(currentTime);
-    }
-    
 
+        currentTimeDisplay.textContent = this.formatTime(currentTime); // Met à jour l'affichage du temps écoulé
+    }
+
+
+    /**
+     * Met à jour l'affichage du temps total de la chanson
+     */
     updateTotalTime() {
-        const totalTimeDisplay = this.shadowRoot.querySelector('.total-time');
-        totalTimeDisplay.textContent = this.formatTime(this.audio.duration);
+        const totalTimeDisplay = this.shadowRoot.querySelector('.total-time'); // Récupérer l'affichage du temps total
+        totalTimeDisplay.textContent = this.formatTime(this.audio.duration); // Mettre à jour l'affichage
     }
 
+    /**
+     * Formate le temps en minutes et secondes
+     * @param {number} seconds - Le temps en secondes
+     * @returns {string} - Le temps formaté
+     * */
     formatTime(seconds) {
-        if (!seconds) return '0:00';
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0');
-        return `${minutes}:${remainingSeconds}`;
+        if (!seconds) return '0:00'; // Retourne 0:00 si le temps est nul
+        const minutes = Math.floor(seconds / 60); // Minutes
+        const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0'); // Secondes
+        return `${minutes}:${remainingSeconds}`; // Retourne le temps formaté
     }
 
+    /**
+     * Met à jour la valeur du slider de progression
+     */
     updateSliderValue() {
-        const progressSlider = this.shadowRoot.querySelector('.progress-slider');
-        const totalDuration = this.audio.duration || 0;
-        const currentTime = this.audio.currentTime || 0;
+        const progressSlider = this.shadowRoot.querySelector('.progress-slider'); // Récupérer le slider
+        const totalDuration = this.audio.duration || 0; // Duration totale
+        const currentTime = this.audio.currentTime || 0; // Temps actuel
 
-        if (totalDuration) {
-            const progressPercent = (currentTime / totalDuration) * 100;
+        if (totalDuration) { // Si la dureé est définie
+            const progressPercent = (currentTime / totalDuration) * 100; // Calcul de la progression
             progressSlider.value = progressPercent; // Met à jour la valeur du slider
         }
     }
 
+    /**
+     * Reinitialise le slider à 0
+     */
     resetSlider() {
-        const progressSlider = this.shadowRoot.querySelector('.progress-slider');
-        progressSlider.value = 0; // Réinitialise la position du slider
+        const progressSlider = this.shadowRoot.querySelector('.progress-slider'); // Récupérer le slider
+        progressSlider.value = 0; // Réinitialise la position du slider 
         progressSlider.style.background = 'linear-gradient(to right, #d3a761 0%, #444450 0%)'; // Réinitialise la couleur
     }
 }

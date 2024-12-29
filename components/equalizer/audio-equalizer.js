@@ -25,7 +25,7 @@ class AudioEqualizer extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.bands = [
-            { id: 0, freq: 32, gain: 0 },    // Basses extrêmes
+            { id: 0, freq: 32, gain: 0 },   // Basses extrêmes
             { id: 1, freq: 65, gain: 0 },   // Basses
             { id: 2, freq: 130, gain: 0 },  // Médiums-basses
             { id: 3, freq: 261, gain: 0 },  // Bas-médiums
@@ -113,7 +113,6 @@ class AudioEqualizer extends HTMLElement {
         }
 
         try {
-            // Connect the chain
             this.audioSource.disconnect();
             this.audioSource.connect(this.filters[0]);
             
@@ -121,7 +120,6 @@ class AudioEqualizer extends HTMLElement {
                 this.filters[i].connect(this.filters[i + 1]);
             }
             
-            // Connect last filter to analyser
             this.filters[this.filters.length - 1].connect(this.analyser);
             
             await this.setupAudioMotion();

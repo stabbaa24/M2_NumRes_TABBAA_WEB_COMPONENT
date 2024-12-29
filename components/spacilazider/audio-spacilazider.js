@@ -47,13 +47,12 @@ class AudioSpacilazider extends HTMLElement {
                 this.leftGain = this.audioContext.createGain();
                 this.rightGain = this.audioContext.createGain();
                 
-                // Split channels
                 const splitter = this.audioContext.createChannelSplitter(2);
                 const merger = this.audioContext.createChannelMerger(2);
                 
                 this.stereoPanner.connect(splitter);
-                splitter.connect(this.leftGain, 0);  // Left channel
-                splitter.connect(this.rightGain, 1); // Right channel
+                splitter.connect(this.leftGain, 0); 
+                splitter.connect(this.rightGain, 1); 
                 this.leftGain.connect(merger, 0, 0);
                 this.rightGain.connect(merger, 0, 1);
                 
@@ -74,7 +73,6 @@ class AudioSpacilazider extends HTMLElement {
         if (this.stereoPanner) {
             this.stereoPanner.pan.setValueAtTime(value, this.audioContext.currentTime);
             
-            // Adjust channel gains for more extreme separation
             if (value === -1) {
                 this.leftGain.gain.setValueAtTime(1, this.audioContext.currentTime);
                 this.rightGain.gain.setValueAtTime(0, this.audioContext.currentTime);

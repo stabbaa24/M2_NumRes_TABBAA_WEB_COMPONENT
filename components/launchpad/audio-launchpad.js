@@ -52,7 +52,6 @@ class AudioLaunchpad extends HTMLElement {
                     button.classList.remove('clicked');
                 }, 5000);
 
-                // Dispatch un événement pour transmettre des images associées au son
                 const images = [];
                 for (let j = 1; j <= 3; j++) {
                     images.push(`${getBaseURL()}../../assets/img/launchpad/sound${i + 1}/sound_${i + 1}_image_${j}.png`);
@@ -80,7 +79,6 @@ class AudioLaunchpad extends HTMLElement {
             button.classList.remove('clicked');
         }, 5000);
 
-        // Dispatch de l'événement avec images
         const images = [];
         for (let j = 1; j <= 3; j++) {
             images.push(`${getBaseURL()}../../assets/img/launchpad/sound${index + 1}/sound_${index + 1}_image_${j}.png`);
@@ -96,12 +94,11 @@ class AudioLaunchpad extends HTMLElement {
         document.addEventListener('keydown', (e) => {
             const key = e.key;
             if (key >= '1' && key <= '9') {
-                const index = key - '1'; // Converti la touche en index (0 à 8)
+                const index = key - '1';
                 this.triggerSound(index);
             }
         });
     }
 }
 
-// Définit le composant <audio-launchpad>
 customElements.define('audio-launchpad', AudioLaunchpad);

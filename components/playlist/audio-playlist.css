@@ -82,7 +82,6 @@ h3 {
     line-height: 1.5em;
 }
 
-/* Texte défilant */
 .track-name span {
     position: absolute;
     display: inline-block;
@@ -171,29 +170,29 @@ h3 {
 
 /* Customisation de la scrollbar */
 .track-list::-webkit-scrollbar {
-    width: 10px; /* Largeur de la scrollbar */
+    width: 10px;
 }
 
 .track-list::-webkit-scrollbar-track {
-    background: linear-gradient(145deg, #1b1b29, #0f0f1f); /* Fond de la scrollbar */
-    border-radius: 10px; /* Coins arrondis */
+    background: linear-gradient(145deg, #1b1b29, #0f0f1f);
+    border-radius: 10px;
 }
 
 .track-list::-webkit-scrollbar-thumb {
-    background: linear-gradient(145deg, #d3a761, #b77932); /* Couleurs steampunk */
-    border-radius: 10px; /* Coins arrondis */
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6); /* Effet en relief */
+    background: linear-gradient(145deg, #d3a761, #b77932);
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6); 
 }
 
 .track-list::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(145deg, #e0b874, #d3a761); /* Couleur plus lumineuse au survol */
-    box-shadow: 0 0 10px rgba(211, 167, 97, 0.8); /* Lueur dorée */
+    background: linear-gradient(145deg, #e0b874, #d3a761);
+    box-shadow: 0 0 10px rgba(211, 167, 97, 0.8);
 }
 
 /* Compatibilité pour Firefox */
 .track-list {
-    scrollbar-width: thin; /* Minceur de la scrollbar */
-    scrollbar-color: #d3a761 #1b1b29; /* Couleur de la thumb et du track */
+    scrollbar-width: thin; 
+    scrollbar-color: #d3a761 #1b1b29;
 }
 
 .shuffle-btn img, .loop-btn img {
@@ -212,40 +211,42 @@ h3 {
     padding: 0;
 }
 
-/* Conteneur pour l'ajout de musique */
 .add-music {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 15px;
     padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
     background: linear-gradient(145deg, #29293f, #1e1e30);
+    border: 1px solid #444450;
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* Champ de fichier */
-.add-music .upload-music {
-    flex: 1;
-    margin-right: 10px;
-    padding: 8px;
+.upload-music {
+    display: none;
+}
+
+.upload-label {
     background: #1f202b;
-    border: 1px solid #444450;
+    color: #f9e1d7;
+    border: 1px solid #9c6b2f;
     border-radius: 8px;
-    color: #f4e9d6;
-    font-size: 0.9rem;
+    padding: 8px 20px;
+    font-size: 1rem;
+    text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
-.add-music .upload-music:hover {
-    background: #2a2b3c;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+.upload-label:hover {
+    background: #d3a761;
+    color: #0f0f1f;
+    box-shadow: 0 0 15px rgba(211, 167, 97, 0.8);
 }
 
-/* Bouton pour ajouter à la playlist */
-.add-music .add-to-playlist {
+.add-to-playlist {
     background: #1f202b;
     border: 1px solid #9c6b2f;
     border-radius: 8px;
@@ -255,15 +256,15 @@ h3 {
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    margin-left: 10px;
 }
 
-.add-music .add-to-playlist:hover {
+.add-to-playlist:hover {
     background-color: #d3a761;
     color: #0f0f1f;
     box-shadow: 0 0 15px rgba(211, 167, 97, 0.8);
 }
 
-/* Conteneur pour le slider avec les boutons */
 .progress-container {
     display: flex;
     flex-direction: column;
@@ -275,10 +276,9 @@ h3 {
     border: 1px solid #444450;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    gap: 10px; /* Ajoute un espace entre les éléments */
+    gap: 10px; 
 }
 
-/* Ligne des boutons et du slider */
 .progress-container > div {
     display: flex;
     align-items: center;
@@ -300,7 +300,6 @@ h3 {
     transition: background-color 0.3s ease;
 }
 
-/* Thumb personnalisé */
 .progress-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -323,7 +322,6 @@ h3 {
     z-index: 3;
 }
 
-/* Boutons de recul et d'avance */
 .seek-backward, .seek-forward {
     background: #1f202b;
     border: 1px solid #444450;
@@ -342,14 +340,13 @@ h3 {
     box-shadow: 0 0 15px rgba(211, 167, 97, 0.8);
 }
 
-/* Temps de lecture */
 .time-display {
     display: flex;
     justify-content: space-between;
     width: 100%;
     color: #f9e1d7;
     font-size: 0.9rem;
-    margin-top: 5px; /* Ajoute de l'espace entre le slider et le time display */
+    margin-top: 5px;
     padding-top: 5px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Séparateur visuel */
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
