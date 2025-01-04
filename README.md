@@ -6,6 +6,14 @@ Ce projet a été réalisé par **Arthur PRUDENT** et **S. TABBAA** dans le cadr
 Nous avons utilisé le thème de la série **Arcane** pour créer une expérience audio-visuelle unique. Les composants ont été conçus pour refléter l'ambiance sombre et immersive de la série, en utilisant des couleurs et des éléments visuels inspirés de l'univers de **Piltover** et de **Zaun**.
 Pour la police, nous avons téléchargé une police personnalisée inspirée de la série **Arcane**. Nous avons également créé des images pour les contrôles de volume et de mute, en utilisant des éléments graphiques de la série.
 
+## 🎥 Vidéo de Présentation
+
+Nous avons également réalisé une **vidéo de présentation** de notre projet pour illustrer son concept et ses fonctionnalités. 🎬✨  
+Cette vidéo est hébergée sur **YouTube**, et nous espérons que vous l'apprécierez autant que nous avons pris plaisir à la créer !  
+Vous pouvez la visionner en suivant ce lien : [📺 Voir la vidéo](https://www.youtube.com/watch?v=NpV4UqVhToU)
+
+N'hésitez pas à nous donner votre avis en commentaire sur la vidéo ou sur ce projet ! 😊
+
 ## 🚀 Réutilisation des web components sur CodePen ou Jsbin
 
 ### Collection CodePen
@@ -266,4 +274,5 @@ Elève de l'école IPI Lyon et passionnée de dessin, elle a réalisé les image
    - [Police d'écriture Arcane](https://fontmeme.com/polices/police-arcane-nine/)
    - [Musique Arcane](https://www.youtube.com)
    - [Sound](https://www.voicy.network/fr/search/arcane-sound-effects)
+   - [Image Soundboard](https://leagueoflegends.fandom.com/wiki/Emote)
 
