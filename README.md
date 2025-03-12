@@ -12,7 +12,7 @@ Nous avons également réalisé une **vidéo de présentation** de notre projet 
 Cette vidéo est hébergée sur **YouTube**, et nous espérons que vous l'apprécierez autant que nous avons pris plaisir à la créer !  
 Vous pouvez la visionner en suivant ce lien : [📺 Voir la vidéo](https://www.youtube.com/watch?v=NpV4UqVhToU)
 
-N'hésitez pas à nous donner votre avis en commentaire sur la vidéo ou sur ce projet ! 😊
+N'hésitez pas à nous donner votre avis en commentaire sur la vidéo ou sur ce projet !
 
 ## 🚀 Réutilisation des web components sur CodePen ou Jsbin
 
